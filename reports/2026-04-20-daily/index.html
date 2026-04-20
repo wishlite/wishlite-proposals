@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>韻手作系統戰報｜2026-04-20</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --moss: #3d5a3e;
+  --moss-dark: #2e4630;
+  --sage: #7a9e7e;
+  --cream: #f5f0e8;
+  --sand: #e8dcc8;
+  --soft: #f9f6f0;
+  --gold: #c49a3c;
+  --gold-light: #d4b06a;
+  --ink: #1e2a1e;
+  --line: #e5ddd0;
+  --paper: #F5F2EA;
+  --earth: #A67C52;
+  --fog: #7D8F72;
+  --ink-warm: #5C4830;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: 'Noto Sans TC', -apple-system, sans-serif;
+  color: var(--ink);
+  background: var(--soft);
+  line-height: 1.75;
+  font-size: 15px;
+}
+.wrap { max-width: 920px; margin: 0 auto; padding: 48px 32px; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--moss) 0%, var(--moss-dark) 100%);
+  color: var(--cream);
+  padding: 64px 48px;
+  border-radius: 8px;
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-eyebrow {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+.hero-subtitle {
+  font-size: 17px;
+  color: rgba(245, 240, 232, 0.85);
+  max-width: 620px;
+  line-height: 1.8;
+}
+.hero-meta {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(245, 240, 232, 0.2);
+  font-size: 14px;
+  color: rgba(245, 240, 232, 0.7);
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.hero-meta span strong { color: var(--gold-light); font-weight: 500; }
+
+/* Section */
+.section { margin-bottom: 56px; }
+.section-label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--fog);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.section-title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 600;
+  font-size: 26px;
+  color: var(--moss-dark);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--sand);
+}
+.section-subtitle {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 28px;
+  line-height: 1.9;
+}
+
+/* Stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.stat {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-number {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--moss);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 12px;
+  color: #777;
+  letter-spacing: 0.05em;
+}
+
+/* Achievement */
+.achievement {
+  background: white;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--moss);
+  border-radius: 4px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+}
+.achievement-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.achievement-num {
+  background: var(--moss);
+  color: var(--cream);
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.achievement-title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 600;
+  font-size: 19px;
+  color: var(--ink);
+}
+.achievement-tag {
+  font-size: 11px;
+  background: var(--sand);
+  color: var(--moss-dark);
+  padding: 3px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.achievement-desc { color: #444; line-height: 1.85; }
+.achievement-desc ul { margin-top: 8px; padding-left: 20px; }
+.achievement-desc li { margin-bottom: 4px; }
+.achievement-desc code {
+  background: var(--sand);
+  color: var(--moss-dark);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 13px;
+  font-family: 'SF Mono', monospace;
+}
+
+/* Callout */
+.callout {
+  background: linear-gradient(to right, #fff8ec, #fffdf5);
+  border: 1px solid var(--gold-light);
+  border-radius: 6px;
+  padding: 24px 28px;
+  margin: 32px 0;
+}
+.callout-label {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 600;
+  color: var(--gold);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.callout p { color: #5c4830; line-height: 1.85; }
+
+/* For Team */
+.for-team {
+  background: var(--cream);
+  border-radius: 6px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+.for-team h3 {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--moss-dark);
+  margin-bottom: 16px;
+}
+.team-item {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--line);
+  align-items: flex-start;
+}
+.team-item:last-child { border-bottom: 0; }
+.team-who {
+  min-width: 80px;
+  font-weight: 500;
+  color: var(--moss);
+}
+.team-what { color: #444; flex: 1; line-height: 1.8; }
+.team-what strong { color: var(--ink); }
+
+/* Footer horizon */
+.footer {
+  margin-top: 80px;
+  padding: 48px 0 32px;
+  text-align: center;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    rgba(166, 124, 82, 0.08) 30%,
+    rgba(166, 124, 82, 0.18) 60%,
+    rgba(166, 124, 82, 0.28) 100%);
+  border-top: 1px solid transparent;
+  position: relative;
+}
+.footer::before {
+  content: '';
+  display: block;
+  width: 38px;
+  height: 1px;
+  background: var(--gold-light);
+  margin: 0 auto 24px;
+}
+.footer-tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--earth);
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.footer-brand {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ink-warm);
+  letter-spacing: 0.05em;
+}
+.footer-meta {
+  margin-top: 16px;
+  font-size: 12px;
+  color: rgba(92, 72, 48, 0.55);
+}
+
+/* Tags */
+.risk-low { color: #3d7a4a; }
+.risk-mid { color: #b88a2a; }
+.risk-high { color: #b04848; }
+
+@media (max-width: 640px) {
+  .wrap { padding: 32px 20px; }
+  .hero { padding: 40px 28px; }
+  .hero-title { font-size: 28px; }
+  .section-title { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">SYSTEM DAILY REPORT · 2026.04.20</div>
+  <h1 class="hero-title">LINE 客服 AI 系統 · 一日深度升級</h1>
+  <p class="hero-subtitle">
+    從 Sprint 4.5 的 LINE 暱稱辨識，到 Phase 4.2 的 Module A 提案引擎，
+    再到 Sprint 5 的意圖化 ACK + 雙保險節流，
+    最後沉澱成 Mico 回覆規則 skill v1.1。
+    這是一日內 6 項系統性改造的完整戰報。
+  </p>
+  <div class="hero-meta">
+    <span>🌿 <strong>工作時數</strong>：約 10 小時</span>
+    <span>🧩 <strong>系統變更</strong>：6 項</span>
+    <span>🔐 <strong>生產風險</strong>：零事故</span>
+    <span>📦 <strong>新增資產</strong>：1 skill · 1 prompt · 2 節點</span>
+  </div>
+</div>
+
+<!-- 關鍵數字 -->
+<div class="section">
+  <div class="section-label">KEY METRICS</div>
+  <h2 class="section-title">關鍵數字</h2>
+  <div class="stats">
+    <div class="stat"><div class="stat-number">48</div><div class="stat-label">WF-LINE-Reply 節點</div></div>
+    <div class="stat"><div class="stat-number">28</div><div class="stat-label">LINE 暱稱補跑</div></div>
+    <div class="stat"><div class="stat-number">14</div><div class="stat-label">對話截圖萃取</div></div>
+    <div class="stat"><div class="stat-number">4/4</div><div class="stat-label">Prompt 案例驗證</div></div>
+    <div class="stat"><div class="stat-number">18</div><div class="stat-label">AI 紅線規則</div></div>
+    <div class="stat"><div class="stat-number">2h</div><div class="stat-label">ACK 節流保護</div></div>
+  </div>
+</div>
+
+<!-- 6 大成就 -->
+<div class="section">
+  <div class="section-label">ACHIEVEMENTS</div>
+  <h2 class="section-title">今日 6 項系統升級</h2>
+  <p class="section-subtitle">按時間順序，每項都經過驗證後才納入生產。</p>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">01</span>
+      <span class="achievement-title">Sprint 4.5｜LINE 暱稱自動辨識</span>
+      <span class="achievement-tag risk-low">✓ 已上線</span>
+    </div>
+    <div class="achievement-desc">
+      在 WF-LINE-Reply 工作流新增 <code>📇 查 LINE 暱稱</code> 與 <code>🔧 加暱稱</code> 節點，透過 LINE Profile API 自動取得客戶暱稱寫入 Notion。
+      <ul>
+        <li>解決 <strong>Notion 列表全是亂碼 userId</strong> 的痛點</li>
+        <li>同時補跑 28 筆歷史訊息（13 位客戶，其中 8 位查到真實暱稱）</li>
+        <li>Apple 的覆核視圖可依「顯示名稱」分組，同客戶訊息自動聚類</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">02</span>
+      <span class="achievement-title">Phase 4.2｜Module A Prompt v0.5.1</span>
+      <span class="achievement-tag risk-low">✓ 離線驗證通過</span>
+    </div>
+    <div class="achievement-desc">
+      設計一套「LINE 對話 → Module A JSON」的 Claude Prompt，核心是 <strong>FULL / PARTIAL / MINIMAL 三態門檻閘門</strong>。
+      <ul>
+        <li>資訊完整才產提案；不足 → 回傳空殼 + <code>next_questions</code> 引導回問</li>
+        <li>G0 門檻閘門 / G1 禁止 Claude 算價 / G2 禁止腦補（3 大鐵律）</li>
+        <li>4 個真實案例離線驗證 100% 通過（FULL 1 / PARTIAL 2 / MINIMAL 1）</li>
+        <li>v0.5.1 補強台灣在地化用語（禁「團建」→「員工凝聚活動」等）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">03</span>
+      <span class="achievement-title">Module A v6.7｜課程流程收尾優化</span>
+      <span class="achievement-tag risk-low">✓ 5 場景同步</span>
+    </div>
+    <div class="achievement-desc">
+      課程流程的「收尾段」5 個場景（企業內訓 / ESG 活動 / 校園 / 親子 / 貴賓）統一優化：
+      <ul>
+        <li>時長統一 <strong>約 10–20 分鐘</strong>（原為 15 / 20 / 20-30 / 30 不一）</li>
+        <li>所有收尾段融入「<strong>合照作為行動句點</strong>」概念</li>
+        <li>主檔 + GitHub 模板兩處同步；未來新提案自動使用新版</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">04</span>
+      <span class="achievement-title">Sprint 5｜意圖化 ACK 文案</span>
+      <span class="achievement-tag risk-low">✓ 4 種文案上線</span>
+    </div>
+    <div class="achievement-desc">
+      客戶收到的系統自動回覆不再只有一句通用文案，而是依意圖分流：
+      <ul>
+        <li><strong>財務加急</strong>（支付 / 退款 / 訂金 / 匯款）：「已加急處理，1 個工作天內回覆」</li>
+        <li><strong>客製售後</strong>：「您的問題已收到，團隊會查詢後盡快回覆」</li>
+        <li><strong>FAQ</strong>：「我們已收到您的詢問，將盡快協助解答」</li>
+        <li><strong>新詢問 / 報價</strong>：「感謝詢問！我們將整理方案後與您聯繫」</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">05</span>
+      <span class="achievement-title">ACK 雙保險節流 · Bug Fix</span>
+      <span class="achievement-tag risk-mid">🔧 踩坑修復</span>
+    </div>
+    <div class="achievement-desc">
+      修復 Doreen Huang 案例中「Mico 手動聊天被 ACK 插入打斷」的 bug：
+      <ul>
+        <li>保險 1：<code>staticData</code> 毫秒級時間戳檢查（2 小時內同 userId 只送 1 次）</li>
+        <li>保險 2：Notion 歷史查詢 fallback（即使 staticData 被洗也擋得住）</li>
+        <li>根因：n8n PUT workflow 時未帶 <code>staticData</code> 欄位 → 被清空。已寫入工程守則</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">06</span>
+      <span class="achievement-title">Skill v1.1｜LINE 回覆規則庫（戰略資產）</span>
+      <span class="achievement-tag risk-low">⭐ 最高價值</span>
+    </div>
+    <div class="achievement-desc">
+      從 Apple 提供的 14 張真實 LINE 對話截圖萃取出一套完整的 Mico 回覆規則，寫入 Claude skill。未來所有 AI 草稿都站在今天的肩膀上。
+      <ul>
+        <li><strong>Mico 語氣 DNA</strong>：開頭 / 收尾 / emoji / 禮節 / 語尾助詞全紀錄</li>
+        <li><strong>擴香石主軸報價</strong>：公版 NT$420、300 組 88 折 NT$370、模具配比 15:1 等硬資料</li>
+        <li><strong>3 招商業套路</strong>：組合型禮贈 / 分層禮品 / 完整問題清單</li>
+        <li><strong>4 組回覆模板</strong>：通用 ACK / 擴香石三段 / 庫存訂購 / B2B 議價</li>
+        <li><strong>18 條 AI 紅線</strong>：語氣 / 承諾 / 財務 / 流程 4 大類禁止事項</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Callout -->
+<div class="callout">
+  <div class="callout-label">🌿 今日最大戰略資產</div>
+  <p>
+    <strong>Skill v1.1 不是一份文件，而是一套「對話作戰手冊」</strong>。它讓未來每一次 AI 代 Mico 寫草稿時都能不失韻手作溫度；更重要的是，它讓 18 條紅線（禁止自行算價、禁止混稅、禁止漏問 Logo 等）成為系統的硬規則，避免任何 AI 在客戶面前做出會損害公司的承諾。
+  </p>
+</div>
+
+<!-- For team -->
+<div class="section">
+  <div class="section-label">FOR THE TEAM</div>
+  <h2 class="section-title">對團隊的實際影響</h2>
+
+  <div class="for-team">
+    <h3>🙋 給 Mico</h3>
+    <div class="team-item">
+      <div class="team-who">ACK 不打擾</div>
+      <div class="team-what">之後你在 chat.line.biz 手動和同一客戶聊天時，<strong>系統不會再插入 ACK 自動回覆打斷節奏</strong>。同 userId 2 小時內只會送 1 次。</div>
+    </div>
+    <div class="team-item">
+      <div class="team-who">Notion 清爽</div>
+      <div class="team-what">「Apple 覆核用」View 的 <strong>Group by 顯示名稱</strong> 會自動聚類，你能直接看到「某位客戶今天的所有訊息」而不是散落 52 筆。</div>
+    </div>
+    <div class="team-item">
+      <div class="team-who">AI 草稿更 Mico 感</div>
+      <div class="team-what">未來系統產的草稿會<strong>模仿你的語氣</strong>（🌿 開頭、唷 / 呢 / 囉 語尾、3 段式報價），減少你手改的時間。</div>
+    </div>
+  </div>
+
+  <div class="for-team">
+    <h3>👤 給 Apple</h3>
+    <div class="team-item">
+      <div class="team-who">提案守門員</div>
+      <div class="team-what">Module A Prompt v0.5.1 的門檻閘門會<strong>自動判斷資訊是否完整</strong>，避免系統產半成品提案誤送客戶。不完整時自動回傳待補問題清單。</div>
+    </div>
+    <div class="team-item">
+      <div class="team-who">擴香石報價不再飄</div>
+      <div class="team-what">所有擴香石主軸報價（NT$420、NT$370、NT$2,500 開版費、10ml +NT$200）都鎖定在 skill 中，任何 AI 引用都會一致，不會出現舊版 NT$390 的狀況。</div>
+    </div>
+    <div class="team-item">
+      <div class="team-who">客戶覆核時間省</div>
+      <div class="team-what">ACK 意圖化之後，客戶看到的不再是制式罐頭，而是<strong>對號入座的回覆</strong>（問訂金→財務加急；問 FAQ→查詢回覆），客戶感受明顯升級。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Path forward -->
+<div class="section">
+  <div class="section-label">ROADMAP</div>
+  <h2 class="section-title">接下來的路線圖</h2>
+  <p class="section-subtitle">今日已建立完整基礎建設，接下來的里程碑按風險 / 價值節奏安排。</p>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">4.3</span>
+      <span class="achievement-title">Phase 4.3｜n8n 接入 Module A Prompt v0.5.1</span>
+      <span class="achievement-tag risk-mid">🟡 待排程</span>
+    </div>
+    <div class="achievement-desc">
+      把離線驗證過的 Prompt 正式接入 WF-LINE-Reply，新增 3 個節點（組合輸入 / Claude 轉 JSON / Push GitHub）。由於要動 48 節點 active 工作流，建議另開專注 session 進行。
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">5</span>
+      <span class="achievement-title">Sprint 5 延伸｜Notion 商品目錄 / FAQ / 快捷回覆庫</span>
+      <span class="achievement-tag risk-low">🟢 本週內</span>
+    </div>
+    <div class="achievement-desc">
+      把 Skill 中的硬資料（價格 / FAQ / 模板）寫進 Notion，讓 Mico 能直接複製貼上、讓 AI 查到最新商品資訊。預計本週內完成。
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-head">
+      <span class="achievement-num">LINE</span>
+      <span class="achievement-title">LINE OA 聊天進階方案訂閱</span>
+      <span class="achievement-tag risk-low">💰 NT$100/月</span>
+    </div>
+    <div class="achievement-desc">
+      訂閱後聊天紀錄從 6 個月延長到 5 年 + 可下載備份，徹底解決「看不到 Mico 手動回覆內容」的系統限制。
+      比自建 Chrome Extension 更穩、無維護成本、無封號風險。
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-tagline">From Earth, With Care.</div>
+  <div class="footer-brand">Wishlite 韻手作永續</div>
+  <div class="footer-meta">
+    Daily System Report · 2026-04-20 · Prepared for team alignment
+  </div>
+</div>
+
+</div>
+</body>
+</html>
