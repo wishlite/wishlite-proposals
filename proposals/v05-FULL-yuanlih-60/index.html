@@ -361,6 +361,18 @@
     color: var(--moss-dark);
     margin-bottom: 8px;
   }
+  /* v6.6 章節副標（依 proposal_mode 顯示） */
+  .section-subtitle {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.85;
+    color: #666;
+    margin-top: 6px;
+    margin-bottom: 22px;
+    max-width: 640px;
+    white-space: pre-line;
+  }
+  .section-subtitle:empty { display: none; }
   .section-tag {
     font-size: 11px;
     color: var(--gold);
@@ -1125,10 +1137,11 @@
         <div class="narrative-plan" id="p-narrative-plan" style="display:none;"></div>
       </div>
 
-      <!-- ③ 課程流程 -->
+      <!-- ③ 課程流程 / 合作流程（依 mode 分流） -->
       <div class="section">
-        <div class="section-tag">FLOW</div>
-        <h2 class="section-title">課程流程</h2>
+        <div class="section-tag">HOW IT WORKS</div>
+        <h2 class="section-title" id="p-flow-title">課程流程</h2>
+        <p class="section-subtitle" id="p-flow-subtitle"></p>
         <div class="divider"></div>
         <div class="flow-list" id="p-flow"></div>
       </div>
@@ -1359,9 +1372,9 @@ const FLOW_LIB = {
     },
     {
       stage: '收尾',
-      title: '成果分享 × 可延伸成果',
-      desc: '作品與活動紀錄可延伸為內部刊物、CSR 素材或企業永續敘事使用。',
-      dur: '約 20 分鐘'
+      title: '成果分享 × 合照句點',
+      desc: '以作品展示與合照留念作為行動句點，延伸為內部刊物、CSR 素材或企業永續敘事使用。',
+      dur: '約 10–20 分鐘'
     }
   ],
   'ESG體驗活動': [
@@ -1380,8 +1393,8 @@ const FLOW_LIB = {
     {
       stage: '收尾',
       title: '成果分享 × 行動延伸',
-      desc: '透過作品紀錄與分享，延伸為企業 ESG 敘事素材與內部溝通資源。',
-      dur: '約 20–30 分鐘'
+      desc: '透過作品展示、合照留念與活動紀錄，讓這場行動以明確的句點收束，延伸為 ESG 敘事素材與內部溝通資源。',
+      dur: '約 10–20 分鐘'
     }
   ],
   '校園課程': [
@@ -1399,9 +1412,9 @@ const FLOW_LIB = {
     },
     {
       stage: '收尾',
-      title: '分享 × 小小行動',
-      desc: '引導學生把今天的發現，連結到未來可以採取的具體行動。',
-      dur: '約 15 分鐘'
+      title: '分享 × 合照句點',
+      desc: '引導學生分享今天的發現，以合照作為行動句點，把永續連結到未來可以採取的具體行動。',
+      dur: '約 10–20 分鐘'
     }
   ],
   '親子活動': [
@@ -1420,8 +1433,8 @@ const FLOW_LIB = {
     {
       stage: '收尾',
       title: '合影 × 故事分享',
-      desc: '讓手作成為家庭記憶的一部分，也成為未來永續對話的起點。',
-      dur: '約 20 分鐘'
+      desc: '以家庭合照作為行動句點，讓手作成為家庭記憶的一部分，也成為未來永續對話的起點。',
+      dur: '約 10–20 分鐘'
     }
   ],
   '貴賓體驗': [
@@ -1439,9 +1452,9 @@ const FLOW_LIB = {
     },
     {
       stage: '收尾',
-      title: '茶敘 × 品牌對談',
-      desc: '以一杯茶延伸對話，深化品牌與永續價值之間的連結。',
-      dur: '約 30 分鐘'
+      title: '茶敘 × 品牌合照',
+      desc: '以一杯茶延伸對話，並以品牌合照作為行動句點，深化品牌與永續價值之間的連結。',
+      dur: '約 10–20 分鐘'
     }
   ]
 };
@@ -1497,12 +1510,14 @@ const ESG_CARDS_GIFT = {
   }
 };
 
-// v6.4 禮品模式合作流程（proposal_mode=gift 時取代 FLOW_LIB）
+// v6.6 禮品模式合作流程（proposal_mode=gift 時取代 FLOW_LIB）
+// 4 步驟：填寫需求 → 選品與報價 → 確認客製 → 製作與交付
+// 關鍵分水嶺：Step 3 完成報價確認後，進入正式製作流程
 const GIFT_FLOW = [
-  { stage: 'Step 1', title: '需求確認', desc: '確認數量、使用場景、時程與預算，釐清客製需求（LOGO、包裝、卡片）。' },
-  { stage: 'Step 2', title: '樣品與打樣', desc: '寄送材質樣品，供團隊親手感受；必要時進行客製打樣確認。' },
-  { stage: 'Step 3', title: '正式下單', desc: '確認報價、簽約、安排生產排程。' },
-  { stage: 'Step 4', title: '交付與追蹤', desc: '依約交付，保留材料故事卡與使用建議，延續禮品的敘事。' }
+  { stage: '1', title: '填寫需求', desc: '提供用途、數量、預算與交期，讓我們快速理解您的禮贈情境。', dur: '約 2 分鐘' },
+  { stage: '2', title: '選品與報價建議', desc: '依需求整理合適禮品組合，提供初步報價與執行方向。', dur: '約 2 個工作天' },
+  { stage: '3', title: '確認內容與客製方式', desc: '確認商品形式、Logo 呈現方式（浮雕／彩貼）與整體設計方向，確保最終呈現符合品牌需求。', dur: '' },
+  { stage: '4', title: '製作與交付', desc: '依數量與交期安排生產與品質控管，完成出貨交付。', dur: '依排程執行' }
 ];
 
 // 材料語境（intro + sdgs tags + 三張卡語境句）
@@ -1826,10 +1841,22 @@ function render() {
     planEl.style.display = 'none';
   }
 
-  // ─── ③ 課程流程 / 合作流程（v6.4 依 mode 分流）───
+  // ─── ③ 課程流程 / 合作流程（v6.6 依 mode 分流 + 標題/副標切換）───
   const flow = (proposalMode === 'gift')
     ? GIFT_FLOW
     : (FLOW_LIB[scene] || FLOW_LIB['ESG體驗活動']);
+  // v6.6 標題切換
+  const flowTitleEl = $('p-flow-title');
+  if (flowTitleEl) {
+    flowTitleEl.textContent = (proposalMode === 'gift') ? '合作流程' : '課程流程';
+  }
+  // v6.6 副標（禮品模式顯示，活動模式隱藏）
+  const flowSubtitleEl = $('p-flow-subtitle');
+  if (flowSubtitleEl) {
+    flowSubtitleEl.textContent = (proposalMode === 'gift')
+      ? '從需求確認到交付完成，\n透過清晰的客製流程，讓企業送禮更安心。'
+      : '';
+  }
   $('p-flow').innerHTML = flow.map(item => `
     <div class="flow-item">
       <div class="flow-stage">${item.stage}</div>
