@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wishlite Template Engine v1｜Module A — Proposal Generator v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  /* =========================================
+     品牌色票
+     【內頁 moss 系統】敘事 / 流程 / ESG / 報價 / OUR BELIEF / CTA 都用這套
+     【封面 v1.0 系統】只有封面區塊用米白 / 土棕 / 霧綠
+     ========================================= */
+  :root {
+    /* 內頁 moss 系統（v2 原色，不動） */
+    --moss: #3d5a3e;
+    --moss-dark: #2e4630;
+    --sage: #7a9e7e;
+    --cream: #f5f0e8;
+    --sand: #e8dcc8;
+    --soft: #f9f6f0;
+    --gold: #c49a3c;
+    --gold-light: #d4b06a;
+    --mist: #d4e4d0;
+    --ink: #1e2a1e;
+    --white: #ffffff;
+    --line: #e5ddd0;
+
+    /* 封面 v1.0 系統（依 Wishlite 視覺規範 v1.0） */
+    --paper:     #F5F2EA;  /* 米白 — 主畫布底 */
+    --earth:     #A67C52;  /* 土棕 — 副文字、細裝飾線 */
+    --fog:       #7D8F72;  /* 霧綠 — eyebrow / label */
+    --stone:     #EAE7E2;  /* 淡灰 — 卡片底、輔助色 */
+    --ink-warm:  #5C4830;  /* 深暖棕 — 主文、客戶名稱 */
+    --ink-weak:  rgba(92, 72, 48, 0.55);  /* 弱文字 */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Noto Sans TC', -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--soft);
+    line-height: 1.75;
+    font-size: 15px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  /* =========================================
+     雙欄主佈局（左表單 / 右預覽）
+     ========================================= */
+  .app {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    min-height: 100vh;
+  }
+
+  /* -------- 左側：表單 -------- */
+  .form-panel {
+    background: var(--white);
+    border-right: 1px solid var(--line);
+    padding: 28px 28px 48px;
+    overflow-y: auto;
+    max-height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .form-panel h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    color: var(--moss-dark);
+    margin-bottom: 4px;
+  }
+  .form-panel .subtitle {
+    font-size: 12px;
+    color: var(--sage);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--moss-dark);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--soft);
+    color: var(--ink);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--moss);
+    background: var(--white);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 72px;
+    font-family: inherit;
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .field option:disabled { color: #aaa; }
+  .hint {
+    font-size: 11px;
+    color: var(--sage);
+    margin-top: 4px;
+  }
+
+  .section-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 24px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .actions {
+    margin-top: 28px;
+    display: flex;
+    gap: 10px;
+  }
+  .btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 28px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .btn-primary {
+    background: var(--moss);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: var(--moss-dark); }
+  .btn-secondary {
+    background: var(--white);
+    color: var(--moss);
+    border: 1.5px solid var(--moss);
+  }
+  .btn-secondary:hover { background: var(--cream); }
+
+  /* -------- 右側：預覽 -------- */
+  .preview-panel {
+    padding: 40px 56px;
+    max-width: 840px;
+    margin: 0 auto;
+  }
+
+  .page {
+    background: var(--white);
+    box-shadow: 0 2px 20px rgba(30, 42, 30, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  /* =========================================
+     ① 封面 v1.0（山景 + 米白系統）
+     依 Wishlite 視覺規範 v1.0
+     禁止：filter / blur / 翻轉 / 調色（選對素材不要亂動）
+     ========================================= */
+  .cover {
+    position: relative;
+    background-color: var(--paper);
+    background-image:
+      /* 左側米白漸層保護文字區（從左 85% 透明度 → 中間 30% → 右邊全透 ） */
+      linear-gradient(95deg,
+        rgba(245, 242, 234, 0.92) 0%,
+        rgba(245, 242, 234, 0.75) 30%,
+        rgba(245, 242, 234, 0.35) 60%,
+        rgba(245, 242, 234, 0.08) 100%),
+      url('/wishlite-proposals/assets/hero-mountain-warm.jpg');
+    background-size: cover;
+    background-position: center 65%;
+    background-repeat: no-repeat;
+    color: var(--ink-warm);
+    padding: 60px 56px 40px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 640px;
+  }
+
+  /* 上方帶：品牌 eyebrow + 土棕分隔線 + 日期 */
+  .cover-topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(166, 124, 82, 0.28);
+    margin-bottom: 56px;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .cover-topbar .brand-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: var(--fog);
+    text-transform: uppercase;
+  }
+  .cover-topbar .topbar-spacer { flex: 1; }
+  .cover-topbar .cover-date {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--earth);
+    letter-spacing: 1.5px;
+  }
+
+  /* 主內容區：5 層字級 */
+  .cover-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Level 1 — 系列 label（eyebrow） */
+  .cover-category {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: var(--fog);
+    margin-bottom: 22px;
+    padding-bottom: 8px;
+    display: inline-block;
+    border-bottom: 1.5px solid var(--earth);
+    align-self: flex-start;
+  }
+
+  /* Level 5 — 主標（A4 直式，從 76 調整為 48 以適應窄版） */
+  .cover-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1.3;
+    color: var(--ink-warm);
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    max-width: 640px;
+  }
+
+  /* Level 3 — 英文 tagline（Playfair Italic） */
+  .cover-en-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--earth);
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+  }
+
+  /* Level 2 — 中文副標品牌金句 */
+  .cover-slogan {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.9;
+    color: var(--ink-warm);
+    margin-bottom: 40px;
+    max-width: 520px;
+    letter-spacing: 1px;
+  }
+
+  /* Level 4 — 客戶宣告 */
+  .cover-client-line {
+    padding-top: 18px;
+    border-top: 1px solid rgba(166, 124, 82, 0.28);
+    font-family: 'Noto Serif TC', serif;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .cover-client-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--fog);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+  }
+  .cover-client-name {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink-warm);
+    letter-spacing: 1px;
+  }
+
+  /* 下方 footer */
+  .cover-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(166, 124, 82, 0.28);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+  }
+  .cover-footer-tagline {
+    color: var(--earth);
+  }
+  .cover-footer-divider {
+    color: var(--ink-weak);
+    font-style: normal;
+  }
+  .cover-footer-brand {
+    color: var(--ink-warm);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-style: normal;
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: 500;
+  }
+
+  /* 一般內容區塊 */
+  .section {
+    padding: 56px 60px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    color: var(--moss-dark);
+    margin-bottom: 8px;
+  }
+  .section-tag {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .divider {
+    width: 32px;
+    height: 1.5px;
+    background: var(--gold);
+    margin: 0 0 24px;
+  }
+
+  /* ② 活動敘事 */
+  .narrative {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16.5px;
+    line-height: 2.1;
+    color: var(--ink);
+    white-space: pre-line;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    max-width: 620px;
+  }
+  .narrative-plan {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line);
+    font-size: 14px;
+    line-height: 1.9;
+    color: #555;
+    white-space: pre-line;
+  }
+
+  /* ③ 課程流程 */
+  .flow-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .flow-item {
+    display: grid;
+    grid-template-columns: 96px 1fr 110px;
+    gap: 20px;
+    padding: 20px 22px;
+    background: var(--soft);
+    border-left: 3px solid var(--sage);
+    border-radius: 4px;
+    align-items: start;
+  }
+  .flow-stage {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--moss);
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding-top: 2px;
+  }
+  .flow-content {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.8;
+  }
+  .flow-content strong {
+    display: block;
+    font-size: 15px;
+    color: var(--moss-dark);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .flow-duration {
+    text-align: right;
+    font-size: 12px;
+    color: var(--sage);
+    letter-spacing: 1px;
+    padding-top: 4px;
+  }
+
+  /* ④ ESG 價值 */
+  .esg-intro {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 17px;
+    line-height: 2.0;
+    color: var(--moss-dark);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    background: var(--soft);
+    border-left: 3px solid var(--moss);
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .esg-card-body {
+    white-space: pre-line;
+    line-height: 1.85;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  .esg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+  }
+  .esg-card {
+    padding: 24px 22px;
+    background: var(--cream);
+    border-radius: 6px;
+  }
+  .esg-card .esg-icon {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 24px;
+    color: var(--moss);
+    margin-bottom: 10px;
+  }
+  .esg-card h4 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--moss-dark);
+    margin-bottom: 10px;
+  }
+  .esg-card p {
+    font-size: 13px;
+    line-height: 1.85;
+    color: #444;
+  }
+  .sdg-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0 10px;
+  }
+  /* SDG 官方圖標橫排（無中文旁標，中文併入下方敘述）*/
+  .sdg-icons-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 14px;
+  }
+  .sdg-icon-only {
+    width: 36px;
+    height: 36px;
+    display: block;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  .sdg-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    background: transparent;
+    color: var(--moss-dark);
+    letter-spacing: 0.5px;
+    padding: 0;
+  }
+  .sdg-tag .sdg-icon-img {
+    width: 48px;                       /* 48px 讓官方文字+符號看得清 */
+    height: 48px;
+    flex-shrink: 0;
+    display: block;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  .sdg-tag .sdg-tag-label {
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  /* ⑤ 報價 */
+  .quote-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    table-layout: fixed;
+  }
+  .quote-table th,
+  .quote-table td {
+    padding: 14px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    vertical-align: top;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  .quote-table th {
+    background: var(--soft);
+    font-weight: 500;
+    color: var(--moss-dark);
+    letter-spacing: 1px;
+    font-size: 12px;
+  }
+  .quote-table col.col-item    { width: 22%; }
+  .quote-table col.col-desc    { width: 34%; }
+  .quote-table col.col-qty     { width: 12%; }
+  .quote-table col.col-unit    { width: 14%; }
+  .quote-table col.col-subtotal{ width: 18%; }
+
+  .quote-table td.num,
+  .quote-table th.num { text-align: right; }
+
+  .quote-total {
+    text-align: right;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--moss-dark);
+    padding-top: 4px;
+  }
+  .quote-total .amount {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--moss);
+    margin-left: 8px;
+  }
+  .quote-notes {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: var(--soft);
+    font-size: 13px;
+    color: #555;
+    line-height: 1.85;
+    border-left: 3px solid var(--gold-light);
+    border-radius: 2px;
+    white-space: pre-line;
+  }
+
+  /* ⑥ 企業價值翻譯（OUR BELIEF） */
+  .belief {
+    background: var(--cream);
+    text-align: center;
+    padding: 72px 60px;
+  }
+  .belief .section-tag {
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .belief-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    line-height: 2.2;
+    color: var(--moss-dark);
+    white-space: pre-line;
+    letter-spacing: 1px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ⑦ CTA */
+  /* CTA — v6.3：米白文字區（上）+ Footer System（下，山脈上緣輪廓 + 品牌字融合） */
+  .cta {
+    position: relative;
+    background: var(--paper);
+    color: var(--ink-warm);
+    padding: 72px 60px 0;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* Footer System — 山從米白中自然浮出（不是貼圖）
+     1. 山作為 background-image
+     2. ::before 上緣米白漸層遮罩 → 山從霧中長出來
+     3. ::after 底部淡深棕 grounding → 撐住頁面
+     4. 文字 absolute 浮在整個系統上 */
+  .cta .cta-footer-system {
+    position: relative;
+    margin: 80px -60px 0;
+    height: 300px;
+    background-image: url('/wishlite-proposals/assets/hero-mountain-warm.jpg');
+    background-size: cover;
+    background-position: center bottom;  /* 山從下半部長出 */
+    background-repeat: no-repeat;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* 第一刀：上緣米白漸層遮罩（從米白淡入到透明，山自然浮出）*/
+  .cta .cta-footer-system::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 95px;                          /* 120 → 95（霧帶再窄一刀，山更銳）*/
+    background: linear-gradient(to bottom,
+      var(--paper) 0%,
+      rgba(245, 242, 234, 0.68) 25%,       /* 0.78 → 0.68 */
+      rgba(245, 242, 234, 0.22) 60%,       /* 0.35 → 0.22（中段更透，山露頭）*/
+      transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  /* 第三刀：底部 grounding + 輔助文字對比 */
+  .cta .cta-footer-system::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      transparent 55%,
+      rgba(60, 40, 20, 0.22) 78%,       /* 0.18 → 0.22（略深）*/
+      rgba(60, 40, 20, 0.52) 100%);     /* 0.42 → 0.52（底部更穩）*/
+    z-index: 2;
+    pointer-events: none;
+  }
+  /* 品牌字 — 被山承接（細金線 + 位置上移到山的肩膀）
+     ⚠️ Wishlite 標準 footer 定版 v6.3 — 此區不再調整風格 */
+  .cta .cta-footer-system .cta-footer-text {
+    position: absolute;
+    bottom: 58px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 3;
+    pointer-events: none;
+  }
+  /* 記憶點：細金線在品牌字上方，成為「Wishlite 的結尾印章」*/
+  .cta .cta-footer-system .cta-footer-text::before {
+    content: '';
+    display: block;
+    width: 38px;
+    height: 1px;
+    background: rgba(212, 176, 106, 0.88);  /* 淡金色細線 */
+    margin: 0 auto 20px;
+    box-shadow: 0 0 6px rgba(212, 176, 106, 0.35);  /* 輕微光暈讓它有儀式感 */
+  }
+  .cta .cta-footer-system .cta-footer-brand {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 3px;
+    text-shadow:
+      0 1px 4px rgba(40, 25, 10, 0.65),
+      0 0 14px rgba(40, 25, 10, 0.45);
+  }
+  .cta .cta-footer-system .cta-footer-slogan {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.88);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    text-shadow:
+      0 1px 3px rgba(40, 25, 10, 0.5),
+      0 0 8px rgba(40, 25, 10, 0.3);
+  }
+
+  /* 舊 signature 樣式保留不動（向下相容，若 render 引用了舊 class 不會壞）*/
+  .cta .cta-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    line-height: 2;
+    color: var(--ink-warm);
+    margin-bottom: 20px;
+    white-space: pre-line;
+  }
+  .cta .cta-divider {
+    color: var(--earth);
+    font-size: 20px;
+    letter-spacing: 6px;
+    margin-bottom: 0;
+    opacity: 0.75;
+  }
+
+  /* 下半土棕簽名帶 — 縮薄讓山景有更多呼吸空間 */
+  .cta .cta-signature {
+    margin: 0 -60px;
+    padding: 22px 60px 26px;      /* 從 36+44 縮到 22+26（減 32px 厚度） */
+    background: var(--earth);
+    position: relative;
+  }
+  .cta .cta-signature .cta-brand {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--paper);         /* 米白字 */
+    letter-spacing: 3px;
+  }
+  .cta .cta-signature .cta-slogan {
+    font-size: 11px;
+    color: rgba(245, 242, 234, 0.72);  /* 米白半透明 — 落款感，不搶 brand */
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+
+  .extra-note {
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.9;
+    color: #555;
+    padding: 14px 18px;
+    background: var(--soft);
+    border-radius: 4px;
+    white-space: pre-line;
+  }
+  .extra-note-label {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* =========================================
+     列印樣式（A4 直式）
+     ========================================= */
+  @media print {
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    html, body {
+      background: var(--white);
+      font-size: 13px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .form-panel,
+    .actions { display: none !important; }
+    .app { display: block; }
+    .preview-panel {
+      padding: 0;
+      max-width: none;
+    }
+    .page {
+      box-shadow: none;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+    .cover {
+      min-height: 297mm;
+      padding: 50px 48px;
+      page-break-after: always;
+    }
+    .cover-title { font-size: 40px; }
+    .cover-en-tagline { font-size: 20px; }
+    .cover-slogan { font-size: 17px; }
+    .cover-client-name { font-size: 22px; }
+    .section,
+    .belief,
+    .cta {
+      page-break-inside: avoid;
+      padding: 40px 50px;
+    }
+    .narrative { font-size: 14.5px; }
+    .section-title { font-size: 19px; }
+    .esg-intro { font-size: 14.5px; padding: 14px 18px; margin-bottom: 16px; }
+    .esg-grid { gap: 12px; }
+    .quote-table th,
+    .quote-table td { padding: 10px; font-size: 12.5px; }
+    .belief-text { font-size: 16px; }
+    .cta .cta-text { font-size: 16px; }
+  }
+
+  /* 手機簡易支援（僅預覽） */
+  @media (max-width: 960px) {
+    .app { grid-template-columns: 1fr; }
+    .form-panel { position: static; max-height: none; }
+    .preview-panel { padding: 20px; }
+    .cover { padding: 40px 28px 32px; min-height: 520px; }
+    .cover-title { font-size: 32px; }
+    .cover-en-tagline { font-size: 18px; }
+    .cover-slogan { font-size: 17px; }
+    .cover-client-name { font-size: 20px; }
+    .section, .cta, .belief { padding: 36px 28px; }
+    .esg-grid { grid-template-columns: 1fr; }
+    .flow-item { grid-template-columns: 1fr; gap: 6px; }
+    .flow-duration { text-align: left; }
+    .quote-table { font-size: 12px; }
+  }
+</style>
+
+<style id="client-view-css">
+  body.client-view .form-panel { display: none !important; }
+  body.client-view .preview { width: 100% !important; max-width: 920px !important; margin: 0 auto !important; }
+  body.client-view { background: var(--soft); }
+</style>
+
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ 左側：輸入表單 ============ -->
+  <aside class="form-panel">
+    <h1>Wishlite Template Engine</h1>
+    <div class="subtitle">MODULE A · v6.5 DUAL-MODE STABLE</div>
+
+    <div class="section-label">基本資訊</div>
+
+    <div class="field">
+      <label>客戶名稱</label>
+      <input type="text" id="f-client" placeholder="例：遠雄建設">
+    </div>
+
+    <div class="field">
+      <label>活動名稱</label>
+      <input type="text" id="f-activity" value="ESG 永續體驗工作坊">
+    </div>
+
+    <div class="field">
+      <label>服務分類　<span style="font-family:'Playfair Display',serif;font-style:italic;color:var(--sage);font-weight:400;">Service Type</span></label>
+      <select id="f-category-select" autocomplete="off" style="margin-bottom:8px;">
+        <option value="ESG 體驗提案">ESG 體驗提案</option>
+        <option value="ESG 禮贈提案">ESG 禮贈提案</option>
+        <option value="ESG 整合方案">ESG 整合方案</option>
+        <option value="永續教育提案">永續教育提案</option>
+        <option value="__custom__">其他（手動輸入）…</option>
+      </select>
+      <input type="text" id="f-category" name="service_type_v3" value="ESG 體驗提案"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+             placeholder="手動輸入自訂分類（例：企業家庭日 / 年度厚禮規劃）"
+             style="display:none;">
+      <!-- 隱藏欄位：給 n8n / Notion / 自動化系統讀取標準 code -->
+      <input type="hidden" id="f-service-type-code" name="service_type_code" value="experience">
+      <div class="hint">標示這份提案屬於哪一種服務型態（4 個主分類 + 可手動輸入，自動對應 code）<br>
+        ・ESG 體驗提案：工作坊／體驗活動／企業內訓／家庭日／參與式活動<br>
+        ・ESG 禮贈提案：永續禮品／客製贈品／節慶禮盒／品牌紀念品<br>
+        ・ESG 整合方案：活動＋禮品＋主題企劃＋敘事延伸＋ESG 素材整合<br>
+        ・永續教育提案：校園課程／教育推廣／教師學生／學習導向內容</div>
+    </div>
+
+    <div class="field">
+      <label>品牌金句（封面副標，可編輯）</label>
+      <input type="text" id="f-tagline" value="讓材料被重新看見，讓行動成為日常的一部分。">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>人數</label>
+        <input type="number" id="f-headcount" placeholder="60" min="1">
+      </div>
+      <div class="field">
+        <label>日期</label>
+        <input type="date" id="f-date">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>活動場景</label>
+      <select id="f-scene">
+        <option value="企業內訓">企業內訓</option>
+        <option value="ESG體驗活動" selected>ESG 體驗活動</option>
+        <option value="校園課程">校園課程</option>
+        <option value="親子活動">親子活動</option>
+        <option value="貴賓體驗">貴賓體驗</option>
+      </select>
+    </div>
+
+    <div class="section-label">提案內容</div>
+
+    <div class="field">
+      <label>材料主題</label>
+      <select id="f-material">
+        <option value="咖啡渣" selected>咖啡渣</option>
+        <option value="牡蠣殼">牡蠣殼</option>
+        <option value="再生塑膠">再生塑膠</option>
+        <option value="紙纖循環">紙纖循環</option>
+        <option value="天然材料">天然材料</option>
+        <option value="其他">其他</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>語氣模式</label>
+      <select id="f-tone">
+        <option value="warm" selected>溫柔敘事</option>
+        <option value="pro" disabled>專業提案（Stage 2 開放）</option>
+        <option value="min" disabled>精簡商務（Stage 2 開放）</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>方案描述（可補充課程細節或客製說明）</label>
+      <textarea id="f-plan" placeholder="例：本場結合 LOGO 浮雕擴香石體驗，贈品為客製精油..." rows="4"></textarea>
+    </div>
+
+    <div class="section-label">活動脈絡（影響敘事生成）</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>活動目的</label>
+        <select id="f-purpose">
+          <option value="">（未指定）</option>
+          <option value="員工參與">員工參與</option>
+          <option value="員工共識">員工共識凝聚</option>
+          <option value="團隊凝聚">團隊凝聚</option>
+          <option value="ESG 推廣">ESG 推廣</option>
+          <option value="ESG 敘事素材">ESG 敘事素材</option>
+          <option value="家庭日 / 親子互動">家庭日 / 親子互動</option>
+          <option value="貴賓接待">貴賓接待</option>
+          <option value="品牌形象">品牌形象</option>
+          <option value="品牌 storytelling">品牌 storytelling</option>
+          <option value="校園教育">校園教育</option>
+          <option value="客戶關係經營">客戶關係經營</option>
+          <option value="純活動體驗">純活動體驗</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>參與對象</label>
+        <select id="f-audience">
+          <option value="">（未指定）</option>
+          <option value="員工">員工</option>
+          <option value="主管">幹部 / 主管</option>
+          <option value="客戶">VIP 客戶</option>
+          <option value="家屬親子">家屬 / 親子</option>
+          <option value="教師學生">教師 / 學生</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>指定作品 / 體驗方向（可空白，影響實作段落）</label>
+      <input type="text" id="f-work-type" placeholder="例：擴香石 / 手工皂 / 多肉盆栽 / 杯墊 / 吊飾 / 肌理畫">
+    </div>
+
+    <div class="field">
+      <label>客戶需求重點（可條列，會進 Narrative 收束段）</label>
+      <textarea id="f-focus" rows="2" placeholder="例：ESG 報告素材、員工關懷、客戶禮品延伸..."></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>需求深度</label>
+        <select id="f-depth">
+          <option value="">（未指定）</option>
+          <option value="資訊簡單">資訊簡單（初步詢問）</option>
+          <option value="一般完整">一般完整</option>
+          <option value="已有明確需求">已有明確需求（偏成交）</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>客製程度</label>
+        <select id="f-customization">
+          <option value="">（未指定）</option>
+          <option value="標準">標準方案</option>
+          <option value="部分客製">部分客製</option>
+          <option value="完全客製">完全客製</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-label">報價</div>
+
+    <div class="field">
+      <label>項目名稱</label>
+      <input type="text" id="f-item-name" value="永續體驗 DIY 工作坊">
+    </div>
+
+    <div class="field">
+      <label>項目說明</label>
+      <input type="text" id="f-item-desc" value="含材料準備、講師教學與現場執行">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>單價（元 / 人）</label>
+        <input type="number" id="f-unit" placeholder="780" min="0">
+      </div>
+      <div class="field">
+        <label>總價（元，自動計算）</label>
+        <input type="number" id="f-total" placeholder="46800" min="0">
+        <div class="hint">可手動覆寫</div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>稅別</label>
+        <select id="f-tax">
+          <option value="untaxed">未稅</option>
+          <option value="taxed">含稅</option>
+          <option value="plus5">未稅（另加 5% 營業稅）</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>客製費用</label>
+        <select id="f-custom-extra">
+          <option value="">（標準方案，無客製費）</option>
+          <option value="estimated">客製需另估</option>
+          <option value="included">已含客製費</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>交通 / 場地費</label>
+      <select id="f-transport-extra">
+        <option value="included">已含進場服務（台北市區內）</option>
+        <option value="extra-transport">交通費另計（依實際地點）</option>
+        <option value="extra-venue">場地租借費另計</option>
+        <option value="both-extra">交通與場地費皆另計</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>報價補充備註（可手動加條件，自動加上稅別/客製/交通說明）</label>
+      <textarea id="f-quote-notes" rows="3" placeholder="例：付款條件 / 專屬折扣 / 其他約定事項..."></textarea>
+      <div class="hint">上方三個選項會自動組進報價備註，此欄可補充額外條件</div>
+    </div>
+
+    <div class="field">
+      <label>其他備註</label>
+      <textarea id="f-memo" placeholder="例：需提前一週確認客製 LOGO 檔案..." rows="3"></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" onclick="resetForm()">清空</button>
+      <button class="btn btn-primary" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+
+    <div style="margin-top: 20px; font-size: 11px; color: #999; line-height: 1.6;">
+      💡 列印時 Chrome 會跳出列印視窗，選「另存為 PDF」即可輸出 A4 提案。
+    </div>
+  </aside>
+
+  <!-- ============ 右側：預覽 ============ -->
+  <main class="preview-panel">
+    <div class="page">
+
+      <!-- ① 封面 v1.0（山景 + 米白系統） -->
+      <div class="cover">
+        <!-- 上方帶：brand + date -->
+        <div class="cover-topbar">
+          <div class="brand-eyebrow">WISHLITE 韻手作永續</div>
+          <div class="topbar-spacer"></div>
+          <div class="cover-date" id="p-date">[ YYYY.MM.DD ]</div>
+        </div>
+
+        <!-- 主內容區 -->
+        <div class="cover-main">
+          <div class="cover-category" id="p-category">提案</div>
+
+          <h1 class="cover-title" id="p-activity">[ 活動名稱 ]</h1>
+
+          <div class="cover-en-tagline">Growing Deep. Giving True.</div>
+
+          <div class="cover-slogan" id="p-tagline">讓材料被重新看見，讓行動成為日常的一部分。</div>
+
+          <div class="cover-client-line">
+            <span class="cover-client-label">提案對象</span>
+            <span class="cover-client-name" id="p-client">[ 客戶名稱 ]</span>
+          </div>
+        </div>
+
+        <!-- 下方 footer -->
+        <div class="cover-footer">
+          <span class="cover-footer-tagline">From Earth, With Care.</span>
+          <span class="cover-footer-divider">·</span>
+          <span class="cover-footer-brand">WISHLITE 韻手作永續</span>
+        </div>
+      </div>
+
+      <!-- ② 活動敘事 -->
+      <div class="section">
+        <div class="section-tag">NARRATIVE</div>
+        <h2 class="section-title">關於這場活動</h2>
+        <div class="divider"></div>
+        <div class="narrative" id="p-narrative"></div>
+        <div class="narrative-plan" id="p-narrative-plan" style="display:none;"></div>
+      </div>
+
+      <!-- ③ 課程流程 -->
+      <div class="section">
+        <div class="section-tag">FLOW</div>
+        <h2 class="section-title">課程流程</h2>
+        <div class="divider"></div>
+        <div class="flow-list" id="p-flow"></div>
+      </div>
+
+      <!-- ④ ESG 價值 -->
+      <div class="section">
+        <div class="section-tag">ESG VALUE</div>
+        <h2 class="section-title">永續價值</h2>
+        <div class="divider"></div>
+        <div class="esg-intro" id="p-esg-intro"></div>
+        <div class="esg-grid" id="p-esg"></div>
+      </div>
+
+      <!-- ⑤ 報價 -->
+      <div class="section">
+        <div class="section-tag">QUOTATION</div>
+        <h2 class="section-title">報價摘要</h2>
+        <div class="divider"></div>
+        <table class="quote-table">
+          <colgroup>
+            <col class="col-item">
+            <col class="col-desc">
+            <col class="col-qty">
+            <col class="col-unit">
+            <col class="col-subtotal">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>說明</th>
+              <th class="num">數量</th>
+              <th class="num">單價</th>
+              <th class="num">小計</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="p-item-name">永續體驗 DIY 工作坊</td>
+              <td id="p-item-desc">含材料準備、講師教學與現場執行</td>
+              <td class="num" id="p-q-headcount">—</td>
+              <td class="num" id="p-q-unit">—</td>
+              <td class="num" id="p-q-subtotal">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="quote-total">
+          總計<span class="amount" id="p-q-total">NT$ —</span>
+        </div>
+        <div class="quote-notes" id="p-q-notes"></div>
+
+        <div id="p-memo-wrap" style="display:none;">
+          <div class="extra-note-label" style="margin-top:20px;">備註</div>
+          <div class="extra-note" id="p-memo"></div>
+        </div>
+      </div>
+
+      <!-- ⑥ 企業價值翻譯（OUR BELIEF） -->
+      <div class="belief">
+        <div class="section-tag">OUR BELIEF</div>
+        <div class="belief-text">我們相信，
+當永續從「理解」走向「親手參與」，
+它才會真正被記住。
+
+這場體驗，
+不只是一次活動，
+而是一段可以被延續的開始。</div>
+      </div>
+
+      <!-- ⑦ CTA — 米白文字區（上）+ 山景 Footer（下，同張山景全景 + 品牌字浮在山景上） -->
+      <div class="cta">
+        <div class="cta-text">期待與你，
+在永續的路上一起同行。</div>
+        <div class="cta-divider">—</div>
+        <!-- Footer：山作為 background，不是獨立 img。上緣米白漸層讓山自然浮出 -->
+        <div class="cta-footer-system">
+          <div class="cta-footer-text">
+            <div class="cta-footer-brand">Wishlite 韻手作永續</div>
+            <div class="cta-footer-slogan">MAKE ART · LIVE ECO</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* =========================================
+   文案庫：材料敘事（v5 — 六段骨架，結構化分流）
+   順序：感動開場 → 材料前世 → 材料困境 → 材料轉化(依成品型) → 永續價值 → 企業意義(動態組)
+   每個材料：opening / past / struggle / transforms{default,pot,soap,diffuser,craft,mat} / value
+   ========================================= */
+const NARRATIVE_LIB = {
+  '咖啡渣': {
+    brand_line: '有些材料一直在我們身邊，只是太熟悉，反而沒被看見。',
+    story: {
+      default:  '每天被倒進垃圾桶的咖啡渣，原本是產業末端最常見的「結束」。\n這一次，我們把它接住，在雙手與時間裡，\n讓它從廢棄物，變成一件可以被記住的日常。',
+      diffuser: '每天被沖煮後的咖啡渣，這次被收進擴香石的紋理。\n放在桌上、車上，每天與一點熟悉的香氣重逢，\n讓「那杯咖啡」在香氣裡繼續存在。',
+      soap:     '每天被沖煮後的咖啡渣，這次被揉進手工皂的顆粒。\n每次洗手，都是一場溫柔的喚醒，\n讓一杯咖啡的餘味，留在每天最日常的那幾秒。',
+      mat:      '每天被沖煮後的咖啡渣，這次被塑成一件杯墊。\n讓下一杯咖啡放下時，都不會忘記它的前世，\n也成為桌上一件有故事的小物。',
+      craft:    '每天被沖煮後的咖啡渣，這次被做成可以佩戴的飾品。\n讓香氣變成形狀，繼續被攜帶、被看見，\n把「每日喝咖啡」的儀式延伸到身上。',
+      pot:      '每天被沖煮後的咖啡渣，這次被混進栽培介質。\n讓一株小植物在咖啡渣裡繼續生長，\n從飲用到陪伴，故事換了一種方式延續。'
+    },
+    brand_line_gift: '有些材料一直在我們身邊，只是太熟悉，反而沒被看見。當它以一份禮的姿態回來，才終於有機會被好好看一次。',
+    story_gift: {
+      default: '每天被沖煮完就丟掉的咖啡渣，這次被收進一份禮物的紋理裡。\n當它到達收禮者的桌上，\n那杯熟悉的咖啡，以另一種方式繼續陪著他。',
+      diffuser: '每天被沖煮後的咖啡渣，這次被收進擴香石的紋理，成為一份可以贈送的日常香氣。\n放在收禮者的桌上或車內，每天與一點熟悉的氣味重逢，\n讓「那杯咖啡」以另一種方式繼續存在。',
+      soap: '每天被沖煮後的咖啡渣，這次被揉進一塊手工皂。\n讓收禮者每次洗手，都有一場溫柔的喚醒，\n把一杯咖啡的餘味，送進最日常的那幾秒。',
+      mat: '每天被沖煮後的咖啡渣，這次被壓成一件杯墊，裝進禮盒。\n當它到達收禮者的桌上，\n每一杯放下的咖啡，都會先與它相遇。',
+      craft: '每天被沖煮後的咖啡渣，這次被做成可以佩戴或攜帶的小物。\n讓收禮者把這份氣味帶在身上，\n把「每天一杯咖啡」的儀式延伸到日常之外。',
+      pot: '每天被沖煮後的咖啡渣，這次被混進栽培介質。\n讓收禮者桌上的小植物，從一杯咖啡開始生長，\n把一份禮物的陪伴延伸到整季。',
+    }
+  },
+
+  '牡蠣殼': {
+    brand_line: '在台灣的海邊，總有一些聲音，安靜地等著我們停下來聽。',
+    story: {
+      default:  '沿海養殖留下的牡蠣殼，有些堆在岸邊、有些進了垃圾場。\n這一次，我們把殼接回來、打磨、重新成形，\n讓海洋的餘音，慢慢長成手中的溫度。',
+      pot:      '沿海養殖留下的牡蠣殼，原本多半被當作廢棄處理。\n這次我們用它做成一座多肉植栽的基座，\n像海洋把土地托起那樣，讓一件作品繼續呼吸。',
+      diffuser: '沿海養殖留下的牡蠣殼，原本多半被當作廢棄處理。\n這次我們把殼磨成粉，再塑形成擴香石，\n讓海的礦物香，留在空氣裡慢慢擴散。',
+      soap:     '沿海養殖留下的牡蠣殼，原本多半被當作廢棄處理。\n這次我們把殼做成皂拖，\n每一次洗手，都是跟海邊的一次短短重逢。',
+      craft:    '沿海養殖留下的牡蠣殼，原本多半被當作廢棄處理。\n這次我們把它做成一件可以佩戴的小物，\n讓海洋的痕跡，繼續被帶著走。',
+      mat:      '沿海養殖留下的牡蠣殼，原本多半被當作廢棄處理。\n這次我們把它塑成一件杯墊，\n讓殼的溫潤與杯的溫度相遇，讓海，參與我們的日常。'
+    },
+    brand_line_gift: '在台灣的海邊，總有一些聲音安靜地等著我們停下來聽。這次我們把那份聲音，收進一份禮裡，讓它繼續傳出去。',
+    story_gift: {
+      default: '沿海養殖留下的牡蠣殼，這次被打磨、重新成形，裝進一份禮盒。\n讓海洋的餘音，成為收禮者手中的溫度。',
+      pot: '沿海養殖留下的牡蠣殼，這次成為一座多肉植栽的基座。\n像海洋托起土地那樣，讓這份禮在對方桌上繼續呼吸。',
+      diffuser: '沿海養殖留下的牡蠣殼，這次被磨成粉再塑形成擴香石。\n當香氣散進空氣，海的礦物氣息也一起被送進收禮者的日常。',
+      soap: '沿海養殖留下的牡蠣殼，這次被做成皂拖。\n每一次洗手，都是收禮者跟海邊的一次短短重逢。',
+      craft: '沿海養殖留下的牡蠣殼，這次被做成可以佩戴的小物。\n讓海洋的痕跡，繼續被收禮者帶著走。',
+      mat: '沿海養殖留下的牡蠣殼，這次被塑成一件杯墊。\n讓殼的溫潤與杯的溫度相遇，把海的氣息，送進對方的桌上。',
+    }
+  },
+
+  '再生塑膠': {
+    brand_line: '塑膠是我們最熟悉、也最抗拒去看的材料。',
+    story: {
+      default:  '瓶蓋、包裝、吸管——它們陪我們走過無數個匆忙的日子，\n卻常常無聲地被丟進焚化爐或漂進海裡。\n這一次，我們把能再生的塑膠挑出來，切、壓、熔、塑——\n讓它不是灰燼，而是一個新的樣子。',
+      craft:    '瓶蓋、包裝的碎片，原本只能在焚化爐結束旅程。\n這次我們把它們拼成一件吊飾，讓不同顏色重新編排，\n誠實地說：我曾經是什麼，現在又是什麼。',
+      mat:      '瓶蓋、包裝的碎片，原本只能在焚化爐結束旅程。\n這次我們把它們壓成一件杯墊，\n放在桌上時，提醒我們：選擇可以不一樣。',
+      pot:      '瓶蓋、包裝的碎片，原本只能在焚化爐結束旅程。\n這次我們讓它變成一個小容器，\n讓一株植物，住進原本要被丟棄的東西裡。',
+      soap:     '瓶蓋、包裝的碎片，原本只能在焚化爐結束旅程。\n這次我們讓再生塑膠成為皂器的一部分，\n在每天使用的小物裡，陪它走完第二段旅程。',
+      diffuser: '瓶蓋、包裝的碎片，原本只能在焚化爐結束旅程。\n這次我們讓它承載擴香石，\n把熟悉的材料，變成會散發香氣的陪伴。'
+    },
+    brand_line_gift: '塑膠是我們最熟悉、也最抗拒去看的材料。當它以一份禮的方式回來，會比任何口號更有力量。',
+    story_gift: {
+      default: '瓶蓋、包裝、吸管——它們陪我們走過無數個匆忙的日子。\n這次我們把能再生的塑膠挑出來、重新成形，裝進禮盒，\n讓收禮者看到：廢棄物也可以成為被珍惜的禮物。',
+      craft: '瓶蓋與包裝的碎片，這次被編成一件吊飾，收進禮盒。\n讓收禮者在使用之間，記得：選擇可以不一樣。',
+      mat: '瓶蓋與包裝的碎片，這次被壓成一件杯墊。\n每天放下杯子的瞬間，都提醒著收禮者：這些材料曾經被忽略，現在被好好帶回來。',
+      pot: '瓶蓋與包裝的碎片，這次成為一個小容器。\n讓收禮者的桌上，有一株植物住進原本要被丟棄的東西裡。',
+      soap: '瓶蓋與包裝的再生塑膠，這次成為皂器的一部分。\n在收禮者每天洗手的小物裡，陪它走完第二段旅程。',
+      diffuser: '瓶蓋與包裝的再生塑膠，這次承載擴香石。\n讓熟悉的材料，變成會散發香氣的陪伴，送進收禮者的日常。',
+    }
+  },
+
+  '紙纖循環': {
+    brand_line: '紙從來不缺席，只是我們很少真正看它。',
+    story: {
+      default:  '量產細縫裡的 NG 紙、任務完成後被放到一旁的紙，\n它們都還健康，卻因為沒有「看得見的用途」被放到一邊。\n這一次，我們把它們接回來，打碎、重塑、定型，\n讓紙的纖維在手中，擁有一個新的身分。',
+      craft:    '量產細縫裡的 NG 紙、任務完成後被放到一旁的紙，\n這次被做成一件冰箱貼，手繪、拼貼、收邊，\n讓每一張被判定「沒用」的紙，貼在最日常的地方。',
+      mat:      '量產細縫裡的 NG 紙、任務完成後被放到一旁的紙，\n這次被用紙漿塑成一件杯墊，\n當你把杯子放下，那些被忽略的纖維，會把杯底的溫度接住。',
+      pot:      '量產細縫裡的 NG 紙、任務完成後被放到一旁的紙，\n這次被用紙漿做成小器皿，\n承載一株植物，讓紙繼續被澆灌、被記得。',
+      diffuser: '量產細縫裡的 NG 紙、任務完成後被放到一旁的紙，\n這次被壓成擴香載體，\n讓香氣從被忽略的纖維裡慢慢散出。',
+      soap:     '量產細縫裡的 NG 紙、任務完成後被放到一旁的紙，\n這次與皂一起成形，\n在每一次洗手裡，紙還有一段陪伴可做。'
+    },
+    brand_line_gift: '紙從來不缺席，只是我們很少真正看它。這一次，我們讓它以一份禮物的身分，重新被拿在手上。',
+    story_gift: {
+      default: '量產細縫裡的 NG 紙、任務完成後被放到一旁的紙。\n這次被接回來、重塑、定型，裝進禮盒，\n讓紙的纖維，在收禮者手中擁有新的身分。',
+      craft: '量產細縫裡的 NG 紙，這次被做成冰箱貼，收進禮盒。\n讓那些被判定「沒用」的紙，貼在收禮者最日常的角落。',
+      mat: '量產細縫裡的 NG 紙，這次被用紙漿塑成一件杯墊。\n當收禮者放下杯子，那些被忽略的纖維，會把杯底的溫度接住。',
+      pot: '量產細縫裡的 NG 紙，這次被做成小器皿，承載一株植物。\n讓紙，繼續在收禮者桌上被澆灌、被記得。',
+      diffuser: '量產細縫裡的 NG 紙，這次被壓成擴香載體。\n讓香氣從被忽略的纖維裡慢慢散出，送進收禮者的空間。',
+      soap: '量產細縫裡的 NG 紙，這次與皂一起成形。\n在收禮者每一次洗手的動作裡，紙還有一段陪伴可做。',
+    }
+  },
+
+  '天然材料': {
+    brand_line: '有些材料不需要被重新發明，它們一直在土地、在四季、在每天錯過的細節裡。',
+    story: {
+      default:  '最樸實的天然素材——植物的根、葉的纖維、土的顆粒，\n它們並不稀有，只是太常被視為理所當然。\n這一次，我們停下來，\n讓這些自然的質地，長成一件可以被帶走的作品。',
+      pot:      '最樸實的天然素材——多肉、土壤、再生牡蠣殼基座，\n它們並不稀有，只是太常被視為理所當然。\n這次我們一起完成一盆小植栽，\n讓它在桌上每天呼吸，繼續生長。',
+      soap:     '最樸實的天然素材——蜂蠟、植物油、自然香氣，\n它們並不稀有，只是太常被視為理所當然。\n這次我們一起做一塊小皂，\n讓每次洗手，都是跟土地的短短重逢。',
+      diffuser: '最樸實的天然素材——植物、精油、天然礦石粉，\n它們並不稀有，只是太常被視為理所當然。\n這次我們一起做一塊擴香石，\n讓植物的香氣，從最原始的質地裡慢慢散出。',
+      craft:    '最樸實的天然素材——葉片、花朵、植物紋路，\n它們並不稀有，只是太常被視為理所當然。\n這次我們一起做一件葉脈拓印作品，\n讓土地的紋路，被完整地留在手中。',
+      mat:      '最樸實的天然素材——竹、麻、植物纖維，\n它們並不稀有，只是太常被視為理所當然。\n這次我們一起做一件日常小物，\n讓自然的質感，進入每一天的使用裡。'
+    },
+    brand_line_gift: '有些材料不需要被重新發明，它們一直在土地、在四季、在每天錯過的細節裡。當它以一份禮的姿態出現，才真正走進生活。',
+    story_gift: {
+      default: '最樸實的天然素材——植物的根、葉的纖維、土的顆粒。\n這次被收進一份禮盒，\n讓自然的質地，長成收禮者桌上可以每天看到的東西。',
+      pot: '最樸實的天然素材——多肉、土壤、再生牡蠣殼基座。\n這次一起成為一盆小植栽，\n在收禮者桌上每天呼吸、繼續生長。',
+      soap: '最樸實的天然素材——蜂蠟、植物油、自然香氣。\n這次被做成一塊小皂，\n讓收禮者每次洗手，都是跟土地的短短重逢。',
+      diffuser: '最樸實的天然素材——植物、精油、天然礦石粉。\n這次被做成擴香石，\n讓植物的香氣，從最原始的質地裡慢慢散進收禮者的空間。',
+      craft: '最樸實的天然素材——葉片、花朵、植物紋路。\n這次被做成葉脈拓印的小物，\n讓土地的紋路，被完整地留在收禮者手中。',
+      mat: '最樸實的天然素材——竹、麻、植物纖維。\n這次被做成日常小物，\n讓自然的質感，進入收禮者的每一天使用裡。',
+    }
+  },
+
+  '其他': {
+    brand_line: '每一份被忽略的資源，都值得一次被重新看見的機會。',
+    story: {
+      default: '這些材料各自有各自的故事——來自產業、日常、或生活中最熟悉的角落。\n它們曾經被使用、被完成、然後被放下。\n這一次，我們用韻手作擅長的循環邏輯，\n讓它們重新被雙手認識，成為可以被記住的作品。'
+    },
+    brand_line_gift: '每一份被忽略的資源，都值得一次被重新看見的機會。當它以一份禮的姿態送出，就是那次機會本身。',
+    story_gift: {
+      default: '這些材料各自有各自的故事——來自產業、日常、或生活中最熟悉的角落。\n這次我們用韻手作擅長的循環邏輯，把它們收進一份禮，\n讓收禮者在使用之間，重新認識它們。',
+    }
+  }
+};
+
+/* =========================================
+   文案庫：課程流程（v2 — 從教學語言升級到企業提案語言）
+   ========================================= */
+const FLOW_LIB = {
+  '企業內訓': [
+    {
+      stage: '開場',
+      title: '永續導入 × 材料敘事',
+      desc: '從材料故事切入，連結企業內部永續目標與員工日常行動，讓 ESG 成為可被感受的共識。',
+      dur: '約 20 分鐘'
+    },
+    {
+      stage: '實作',
+      title: '手作體驗 × 團隊參與',
+      desc: '透過親手製作的過程，強化員工彼此的互動與共識，讓永續成為團隊文化的一部分。',
+      dur: '約 60–80 分鐘'
+    },
+    {
+      stage: '收尾',
+      title: '成果分享 × 可延伸成果',
+      desc: '作品與活動紀錄可延伸為內部刊物、CSR 素材或企業永續敘事使用。',
+      dur: '約 20 分鐘'
+    }
+  ],
+  'ESG體驗活動': [
+    {
+      stage: '開場',
+      title: '永續導入 × 材料敘事',
+      desc: '透過材料故事與 ESG 議題引導，讓參與者理解永續行動與個人之間的連結。',
+      dur: '約 20 分鐘'
+    },
+    {
+      stage: '實作',
+      title: '手作體驗 × 循環轉化',
+      desc: '透過親手製作的過程，將循環材料轉化為日常物件，讓「永續」從理解走向體驗。',
+      dur: '約 60–80 分鐘'
+    },
+    {
+      stage: '收尾',
+      title: '成果分享 × 行動延伸',
+      desc: '透過作品紀錄與分享，延伸為企業 ESG 敘事素材與內部溝通資源。',
+      dur: '約 20–30 分鐘'
+    }
+  ],
+  '校園課程': [
+    {
+      stage: '開場',
+      title: '材料故事 × 環境啟發',
+      desc: '用孩子能理解的語言，打開對材料、環境與永續的認識，建立價值基礎。',
+      dur: '約 20 分鐘'
+    },
+    {
+      stage: '實作',
+      title: '手作體驗 × 動手探索',
+      desc: '透過親手操作，讓學生在體驗中理解循環的意義，並培養解決問題的能力。',
+      dur: '約 40–50 分鐘'
+    },
+    {
+      stage: '收尾',
+      title: '分享 × 小小行動',
+      desc: '引導學生把今天的發現，連結到未來可以採取的具體行動。',
+      dur: '約 15 分鐘'
+    }
+  ],
+  '親子活動': [
+    {
+      stage: '開場',
+      title: '材料探索 × 家庭互動',
+      desc: '一起觸摸、一起聞、一起認識被忽略的材料，讓永續從親子對話開始。',
+      dur: '約 20 分鐘'
+    },
+    {
+      stage: '實作',
+      title: '親子共作 × 共同完成',
+      desc: '由孩子主導、父母陪伴，一起完成一件屬於家庭的永續作品。',
+      dur: '約 60 分鐘'
+    },
+    {
+      stage: '收尾',
+      title: '合影 × 故事分享',
+      desc: '讓手作成為家庭記憶的一部分，也成為未來永續對話的起點。',
+      dur: '約 20 分鐘'
+    }
+  ],
+  '貴賓體驗': [
+    {
+      stage: '開場',
+      title: '品牌敘事 × 材料賞析',
+      desc: '以講座形式帶領貴賓深入品牌與材料的設計語言，建立品牌記憶。',
+      dur: '約 20 分鐘'
+    },
+    {
+      stage: '實作',
+      title: '精緻手作 × 深度體驗',
+      desc: '在引導下完成具質感的永續作品，作為品牌印象與永續價值的延續。',
+      dur: '約 80 分鐘'
+    },
+    {
+      stage: '收尾',
+      title: '茶敘 × 品牌對談',
+      desc: '以一杯茶延伸對話，深化品牌與永續價值之間的連結。',
+      dur: '約 30 分鐘'
+    }
+  ]
+};
+
+/* =========================================
+   文案庫：ESG 價值（v3 — 固定結構，只換內容）
+   原則：溫柔、誠實、有畫面，不寫碳數據、不浮誇。
+   每段都是「先感受，再理解」的節奏。
+   ========================================= */
+/* =========================================
+   ESG 三張卡（v6.2 雙層結構：固定骨架 + 材料語境句）
+   Apple 2026-04-19 定案：
+   - 固定句（不可改）確保通用、不出錯
+   - 材料語境句依材料替換，保有畫面感
+   - Module A = 穩定通用版；Module B = 成交強化版（放 prompt 檔）
+
+   【ESG 卡片語言規則】
+   1. 禁止使用「員工」作為預設主詞 → 統一使用「參與者」
+   2. 禁止過度限定場域（企業內部 / 公司內部 / 組織內部）
+      除非使用者明確指定
+   3. 所有敘事需符合「企業 / 校園 / 親子 / VIP」四種場景通用
+   ========================================= */
+
+// Module A 固定骨架（穩定通用版）
+const ESG_CARDS_A = {
+  cycle: {
+    head: '我們不將材料視為廢棄，而是陪伴它走向下一段旅程。',
+    tail: '讓原本被忽略的資源，重新成為可以被理解、被使用的存在。'
+  },
+  sdgs: {
+    head: '本體驗呼應永續發展目標（SDGs），',
+    tail: '讓永續不只是概念，而是可以被實踐的行動。'
+  },
+  education: {
+    head: '讓參與者用雙手，真實理解循環經濟如何被實踐；',
+    tail: '每一件作品與活動紀錄，也都能成為被傳遞的永續故事。'
+  }
+};
+
+// v6.4 禮品模式 ESG 骨架（proposal_mode=gift 時用）
+const ESG_CARDS_GIFT = {
+  cycle: {
+    head: '我們不將材料視為廢棄，而是讓它以一份禮物的姿態，走進另一段生活。',
+    tail: '讓原本被忽略的資源，重新成為可以被看見、被珍惜的存在。'
+  },
+  sdgs: {
+    head: '本禮品呼應永續發展目標（SDGs），',
+    tail: '讓永續不只是企業的承諾，也能成為收禮者手中的日常。'
+  },
+  education: {
+    head: '讓每一份禮物，都成為一次與材料故事的對話；',
+    tail: '收禮者在使用之間，自然參與到這段循環旅程。'
+  }
+};
+
+// v6.4 禮品模式合作流程（proposal_mode=gift 時取代 FLOW_LIB）
+const GIFT_FLOW = [
+  { stage: 'Step 1', title: '需求確認', desc: '確認數量、使用場景、時程與預算，釐清客製需求（LOGO、包裝、卡片）。' },
+  { stage: 'Step 2', title: '樣品與打樣', desc: '寄送材質樣品，供團隊親手感受；必要時進行客製打樣確認。' },
+  { stage: 'Step 3', title: '正式下單', desc: '確認報價、簽約、安排生產排程。' },
+  { stage: 'Step 4', title: '交付與追蹤', desc: '依約交付，保留材料故事卡與使用建議，延續禮品的敘事。' }
+];
+
+// 材料語境（intro + sdgs tags + 三張卡語境句）
+const ESG_LIB = {
+  '咖啡渣': {
+    intro: '一杯咖啡喝完的下一秒，可以不是結束——那也是一種永續。',
+    sdgs: ['SDG 12 責任消費', 'SDG 13 氣候行動'],
+    cycle_ctx:     '那些曾經被沖煮過、看似結束的咖啡渣，被再次帶回生活之中。',
+    sdgs_ctx:      '從日常咖啡廢棄物出發，連結循環再利用與減廢行動',
+    education_ctx: '在氣味與觸感之中，重新認識被忽略的日常材料'
+  },
+  '牡蠣殼': {
+    intro: '當海洋的痕跡能被帶回桌上，永續就不只是遠方的議題。',
+    sdgs: ['SDG 12 責任消費', 'SDG 14 海洋生態'],
+    cycle_ctx:     '那些來自海洋的牡蠣殼，在使用後不再只是廢棄，而是回到材料循環之中。',
+    sdgs_ctx:      '從海洋副產物出發，連結海洋生態與資源再生利用',
+    education_ctx: '在細緻的質地與轉化過程中，感受海洋資源的另一種樣貌'
+  },
+  '再生塑膠': {
+    intro: '我們不拒絕塑膠，而是誠實地陪它走完第二段旅程。',
+    sdgs: ['SDG 12 責任消費', 'SDG 14 海洋生態'],
+    cycle_ctx:     '那些日常中被丟棄的瓶蓋與塑膠碎片，在重新編排後，成為全新的樣貌。',
+    sdgs_ctx:      '從塑膠再生出發，連結責任消費與減少海洋污染議題',
+    education_ctx: '在拼接與重組的過程中，看見材料如何被重新定義'
+  },
+  '紙纖循環': {
+    intro: '讓被判定「沒用」的紙，重新擁有第二次被使用的機會。',
+    sdgs: ['SDG 12 責任消費', 'SDG 15 陸域生態'],
+    cycle_ctx:     '那些使用過的紙纖材料，在轉化後重新回到可被創作與使用的狀態。',
+    sdgs_ctx:      '從紙類資源再利用出發，連結減廢與循環經濟實踐',
+    education_ctx: '在纖維重組的過程中，理解材料如何被再次使用與延續'
+  },
+  '天然材料': {
+    intro: '當一個材料不需要被「拯救」，只需要被「看見」——那也是一種永續。',
+    sdgs: ['SDG 3 健康福祉', 'SDG 15 陸域生態'],
+    cycle_ctx:     '那些原本生長於土地與季節裡的素材，在不過度加工的前提下，回到日常生活中陪伴。',
+    sdgs_ctx:      '從自然素材出發，連結環境保護與人與土地的永續關係',
+    education_ctx: '在質地與氣味的觸碰之中，重新感受土地的溫度與節奏'
+  },
+  '其他': {
+    intro: '每一份被忽略的資源，都值得一次被重新看見的機會。',
+    sdgs: ['SDG 12 責任消費'],
+    cycle_ctx:     '那些曾經被忽略的資源，在轉化之後，重新擁有被看見與被使用的機會。',
+    sdgs_ctx:      '從被忽略的資源出發，連結永續理念與日常生活的實踐',
+    education_ctx: '在親手實作的過程中，重新看見資源的多元樣貌與可能性'
+  }
+};
+
+/* =========================================
+   DOM 快取
+   ========================================= */
+const $ = (id) => document.getElementById(id);
+
+/* =========================================
+   工具函式
+   ========================================= */
+function formatDate(dateStr) {
+  if (!dateStr) return '[ YYYY.MM.DD ]';
+  const d = new Date(dateStr);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${y}.${m}.${dd}`;
+}
+
+function formatNTD(n) {
+  if (!n || isNaN(n)) return 'NT$ —';
+  return 'NT$ ' + Number(n).toLocaleString('en-US');
+}
+
+/* =========================================
+   SDG 官方圖標（UN 官方 PNG，從 Wikimedia Commons 下載原版）
+   存放位置：assets/sdg/sdg-{N}.png
+   完整 17 個都已備齊，未來新增材料 ESG 只要改 ESG_LIB 的 sdgs 陣列即可。
+   ========================================= */
+const SDG_ICONS = {
+  1:  '/wishlite-proposals/assets/sdg/sdg-1.png',   // 終結貧窮
+  2:  '/wishlite-proposals/assets/sdg/sdg-2.png',   // 消除飢餓
+  3:  '/wishlite-proposals/assets/sdg/sdg-3.png',   // 健康與福祉
+  4:  '/wishlite-proposals/assets/sdg/sdg-4.png',   // 優質教育
+  5:  '/wishlite-proposals/assets/sdg/sdg-5.png',   // 性別平權
+  6:  '/wishlite-proposals/assets/sdg/sdg-6.png',   // 淨水及衛生
+  7:  '/wishlite-proposals/assets/sdg/sdg-7.png',   // 可負擔的潔淨能源
+  8:  '/wishlite-proposals/assets/sdg/sdg-8.png',   // 合適的工作及經濟成長
+  9:  '/wishlite-proposals/assets/sdg/sdg-9.png',   // 工業化、創新及基礎建設
+  10: '/wishlite-proposals/assets/sdg/sdg-10.png',  // 減少不平等
+  11: '/wishlite-proposals/assets/sdg/sdg-11.png',  // 永續城鄉
+  12: '/wishlite-proposals/assets/sdg/sdg-12.png',  // 責任消費及生產
+  13: '/wishlite-proposals/assets/sdg/sdg-13.png',  // 氣候行動
+  14: '/wishlite-proposals/assets/sdg/sdg-14.png',  // 保育海洋生態
+  15: '/wishlite-proposals/assets/sdg/sdg-15.png',  // 保育陸域生態
+  16: '/wishlite-proposals/assets/sdg/sdg-16.png',  // 和平、正義及健全制度
+  17: '/wishlite-proposals/assets/sdg/sdg-17.png'   // 多元夥伴關係
+};
+
+// 新版：只輸出純圖標（橫排並列用），中文併進下方敘述
+function renderSDGIcon(text) {
+  const match = (text || '').match(/SDG\s*(\d+)/);
+  const num = match ? parseInt(match[1], 10) : null;
+  return num && SDG_ICONS[num]
+    ? `<img class="sdg-icon-only" src="${SDG_ICONS[num]}" alt="${text}" title="${text}" loading="lazy">`
+    : '';
+}
+// 舊版（圖+中文）保留，以免其他地方引用
+function renderSDGTag(text) {
+  const match = (text || '').match(/SDG\s*(\d+)/);
+  const num = match ? parseInt(match[1], 10) : null;
+  const icon = num && SDG_ICONS[num]
+    ? `<img class="sdg-icon-img" src="${SDG_ICONS[num]}" alt="SDG ${num}" loading="lazy">`
+    : '';
+  return `<span class="sdg-tag">${icon}<span class="sdg-tag-label">${text}</span></span>`;
+}
+
+/* =========================================
+   服務分類 Service Type 對照（v6.3 — 給 n8n/Notion/Claude 用的標準 code）
+   主分類 4 種，使用者可自訂其他文字，系統用模糊比對 derive code。
+   ========================================= */
+const SERVICE_TYPE_MAP = {
+  'ESG 體驗提案': 'experience',
+  'ESG 禮贈提案': 'gifting',
+  'ESG 整合方案': 'integrated',
+  '永續教育提案': 'education'
+};
+
+function getServiceTypeCode(category) {
+  const text = (category || '').trim();
+  // 1. 精確匹配預設分類
+  if (SERVICE_TYPE_MAP[text]) return SERVICE_TYPE_MAP[text];
+  // 2. 模糊匹配（使用者自訂輸入時）
+  const c = text.toLowerCase();
+  if (/禮贈|禮品|厚禮|禮盒|贈品/.test(c))                return 'gifting';
+  if (/教育|校園|學習|教學|培訓/.test(c))                return 'education';
+  if (/整合|整體|全方位|綜合/.test(c))                   return 'integrated';
+  if (/體驗|工作坊|手作|活動|家庭日|員工|內訓|親子|貴賓/.test(c)) return 'experience';
+  return 'experience';  // fallback
+}
+
+/* =========================================
+   文案生成輔助：成品偵測 + 企業意義組合
+   （v5 — 讓「方案描述」驅動 Narrative 第 4 段，
+    讓 client + scene 組合 Narrative 第 6 段）
+   ========================================= */
+function detectCraftForm(...texts) {
+  // v6：同時吃「指定作品 / 體驗方向」+ 方案描述，優先度從前到後
+  const s = texts.filter(Boolean).join(' ').toLowerCase();
+  if (/盆栽|多肉|植栽|植物|綠意|小綠/.test(s))      return 'pot';
+  if (/手工皂|皂拖|香皂|皂/.test(s))                return 'soap';
+  if (/擴香石|香石|擴香|車夾/.test(s))              return 'diffuser';
+  if (/吊飾|掛飾|飾品|鑰匙圈|吊牌|拉鍊/.test(s))    return 'craft';
+  if (/杯墊|冰箱貼|吸水|杯套|墊|肌理/.test(s))      return 'mat';
+  return 'default';
+}
+
+/* v6：客戶場景連結（Narrative 第 3 段）
+   讓客戶名 / 場景 / 人數 / 參與對象 / 活動目的 真的進 HTML 提案 */
+function buildClientLink({ client, scene, headcount, audience, purpose }) {
+  // v6.5 gift 模式分支
+  if (window.WL_PROPOSAL_MODE === 'gift') {
+    const qty = headcount ? (headcount + ' 份') : '';
+    const c = client || '你們';
+    let lead;
+    if (client && headcount) lead = '這份為 ' + c + ' 準備的 ' + qty + '禮品，';
+    else if (client)          lead = '這份為 ' + c + ' 準備的永續禮品，';
+    else if (headcount)       lead = '這份 ' + qty + '的永續禮品，';
+    else                      lead = '這份永續禮品，';
+    return lead + '\n不是一件被包裝的商品，\n而是讓永續從文件裡走出來，\n以材料的溫度，進入收禮者的日常。';
+  }
+  const sceneMap = {
+    'ESG體驗活動': 'ESG 體驗活動',
+    '企業內訓':   '企業內訓活動',
+    '校園課程':   '校園體驗課程',
+    '親子活動':   '親子共作時光',
+    '貴賓體驗':   '貴賓體驗場'
+  };
+  const audienceMap = {
+    '員工':      '企業同仁',
+    '主管':      '企業主管',
+    '客戶':      'VIP 客戶',
+    '家屬親子':  '員工與家屬',
+    '教師學生':  '師生群體'
+  };
+  const sceneText    = sceneMap[scene] || '永續體驗活動';
+  const clientText   = client || '你們';
+  const audienceText = audience && audienceMap[audience] ? `（${audienceMap[audience]}）` : '';
+  const hcText       = headcount ? `${headcount} 位夥伴` : '';
+
+  // 動態組句首
+  let lead;
+  if (client && headcount) {
+    lead = `這場為 ${clientText}${audienceText} ${hcText}設計的${sceneText}，`;
+  } else if (client) {
+    lead = `這場為 ${clientText}${audienceText}設計的${sceneText}，`;
+  } else if (headcount) {
+    lead = `這場${hcText}的${sceneText}，`;
+  } else {
+    lead = `這場${sceneText}，`;
+  }
+
+  return `${lead}\n不是一堂單向的課程，\n而是讓永續從文件裡走出來，\n回到每一雙參與的手中。`;
+}
+
+/* v6：活動目的收束（Narrative 第 4 段）
+   依活動目的自動帶入對應的收束語，並帶入客戶需求重點 */
+function buildClosing({ purpose, focus, customization }) {
+  const purposeMap = {
+    '員工共識':           '讓這一天成為員工彼此理解、團隊共識的開始。',
+    '員工參與':           '讓每位員工在這一天，從觀察者變成真正的參與者。',
+    'ESG 推廣':           '讓活動紀錄成為後續 ESG 報告與品牌敘事的真實素材。',
+    'ESG 敘事素材':       '讓活動紀錄成為後續 ESG 報告與品牌敘事的真實素材。',
+    '團隊凝聚':           '讓一起動手的過程，凝結成團隊共同的一段記憶。',
+    '家庭日 / 親子互動':  '讓這一天成為家庭共同完成、共同分享的親子時光。',
+    '家庭日':             '讓這一天成為家庭共同完成、共同分享的親子時光。',
+    '貴賓接待':           '讓這場體驗，成為品牌與貴賓之間一段有質感的記憶。',
+    '品牌形象':           '讓這場體驗延伸成可以被傳遞的品牌故事。',
+    '品牌 storytelling':  '讓這場體驗延伸成可以被傳遞的品牌故事。',
+    '校園教育':           '讓永續從課本走出來，成為學生可以親手參與的一段學習。',
+    '純活動體驗':         '讓每一位參與者，帶走一件屬於自己的作品與記憶。',
+    '客戶關係經營':       '讓這場體驗，成為企業與客戶之間一段共同的記憶。',
+    'gift':               '讓收到這份禮的人，在使用之間，自然參與到這段循環裡。',
+    '企業贈禮':           '讓收到這份禮的人，在使用之間，自然參與到這段循環裡。',
+    '年節送禮':           '讓這份禮在節慶之間，傳遞一份被認真對待的心意。',
+    '客戶關懷':           '讓這份禮成為與客戶之間一段有溫度的記憶。',
+    '員工關懷':           '讓這份禮讓每一位同仁感受到被好好對待。',
+    '品牌體驗':           '讓這份禮延伸成可以被傳遞的品牌故事。'
+  };
+  const closing = purposeMap[purpose] || '讓每一位參與者，帶走一件屬於自己的作品與記憶。';
+
+  // focus 有填就帶一段 acknowledgement
+  let focusText = '';
+  if (focus && focus.trim()) {
+    focusText = `我們將圍繞您提到的「${focus.trim()}」為方案核心，讓每個細節都服務到這件事。\n`;
+  }
+
+  // 高度客製補一句
+  let customText = '';
+  if (customization === '完全客製' || customization === '部分客製') {
+    customText = '本案將依實際需求進行客製調整，確保與品牌精神一致。\n';
+  }
+
+  return `${focusText}${customText}${closing}`;
+}
+
+/* =========================================
+   主渲染邏輯
+   ========================================= */
+function render() {
+  const client        = $('f-client').value.trim();
+  const activity      = $('f-activity').value.trim();
+  const category      = $('f-category').value.trim();
+  const tagline       = $('f-tagline').value.trim();
+  const headcount     = $('f-headcount').value.trim();
+  const date          = $('f-date').value.trim();
+  const scene         = $('f-scene').value;
+  const material      = $('f-material').value;
+  const plan          = $('f-plan').value.trim();
+  // v6 新欄位
+  const purpose       = $('f-purpose') ? $('f-purpose').value.trim() : '';
+  const audience      = $('f-audience') ? $('f-audience').value.trim() : '';
+  const workType      = $('f-work-type') ? $('f-work-type').value.trim() : '';
+  const focus         = $('f-focus') ? $('f-focus').value.trim() : '';
+  const depth         = $('f-depth') ? $('f-depth').value.trim() : '';
+  const customization = $('f-customization') ? $('f-customization').value.trim() : '';
+  // 報價
+  const itemName      = $('f-item-name').value.trim();
+  const itemDesc      = $('f-item-desc').value.trim();
+  const unit          = $('f-unit').value.trim();
+  let   total         = $('f-total').value.trim();
+  const qNotes        = $('f-quote-notes').value.trim();
+  const memo          = $('f-memo').value.trim();
+  // v6 報價商務欄位
+  const tax           = $('f-tax') ? $('f-tax').value.trim() : '';
+  const customExtra   = $('f-custom-extra') ? $('f-custom-extra').value.trim() : '';
+  const transportExtra= $('f-transport-extra') ? $('f-transport-extra').value.trim() : '';
+
+  // v6.4 讀 proposal_mode（由 applyJsonToForm 寫入 window.WL_PROPOSAL_MODE）
+  const proposalMode = (window.WL_PROPOSAL_MODE === 'gift') ? 'gift' : 'activity';
+
+  // ─── ① 封面 ───
+  $('p-client').textContent   = client   || '[ 客戶名稱 ]';
+  $('p-activity').textContent = activity || '[ 活動名稱 ]';
+  // 服務分類：預設依 mode 切換，並同步更新隱藏 code 欄位（給 n8n / Notion / AI 用）
+  const categoryDefault = (proposalMode === 'gift') ? '永續禮品提案' : 'ESG 體驗提案';
+  const categoryText = category || categoryDefault;
+  $('p-category').textContent = categoryText;
+  if ($('f-service-type-code')) {
+    $('f-service-type-code').value = getServiceTypeCode(categoryText);
+  }
+  $('p-tagline').textContent  = tagline  || '讓材料被重新看見，讓行動成為日常的一部分。';
+  $('p-date').textContent     = formatDate(date);
+  // v6.5 narrative 標題依 mode 切換
+  const narrativeHeadingEl = document.querySelector('#p-narrative')?.closest('section, article, div')?.querySelector('h1, h2, h3, .narrative-title');
+  // 嘗試找可能的標題元素，若找不到就 skip（不影響主要功能）
+  try {
+    const h2s = document.querySelectorAll('h1, h2, h3');
+    h2s.forEach(h => {
+      if (h.textContent.trim() === '關於這場活動' || h.textContent.trim() === '關於這份禮') {
+        h.textContent = (proposalMode === 'gift') ? '關於這份禮' : '關於這場活動';
+      }
+    });
+  } catch(e) {}
+
+  // ─── ② 活動敘事 ─── v6.5 四段組裝 + mode 分流
+  const nb = NARRATIVE_LIB[material] || NARRATIVE_LIB['其他'];
+  const craftForm = detectCraftForm(workType, plan);
+  const isGift = (proposalMode === 'gift');
+  const brandLine = isGift && nb.brand_line_gift ? nb.brand_line_gift : nb.brand_line;
+  const storySource = isGift && nb.story_gift ? nb.story_gift : nb.story;
+  const storyText = (storySource && (storySource[craftForm] || storySource.default)) || '';
+  const narrativeSegments = [
+    brandLine,
+    storyText,
+    buildClientLink({ client, scene, headcount, audience, purpose }),
+    buildClosing({ purpose: purpose || (isGift ? 'gift' : ''), focus, customization })
+  ].filter(Boolean);
+  $('p-narrative').textContent = narrativeSegments.join('\n\n');
+  const planEl = $('p-narrative-plan');
+  if (plan) {
+    planEl.style.display = '';
+    planEl.textContent = plan;
+  } else {
+    planEl.style.display = 'none';
+  }
+
+  // ─── ③ 課程流程 / 合作流程（v6.4 依 mode 分流）───
+  const flow = (proposalMode === 'gift')
+    ? GIFT_FLOW
+    : (FLOW_LIB[scene] || FLOW_LIB['ESG體驗活動']);
+  $('p-flow').innerHTML = flow.map(item => `
+    <div class="flow-item">
+      <div class="flow-stage">${item.stage}</div>
+      <div class="flow-content"><strong>${item.title}</strong>${item.desc}</div>
+      <div class="flow-duration">${item.dur || ''}</div>
+    </div>
+  `).join('');
+
+  // ─── ④ ESG 價值 ─── v6.2 雙層結構 + v6.4 mode 分流
+  const esg = ESG_LIB[material] || ESG_LIB['其他'];
+  const T = (proposalMode === 'gift') ? ESG_CARDS_GIFT : ESG_CARDS_A;
+  $('p-esg-intro').textContent = esg.intro || '';
+  // 三張卡 = 固定句（head）＋ 材料語境句（ctx）＋ 固定句（tail）
+  const cycleText     = `${T.cycle.head}\n${esg.cycle_ctx}\n${T.cycle.tail}`;
+  // SDG label 併入敘述文字（取代旁邊的中文，讓圖標可純橫排）
+  const sdgLabels     = esg.sdgs.join('、');
+  const sdgsDescText  = `${T.sdgs.head}\n對應 ${sdgLabels}，\n${esg.sdgs_ctx}，\n${T.sdgs.tail}`;
+  const educationText = `${T.education.head}\n${esg.education_ctx}；\n${T.education.tail}`;
+  $('p-esg').innerHTML = `
+    <div class="esg-card">
+      <div class="esg-icon">◐</div>
+      <h4>材料循環</h4>
+      <p class="esg-card-body">${cycleText}</p>
+    </div>
+    <div class="esg-card">
+      <div class="esg-icon">◎</div>
+      <h4>SDGs 對應</h4>
+      <div class="sdg-icons-row">${esg.sdgs.map(renderSDGIcon).join('')}</div>
+      <p class="esg-card-body">${sdgsDescText}</p>
+    </div>
+    <div class="esg-card">
+      <div class="esg-icon">◑</div>
+      <h4>教育與體驗</h4>
+      <p class="esg-card-body">${educationText}</p>
+    </div>
+  `;
+
+  // ─── ⑤ 報價 ───
+  // 自動計算總價（若總價未手動填寫）
+  if (unit && headcount && (!total || total === '' || $('f-total').dataset.auto === '1')) {
+    total = String(Number(unit) * Number(headcount));
+    $('f-total').value = total;
+    $('f-total').dataset.auto = '1';
+  }
+
+  $('p-item-name').textContent   = itemName || '永續體驗 DIY 工作坊';
+  $('p-item-desc').textContent   = itemDesc || '含材料準備、講師教學與現場執行';
+  $('p-q-headcount').textContent = headcount ? `${headcount} 人` : '—';
+  $('p-q-unit').textContent      = unit ? formatNTD(unit) : '—';
+  $('p-q-subtotal').textContent  = total ? formatNTD(total) : '—';
+  $('p-q-total').textContent     = total ? formatNTD(total) : 'NT$ —';
+
+  // v6：報價備註動態組（稅別 + 客製 + 交通 + 自由補充 + v2.5 固定尾句）
+  const autoNotes = [];
+  if (tax === 'untaxed')      autoNotes.push('・報價金額為未稅金額');
+  else if (tax === 'taxed')   autoNotes.push('・報價金額為含稅金額');
+  else if (tax === 'plus5')   autoNotes.push('・報價金額為未稅金額，另加 5% 營業稅');
+
+  if (customExtra === 'estimated')     autoNotes.push('・客製內容（LOGO 浮雕、包裝印刷、專屬設計等）依實際需求另行估價');
+  else if (customExtra === 'included') autoNotes.push('・報價已包含客製費用');
+
+  if (transportExtra === 'included')            autoNotes.push('・報價已含進場服務與現場執行（台北市區內）');
+  else if (transportExtra === 'extra-transport')autoNotes.push('・交通費依實際地點另計');
+  else if (transportExtra === 'extra-venue')    autoNotes.push('・場地租借費另計');
+  else if (transportExtra === 'both-extra')     autoNotes.push('・交通費與場地費皆依實際需求另計');
+
+  // 使用者自由補充
+  if (qNotes) {
+    qNotes.split('\n').forEach(line => {
+      const t = line.trim();
+      if (t) autoNotes.push(t.startsWith('・') || t.startsWith('※') ? t : '・' + t);
+    });
+  }
+
+  // v2.5 固定尾句（商務安全）
+  autoNotes.push('※ 本報價可依實際人數與執行需求進行調整，最終以正式報價單為準。');
+
+  $('p-q-notes').textContent = autoNotes.join('\n');
+
+  // ─── ⑥ 備註 ───
+  const memoWrap = $('p-memo-wrap');
+  if (memo) {
+    memoWrap.style.display = '';
+    $('p-memo').textContent = memo;
+  } else {
+    memoWrap.style.display = 'none';
+  }
+}
+
+/* =========================================
+   事件綁定
+   ========================================= */
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('input', render);
+  el.addEventListener('change', render);
+});
+
+// 若使用者手動改總價，取消自動計算
+$('f-total').addEventListener('input', () => {
+  $('f-total').dataset.auto = '0';
+});
+
+function resetForm() {
+  if (!confirm('確定要清空所有欄位嗎？')) return;
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    if (el.tagName === 'SELECT') {
+      el.selectedIndex = 0;
+    } else if (el.id === 'f-activity') {
+      el.value = 'ESG 永續體驗工作坊';
+    } else if (el.id === 'f-category') {
+      el.value = 'ESG 體驗提案';
+    } else if (el.id === 'f-tagline') {
+      el.value = '讓材料被重新看見，讓行動成為日常的一部分。';
+    } else if (el.id === 'f-item-name') {
+      el.value = '永續體驗 DIY 工作坊';
+    } else if (el.id === 'f-item-desc') {
+      el.value = '含材料準備、講師教學與現場執行';
+    } else {
+      el.value = '';
+    }
+  });
+  // 報價商務欄位回預設
+  if ($('f-tax'))              $('f-tax').value = 'untaxed';
+  if ($('f-transport-extra'))  $('f-transport-extra').value = 'included';
+  $('f-total').dataset.auto = '1';
+  render();
+}
+
+/* =========================================
+   🆕 JSON 注入模式（v6.1，2026-04-19）
+   用途：n8n / Claude 直接輸出 JSON → 自動灌入表單 → render()
+   啟用方式：把 JSON 貼到下方 <script id="proposalData"> 區塊
+   未貼 JSON 時（null）→ 走原本的表單模式
+   ========================================= */
+function applyJsonToForm(data) {
+  if (!data || typeof data !== 'object') return false;
+
+  const setVal = (id, v) => {
+    const el = $(id);
+    if (el && v !== undefined && v !== null && v !== '') el.value = v;
+  };
+
+  // meta
+  if (data.meta) {
+    setVal('f-scene',    data.meta.scene);
+    setVal('f-material', data.meta.material);
+    setVal('f-tone',     data.meta.tone);
+    // v6.4 proposal_mode（activity / gift）→ render() 讀取做分流
+    window.WL_PROPOSAL_MODE = (data.meta.proposal_mode === 'gift') ? 'gift' : 'activity';
+  }
+  // cover
+  if (data.cover) {
+    setVal('f-client',   data.cover.client);
+    setVal('f-activity', data.cover.activity);
+    setVal('f-category', data.cover.category);
+    setVal('f-tagline',  data.cover.tagline || data.cover.subtitle);
+    setVal('f-date',     data.cover.date);
+    setVal('f-headcount',data.cover.headcount);
+  }
+  // v6.5 相容：若 Claude 用 narrative key，視為 context
+  if (data.narrative && !data.context) data.context = data.narrative;
+  // context（活動脈絡六欄位）
+  if (data.context) {
+    setVal('f-purpose',       data.context.purpose);
+    setVal('f-audience',      data.context.audience);
+    setVal('f-work-type',     data.context.work_type);
+    setVal('f-focus',         data.context.focus);
+    setVal('f-depth',         data.context.depth);
+    setVal('f-customization', data.context.customization);
+    setVal('f-plan',          data.context.plan);
+  }
+  // quote
+  if (data.quote) {
+    setVal('f-item-name', data.quote.item_name);
+    setVal('f-item-desc', data.quote.item_desc);
+    setVal('f-unit',      data.quote.unit_price);
+    setVal('f-total',     data.quote.total);
+    setVal('f-tax',             data.quote.tax);
+    setVal('f-custom-extra',    data.quote.custom_extra);
+    setVal('f-transport-extra', data.quote.transport_extra);
+    setVal('f-quote-notes',     data.quote.notes);
+  }
+  // memo
+  setVal('f-memo', data.memo);
+
+  return true;
+}
+
+// 預設值：載入時先填示範資料 / 或吃 JSON
+window.addEventListener('DOMContentLoaded', () => {
+  // 先套預設
+  $('f-scene').value = 'ESG體驗活動';
+  $('f-material').value = '咖啡渣';
+  $('f-tone').value = 'warm';
+
+  // 服務分類：select ↔ hidden input 連動
+  const catSelect = $('f-category-select');
+  const catInput  = $('f-category');
+  if (catSelect && catInput) {
+    const syncFromSelect = () => {
+      if (catSelect.value === '__custom__') {
+        catInput.style.display = '';
+        catInput.value = '';
+        catInput.focus();
+      } else {
+        catInput.style.display = 'none';
+        catInput.value = catSelect.value;
+      }
+      catInput.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    catSelect.addEventListener('change', syncFromSelect);
+    // 初始：若 input 值不在 4 個主分類，切到自訂模式
+    const presets = ['ESG 體驗提案','ESG 禮贈提案','ESG 整合方案','永續教育提案'];
+    if (!presets.includes(catInput.value)) {
+      catSelect.value = '__custom__';
+      catInput.style.display = '';
+    }
+  }
+
+  // 偵測 JSON 注入
+  const jsonEl = document.getElementById('proposalData');
+  let injected = false;
+  if (jsonEl) {
+    const raw = jsonEl.textContent.trim();
+    if (raw && raw !== 'null' && raw !== '{}') {
+      try {
+        const data = JSON.parse(raw);
+        injected = applyJsonToForm(data);
+        if (injected) console.log('[Module A] JSON 注入成功', data);
+      } catch (e) {
+        console.error('[Module A] JSON 解析失敗：', e);
+      }
+    }
+  }
+
+  render();
+});
+</script>
+
+<!-- 🆕 JSON 注入區（n8n / Claude 寫入處） -->
+<script id="proposalData" type="application/json">
+{
+  "meta": {
+    "template": "A",
+    "proposal_mode": "gift",
+    "material": "咖啡渣",
+    "scene": "企業贈禮",
+    "tone": "warm"
+  },
+  "cover": {
+    "client": "（待確認公司名）",
+    "activity": "客製化擴香石專案",
+    "category": "永續禮品提案",
+    "tagline": "讓材料被重新看見，讓行動成為日常的一部分。",
+    "date": "2026-04",
+    "headcount": 0
+  },
+  "context": {
+    "purpose": "gift",
+    "audience": "clients",
+    "work_type": "",
+    "focus": "客戶希望製作客製化擴香石，可能用於送禮或品牌推廣情境。建議確認：使用場景（企業贈禮/客戶關懷/員工關懷）、數量、是否需要 LOGO 或造型客製、預算範圍，以提供更精準的方案與報價。",
+    "depth": "light",
+    "customization": "full",
+    "plan": "提供咖啡渣擴香石作為永續禮品選項，可依需求進行 LOGO 浮雕或造型客製。建議先確認使用情境與數量，再提供完整報價與設計提案。"
+  },
+  "quote": {
+    "item_name": "咖啡渣擴香石（客製化）",
+    "item_desc": "將咖啡渣升級再造，可進行 LOGO 浮雕或造型客製",
+    "unit_price": 240,
+    "total": null,
+    "tax": "untaxed",
+    "custom_extra": "estimated",
+    "transport_extra": "included",
+    "notes": "• 起訂量：50 個\n• 客製選項：LOGO 浮雕、造型客製\n• 適用情境：企業贈禮、客戶關懷\n• 實際報價需依數量、客製需求調整"
+  },
+  "memo": "此案 LINE 暱稱為「Tina 謝踢娜」，正式公司名待確認後再寄出。客戶詢問客製化擴香石，但未提供具體數量、用途、預算等資訊，建議先確認後再提供完整提案。"
+}
+</script>
+
+
+<script>
+(function(){
+  var d = document.getElementById('proposalData');
+  if (d && d.textContent.trim() && d.textContent.trim() !== '{}') {
+    document.body.classList.add('client-view');
+  }
+})();
+</script>
+
+</body>
+</html>
