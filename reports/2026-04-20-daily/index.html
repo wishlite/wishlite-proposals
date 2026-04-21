@@ -296,7 +296,7 @@ html, body {
   <p class="hero-subtitle">
     從 Sprint 4.5 的 LINE 暱稱辨識，到 Phase 4.2 的 Module A 提案引擎，
     再到 Sprint 5 的意圖化 ACK + 雙保險節流，
-    最後沉澱成 Mico 回覆規則 skill v1.1。
+    最後沉澱成 LINE 回覆規則 skill v1.1。
     這是一日內 6 項系統性改造的完整戰報。
   </p>
   <div class="hero-meta">
@@ -338,7 +338,7 @@ html, body {
       <ul>
         <li>解決 <strong>Notion 列表全是亂碼 userId</strong> 的痛點</li>
         <li>同時補跑 28 筆歷史訊息（13 位客戶，其中 8 位查到真實暱稱）</li>
-        <li>Apple 的覆核視圖可依「顯示名稱」分組，同客戶訊息自動聚類</li>
+        <li>客服覆核視圖可依「顯示名稱」分組，同客戶訊息自動聚類</li>
       </ul>
     </div>
   </div>
@@ -400,7 +400,7 @@ html, body {
       <span class="achievement-tag risk-mid">🔧 踩坑修復</span>
     </div>
     <div class="achievement-desc">
-      修復 Doreen Huang 案例中「Mico 手動聊天被 ACK 插入打斷」的 bug：
+      修復「客服夥伴手動聊天被 ACK 插入打斷」的 bug：
       <ul>
         <li>保險 1：<code>staticData</code> 毫秒級時間戳檢查（2 小時內同 userId 只送 1 次）</li>
         <li>保險 2：Notion 歷史查詢 fallback（即使 staticData 被洗也擋得住）</li>
@@ -416,9 +416,9 @@ html, body {
       <span class="achievement-tag risk-low">⭐ 最高價值</span>
     </div>
     <div class="achievement-desc">
-      從 Apple 提供的 14 張真實 LINE 對話截圖萃取出一套完整的 Mico 回覆規則，寫入 Claude skill。未來所有 AI 草稿都站在今天的肩膀上。
+      從 14 張真實 LINE 對話截圖萃取出一套完整的韻手作回覆規則，寫入 Claude skill。未來所有 AI 草稿都站在今天的肩膀上。
       <ul>
-        <li><strong>Mico 語氣 DNA</strong>：開頭 / 收尾 / emoji / 禮節 / 語尾助詞全紀錄</li>
+        <li><strong>韻手作語氣 DNA</strong>：開頭 / 收尾 / emoji / 禮節 / 語尾助詞全紀錄</li>
         <li><strong>擴香石主軸報價</strong>：公版 NT$420、300 組 88 折 NT$370、模具配比 15:1 等硬資料</li>
         <li><strong>3 招商業套路</strong>：組合型禮贈 / 分層禮品 / 完整問題清單</li>
         <li><strong>4 組回覆模板</strong>：通用 ACK / 擴香石三段 / 庫存訂購 / B2B 議價</li>
@@ -432,7 +432,7 @@ html, body {
 <div class="callout">
   <div class="callout-label">🌿 今日最大戰略資產</div>
   <p>
-    <strong>Skill v1.1 不是一份文件，而是一套「對話作戰手冊」</strong>。它讓未來每一次 AI 代 Mico 寫草稿時都能不失韻手作溫度；更重要的是，它讓 18 條紅線（禁止自行算價、禁止混稅、禁止漏問 Logo 等）成為系統的硬規則，避免任何 AI 在客戶面前做出會損害公司的承諾。
+    <strong>Skill v1.1 不是一份文件，而是一套「對話作戰手冊」</strong>。它讓未來每一次 AI 草稿都能不失韻手作溫度；更重要的是，它讓 18 條紅線（禁止自行算價、禁止混稅、禁止漏問 Logo 等）成為系統的硬規則，避免任何 AI 在客戶面前做出會損害公司的承諾。
   </p>
 </div>
 
@@ -442,23 +442,23 @@ html, body {
   <h2 class="section-title">對團隊的實際影響</h2>
 
   <div class="for-team">
-    <h3>🙋 給 Mico</h3>
+    <h3>🙋 給客服夥伴</h3>
     <div class="team-item">
       <div class="team-who">ACK 不打擾</div>
       <div class="team-what">之後你在 chat.line.biz 手動和同一客戶聊天時，<strong>系統不會再插入 ACK 自動回覆打斷節奏</strong>。同 userId 2 小時內只會送 1 次。</div>
     </div>
     <div class="team-item">
       <div class="team-who">Notion 清爽</div>
-      <div class="team-what">「Apple 覆核用」View 的 <strong>Group by 顯示名稱</strong> 會自動聚類，你能直接看到「某位客戶今天的所有訊息」而不是散落 52 筆。</div>
+      <div class="team-what">「客服覆核用」View 的 <strong>Group by 顯示名稱</strong> 會自動聚類，你能直接看到「某位客戶今天的所有訊息」而不是散落 52 筆。</div>
     </div>
     <div class="team-item">
-      <div class="team-who">AI 草稿更 Mico 感</div>
+      <div class="team-who">AI 草稿更具品牌感</div>
       <div class="team-what">未來系統產的草稿會<strong>模仿你的語氣</strong>（🌿 開頭、唷 / 呢 / 囉 語尾、3 段式報價），減少你手改的時間。</div>
     </div>
   </div>
 
   <div class="for-team">
-    <h3>👤 給 Apple</h3>
+    <h3>👤 給經營決策者</h3>
     <div class="team-item">
       <div class="team-who">提案守門員</div>
       <div class="team-what">Module A Prompt v0.5.1 的門檻閘門會<strong>自動判斷資訊是否完整</strong>，避免系統產半成品提案誤送客戶。不完整時自動回傳待補問題清單。</div>
@@ -498,7 +498,7 @@ html, body {
       <span class="achievement-tag risk-low">🟢 本週內</span>
     </div>
     <div class="achievement-desc">
-      把 Skill 中的硬資料（價格 / FAQ / 模板）寫進 Notion，讓 Mico 能直接複製貼上、讓 AI 查到最新商品資訊。預計本週內完成。
+      把 Skill 中的硬資料（價格 / FAQ / 模板）寫進 Notion，讓團隊能直接複製貼上、讓 AI 查到最新商品資訊。預計本週內完成。
     </div>
   </div>
 
@@ -509,7 +509,7 @@ html, body {
       <span class="achievement-tag risk-low">💰 NT$100/月</span>
     </div>
     <div class="achievement-desc">
-      訂閱後聊天紀錄從 6 個月延長到 5 年 + 可下載備份，徹底解決「看不到 Mico 手動回覆內容」的系統限制。
+      訂閱後聊天紀錄從 6 個月延長到 5 年 + 可下載備份，徹底解決「看不到手動回覆內容」的系統限制。
       比自建 Chrome Extension 更穩、無維護成本、無封號風險。
     </div>
   </div>
