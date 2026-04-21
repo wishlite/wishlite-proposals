@@ -844,7 +844,30 @@
     .flow-item { grid-template-columns: 1fr; gap: 6px; }
     .flow-duration { text-align: left; }
     .quote-table { font-size: 12px; }
+    .options-grid { grid-template-columns: 1fr !important; }
   }
+
+  /* =========================================
+     v0.6 三方案比較卡片（保底 / 首選 / 升級）
+     ========================================= */
+  .quote-options-wrap { margin-top: 36px; padding-top: 28px; }
+  .options-divider { text-align: center; color: var(--earth); letter-spacing: 8px; margin-bottom: 14px; }
+  .options-title { font-family: 'Noto Serif TC', serif; font-size: 16px; color: var(--moss-dark); text-align: center; margin-bottom: 20px; letter-spacing: 1px; }
+  .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .option-card { background: var(--soft); border: 1px solid var(--line); padding: 22px 18px; border-radius: 6px; position: relative; display: flex; flex-direction: column; }
+  .option-card.recommended { border-color: var(--moss); background: #fff; box-shadow: 0 4px 14px rgba(61,90,62,0.10); transform: scale(1.02); }
+  .option-tier { font-size: 11px; color: var(--sage); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; font-weight: 500; }
+  .option-card.recommended .option-tier { color: var(--moss-dark); font-weight: 700; }
+  .option-name { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 8px; line-height: 1.4; }
+  .option-desc { font-size: 12.5px; color: #666; line-height: 1.7; margin-bottom: 16px; min-height: 54px; }
+  .option-price { font-size: 13px; color: var(--moss-dark); margin-bottom: 6px; }
+  .option-price .num { font-family: 'Noto Serif TC', serif; font-size: 26px; font-weight: 700; color: var(--ink); }
+  .option-total { font-size: 12px; color: var(--earth); margin-bottom: 14px; }
+  .option-highlights { list-style: none; padding: 0; margin: 8px 0 0 0; font-size: 12px; color: #555; flex-grow: 1; }
+  .option-highlights li { padding: 4px 0; padding-left: 14px; position: relative; line-height: 1.5; }
+  .option-highlights li::before { content: '◆'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 6px; }
+  .option-badge { position: absolute; top: -10px; right: 14px; background: var(--moss-dark); color: #fff; font-size: 10px; padding: 4px 12px; border-radius: 12px; letter-spacing: 2px; font-weight: 500; }
+  .options-note { font-size: 11px; color: var(--ink-weak); text-align: center; margin-top: 14px; letter-spacing: 0.5px; }
 </style>
 </head>
 <body>
@@ -1185,6 +1208,14 @@
           總計<span class="amount" id="p-q-total">NT$ —</span>
         </div>
         <div class="quote-notes" id="p-q-notes"></div>
+
+        <!-- v0.6: 三方案比較（保底 / 首選 / 升級） -->
+        <div class="quote-options-wrap" id="p-options-wrap" style="display:none;">
+          <div class="options-divider">—</div>
+          <div class="options-title">為您準備了三種方案，可依需求彈性選擇</div>
+          <div class="options-grid" id="p-options-grid"></div>
+          <div class="options-note">※ 上述報價依商品中位價估算，實際報價以正式報價單為準</div>
+        </div>
 
         <div id="p-memo-wrap" style="display:none;">
           <div class="extra-note-label" style="margin-top:20px;">備註</div>
@@ -1966,6 +1997,36 @@ function render() {
   } else {
     memoWrap.style.display = 'none';
   }
+
+  // v0.6: 渲染 3 方案卡片（若有 quote_options 資料）
+  const optWrap = document.getElementById('p-options-wrap');
+  const optGrid = document.getElementById('p-options-grid');
+  if (optWrap && optGrid) {
+    const opts = window.__WL_QUOTE_OPTIONS__ || [];
+    if (opts.length >= 2) {
+      optGrid.innerHTML = opts.map(o => {
+        const rec = o.recommended ? ' recommended' : '';
+        const badge = o.recommended ? '<div class="option-badge">推薦</div>' : '';
+        const highlights = (o.highlights || []).map(h => '<li>' + h + '</li>').join('');
+        const price = (o.unit_price != null && o.unit_price !== '') ? o.unit_price : '—';
+        const totalStr = (o.total != null && o.total !== '')
+          ? '<div class="option-total">估算總計 NT$ ' + o.total.toLocaleString() + '</div>'
+          : '';
+        return '<div class="option-card' + rec + '">' + badge +
+          '<div class="option-tier">' + (o.tier_label || '方案') + '</div>' +
+          '<div class="option-name">' + (o.item_name || '') + '</div>' +
+          '<div class="option-desc">' + (o.item_desc || '') + '</div>' +
+          '<div class="option-price">NT$ <span class="num">' + price + '</span> / ' +
+            ((window.WL_PROPOSAL_MODE === 'gift') ? '份' : '人') + '</div>' +
+          totalStr +
+          (highlights ? '<ul class="option-highlights">' + highlights + '</ul>' : '') +
+          '</div>';
+      }).join('');
+      optWrap.style.display = 'block';
+    } else {
+      optWrap.style.display = 'none';
+    }
+  }
 }
 
 /* =========================================
@@ -2064,6 +2125,13 @@ function applyJsonToForm(data) {
   // memo
   setVal('f-memo', data.memo);
 
+  // v0.6: 三方案（保底 / 首選 / 升級）
+  if (Array.isArray(data.quote_options) && data.quote_options.length >= 2) {
+    window.__WL_QUOTE_OPTIONS__ = data.quote_options;
+  } else {
+    window.__WL_QUOTE_OPTIONS__ = null;
+  }
+
   return true;
 }
 
@@ -2123,38 +2191,38 @@ window.addEventListener('DOMContentLoaded', () => {
 {
   "meta": {
     "template": "A",
-    "material": "咖啡渣",
-    "scene": "ESG體驗活動",
+    "proposal_mode": "gift",
+    "material": "咖啡渣、牡蠣殼粉、FGD 環保石膏",
+    "scene": "半導體展覽會場",
     "tone": "warm"
   },
   "cover": {
-    "client": "遠雄建設",
-    "activity": "永續材料體驗工作坊",
-    "category": "提案",
-    "tagline": "讓材料被重新看見，讓行動成為日常的一部分。",
+    "client": "香港商達思系統(股)公司台灣分公司",
+    "activity": "半導體展 ESG 禮品",
+    "category": "永續禮品提案",
+    "tagline": "讓一份禮，成為一段被帶走的故事",
     "date": "2026-05-15",
-    "headcount": 60
+    "headcount": 300
   },
-  "context": {
-    "purpose": "team",
-    "audience": "employees",
-    "work_type": "擴香石",
-    "focus": "ESG 報告素材、員工關懷、客戶禮品延伸",
-    "depth": "medium",
-    "customization": "light",
-    "plan": "本場結合 LOGO 浮雕擴香石體驗，現場提供三款精油香氣選擇（森林、海洋、柑橘），作品可帶回辦公室或作為員工關懷贈品。"
+  "narrative": {
+    "plan": "為 9 月半導體展規劃三款永續禮品方案，分別對應不同預算層級與工法風格：從入門香氛識別禮到職人質感客製版，讓達思能依現場賓客與預算彈性選擇。每款都以牡蠣殼粉 × FGD 環保石膏的雙材料敘事為核心，結合咖啡渣再生工法，展現品牌 ESG 理念。",
+    "purpose": "在產業菁英雲集的展會現場，以有材料故事的永續禮品建立品牌印象，讓達思對 ESG 的重視化為能被帶回辦公室的日常提醒。",
+    "audience": "半導體產業客戶與合作夥伴，多為商務差旅人士，重視品質與品牌形象。",
+    "work_type": "禮品/禮盒",
+    "focus": "三款方案涵蓋單品香氛、組合禮盒、客製職人款，讓達思依現場需求選擇；所有方案皆支援 LOGO 客製。",
+    "customization": "三款工法各異：方案 A 採浮雕貼紙（最經濟、彈性大）；方案 B 擴香石貼紙＋環保筆雷雕（工法層次豐富）；方案 C 採 3D 建模一體成型（職人等級、LOGO 直接嵌入造型）。"
   },
   "quote": {
-    "item_name": "永續體驗 DIY 工作坊",
-    "item_desc": "含咖啡渣材料、講師教學、LOGO 浮雕、三款精油",
-    "unit_price": 780,
-    "total": 46800,
-    "tax": "untaxed",
-    "custom_extra": "estimated",
-    "transport_extra": "included",
-    "notes": "付款條件：簽約 50% / 活動後 50%\n交期：活動前 7 天確認客製 LOGO 檔案"
+    "item_name": "半導體展永續禮品方案（三選一）",
+    "item_desc": "方案 A｜香氛識別禮：地球擴香石（含 LOGO 浮雕貼紙）／方案 B｜香氛組合禮：方形兩用擴香石（含 LOGO 浮雕貼紙）＋咖啡渣環保筆（含 LOGO 雷雕）／方案 C｜職人質感禮：立體客製 Logo 擴香石（3D 建模一體成型）",
+    "unit_price": 350,
+    "total": 105000,
+    "tax": "含稅價格",
+    "custom_extra": "各方案 LOGO 客製工法費用另計",
+    "transport_extra": "台北市區免運",
+    "notes": "方案 A：每份約 NT$250-300（單品擴香石＋浮雕貼紙）｜方案 B：每份約 NT$350-400（擴香石＋環保筆組合，兩種工法）｜方案 C：每份約 NT$450-500（3D 建模客製，LOGO 嵌入造型）｜三款皆含稅，LOGO 客製工法費另計｜台北市區免運｜建議 8 月上旬前確認下單，以利排程生產與交期"
   },
-  "memo": "建議搭配內部永續週活動，可延伸為 ESG 報告素材。"
+  "memo": ""
 }
 </script>
 
