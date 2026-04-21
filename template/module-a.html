@@ -844,7 +844,30 @@
     .flow-item { grid-template-columns: 1fr; gap: 6px; }
     .flow-duration { text-align: left; }
     .quote-table { font-size: 12px; }
+    .options-grid { grid-template-columns: 1fr !important; }
   }
+
+  /* =========================================
+     v0.6 三方案比較卡片（保底 / 首選 / 升級）
+     ========================================= */
+  .quote-options-wrap { margin-top: 36px; padding-top: 28px; }
+  .options-divider { text-align: center; color: var(--earth); letter-spacing: 8px; margin-bottom: 14px; }
+  .options-title { font-family: 'Noto Serif TC', serif; font-size: 16px; color: var(--moss-dark); text-align: center; margin-bottom: 20px; letter-spacing: 1px; }
+  .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .option-card { background: var(--soft); border: 1px solid var(--line); padding: 22px 18px; border-radius: 6px; position: relative; display: flex; flex-direction: column; }
+  .option-card.recommended { border-color: var(--moss); background: #fff; box-shadow: 0 4px 14px rgba(61,90,62,0.10); transform: scale(1.02); }
+  .option-tier { font-size: 11px; color: var(--sage); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; font-weight: 500; }
+  .option-card.recommended .option-tier { color: var(--moss-dark); font-weight: 700; }
+  .option-name { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 8px; line-height: 1.4; }
+  .option-desc { font-size: 12.5px; color: #666; line-height: 1.7; margin-bottom: 16px; min-height: 54px; }
+  .option-price { font-size: 13px; color: var(--moss-dark); margin-bottom: 6px; }
+  .option-price .num { font-family: 'Noto Serif TC', serif; font-size: 26px; font-weight: 700; color: var(--ink); }
+  .option-total { font-size: 12px; color: var(--earth); margin-bottom: 14px; }
+  .option-highlights { list-style: none; padding: 0; margin: 8px 0 0 0; font-size: 12px; color: #555; flex-grow: 1; }
+  .option-highlights li { padding: 4px 0; padding-left: 14px; position: relative; line-height: 1.5; }
+  .option-highlights li::before { content: '◆'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 6px; }
+  .option-badge { position: absolute; top: -10px; right: 14px; background: var(--moss-dark); color: #fff; font-size: 10px; padding: 4px 12px; border-radius: 12px; letter-spacing: 2px; font-weight: 500; }
+  .options-note { font-size: 11px; color: var(--ink-weak); text-align: center; margin-top: 14px; letter-spacing: 0.5px; }
 </style>
 </head>
 <body>
@@ -1185,6 +1208,14 @@
           總計<span class="amount" id="p-q-total">NT$ —</span>
         </div>
         <div class="quote-notes" id="p-q-notes"></div>
+
+        <!-- v0.6: 三方案比較（保底 / 首選 / 升級） -->
+        <div class="quote-options-wrap" id="p-options-wrap" style="display:none;">
+          <div class="options-divider">—</div>
+          <div class="options-title">為您準備了三種方案，可依需求彈性選擇</div>
+          <div class="options-grid" id="p-options-grid"></div>
+          <div class="options-note">※ 上述報價依商品中位價估算，實際報價以正式報價單為準</div>
+        </div>
 
         <div id="p-memo-wrap" style="display:none;">
           <div class="extra-note-label" style="margin-top:20px;">備註</div>
@@ -1966,6 +1997,36 @@ function render() {
   } else {
     memoWrap.style.display = 'none';
   }
+
+  // v0.6: 渲染 3 方案卡片（若有 quote_options 資料）
+  const optWrap = document.getElementById('p-options-wrap');
+  const optGrid = document.getElementById('p-options-grid');
+  if (optWrap && optGrid) {
+    const opts = window.__WL_QUOTE_OPTIONS__ || [];
+    if (opts.length >= 2) {
+      optGrid.innerHTML = opts.map(o => {
+        const rec = o.recommended ? ' recommended' : '';
+        const badge = o.recommended ? '<div class="option-badge">推薦</div>' : '';
+        const highlights = (o.highlights || []).map(h => '<li>' + h + '</li>').join('');
+        const price = (o.unit_price != null && o.unit_price !== '') ? o.unit_price : '—';
+        const totalStr = (o.total != null && o.total !== '')
+          ? '<div class="option-total">估算總計 NT$ ' + o.total.toLocaleString() + '</div>'
+          : '';
+        return '<div class="option-card' + rec + '">' + badge +
+          '<div class="option-tier">' + (o.tier_label || '方案') + '</div>' +
+          '<div class="option-name">' + (o.item_name || '') + '</div>' +
+          '<div class="option-desc">' + (o.item_desc || '') + '</div>' +
+          '<div class="option-price">NT$ <span class="num">' + price + '</span> / ' +
+            ((window.WL_PROPOSAL_MODE === 'gift') ? '份' : '人') + '</div>' +
+          totalStr +
+          (highlights ? '<ul class="option-highlights">' + highlights + '</ul>' : '') +
+          '</div>';
+      }).join('');
+      optWrap.style.display = 'block';
+    } else {
+      optWrap.style.display = 'none';
+    }
+  }
 }
 
 /* =========================================
@@ -2063,6 +2124,13 @@ function applyJsonToForm(data) {
   }
   // memo
   setVal('f-memo', data.memo);
+
+  // v0.6: 三方案（保底 / 首選 / 升級）
+  if (Array.isArray(data.quote_options) && data.quote_options.length >= 2) {
+    window.__WL_QUOTE_OPTIONS__ = data.quote_options;
+  } else {
+    window.__WL_QUOTE_OPTIONS__ = null;
+  }
 
   return true;
 }
