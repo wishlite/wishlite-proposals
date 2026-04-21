@@ -868,6 +868,12 @@
   .option-highlights li::before { content: '◆'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 6px; }
   .option-badge { position: absolute; top: -10px; right: 14px; background: var(--moss-dark); color: #fff; font-size: 10px; padding: 4px 12px; border-radius: 12px; letter-spacing: 2px; font-weight: 500; }
   .options-note { font-size: 11px; color: var(--ink-weak); text-align: center; margin-top: 14px; letter-spacing: 0.5px; }
+
+  /* v0.7：報價表格 3 列模式（取代卡片）*/
+  .quote-table tr.recommended-row { background: rgba(61,90,62,0.05); }
+  .quote-table tr.recommended-row td:first-child { border-left: 3px solid var(--moss); padding-left: 10px; }
+  .quote-table .tier-item { font-size: 12.5px; color: var(--ink); font-weight: 500; display: inline-block; margin-top: 2px; }
+  .quote-table tbody tr td { padding-top: 14px; padding-bottom: 14px; vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -1177,7 +1183,7 @@
         <div class="section-tag">QUOTATION</div>
         <h2 class="section-title">報價摘要</h2>
         <div class="divider"></div>
-        <table class="quote-table">
+        <table class="quote-table" id="p-quote-table">
           <colgroup>
             <col class="col-item">
             <col class="col-desc">
@@ -1194,7 +1200,7 @@
               <th class="num">小計</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="p-quote-tbody">
             <tr>
               <td id="p-item-name">永續體驗 DIY 工作坊</td>
               <td id="p-item-desc">含材料準備、講師教學與現場執行</td>
@@ -1998,35 +2004,36 @@ function render() {
     memoWrap.style.display = 'none';
   }
 
-  // v0.6: 渲染 3 方案卡片（若有 quote_options 資料）
-  const optWrap = document.getElementById('p-options-wrap');
-  const optGrid = document.getElementById('p-options-grid');
-  if (optWrap && optGrid) {
-    const opts = window.__WL_QUOTE_OPTIONS__ || [];
-    if (opts.length >= 2) {
-      optGrid.innerHTML = opts.map(o => {
-        const rec = o.recommended ? ' recommended' : '';
-        const badge = o.recommended ? '<div class="option-badge">推薦</div>' : '';
-        const highlights = (o.highlights || []).map(h => '<li>' + h + '</li>').join('');
-        const price = (o.unit_price != null && o.unit_price !== '') ? o.unit_price : '—';
-        const totalStr = (o.total != null && o.total !== '')
-          ? '<div class="option-total">估算總計 NT$ ' + o.total.toLocaleString() + '</div>'
-          : '';
-        return '<div class="option-card' + rec + '">' + badge +
-          '<div class="option-tier">' + (o.tier_label || '方案') + '</div>' +
-          '<div class="option-name">' + (o.item_name || '') + '</div>' +
-          '<div class="option-desc">' + (o.item_desc || '') + '</div>' +
-          '<div class="option-price">NT$ <span class="num">' + price + '</span> / ' +
-            ((window.WL_PROPOSAL_MODE === 'gift') ? '份' : '人') + '</div>' +
-          totalStr +
-          (highlights ? '<ul class="option-highlights">' + highlights + '</ul>' : '') +
-          '</div>';
-      }).join('');
-      optWrap.style.display = 'block';
-    } else {
-      optWrap.style.display = 'none';
+  // v0.7: 3 方案用「報價摘要表格」3 列呈現（取代單列 + 卡片）
+  const opts = window.__WL_QUOTE_OPTIONS__ || [];
+  const tbody = document.getElementById('p-quote-tbody');
+  const totalEl = $('p-q-total');
+  const unitLabel = (window.WL_PROPOSAL_MODE === 'gift') ? '份' : '人';
+  const qty = headcount || '—';
+  if (tbody && opts.length >= 2) {
+    // 3 列表格
+    tbody.innerHTML = opts.map(o => {
+      const price = (o.unit_price != null && o.unit_price !== '') ? formatNTD(o.unit_price) : '—';
+      const sub = (o.total != null && o.total !== '') ? formatNTD(o.total) : '—';
+      const recClass = o.recommended ? ' class="recommended-row"' : '';
+      const tierMark = o.recommended ? '⭐ ' : '';
+      return '<tr' + recClass + '>' +
+        '<td>' + tierMark + '<strong>' + (o.tier_label || '') + '</strong><br><span class="tier-item">' + (o.item_name || '') + '</span></td>' +
+        '<td>' + (o.item_desc || '') + '</td>' +
+        '<td class="num">' + qty + ' ' + unitLabel + '</td>' +
+        '<td class="num">' + price + '</td>' +
+        '<td class="num">' + sub + '</td>' +
+        '</tr>';
+    }).join('');
+    // 總計顯示「推薦方案」的 total
+    const rec = opts.find(o => o.recommended) || opts[1] || opts[0];
+    if (totalEl && rec && rec.total != null) {
+      totalEl.textContent = formatNTD(rec.total) + '（推薦方案）';
     }
   }
+  // 隱藏舊卡片區
+  const optWrap = document.getElementById('p-options-wrap');
+  if (optWrap) optWrap.style.display = 'none';
 }
 
 /* =========================================
