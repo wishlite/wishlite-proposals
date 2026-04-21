@@ -199,7 +199,7 @@
         rgba(245, 242, 234, 0.75) 30%,
         rgba(245, 242, 234, 0.35) 60%,
         rgba(245, 242, 234, 0.08) 100%),
-      url('/wishlite-proposals/assets/hero-mountain-warm.jpg');
+      url('assets/hero-mountain-warm.jpg');
     background-size: cover;
     background-position: center 65%;
     background-repeat: no-repeat;
@@ -639,7 +639,7 @@
     position: relative;
     margin: 80px -60px 0;
     height: 300px;
-    background-image: url('/wishlite-proposals/assets/hero-mountain-warm.jpg');
+    background-image: url('assets/hero-mountain-warm.jpg');
     background-size: cover;
     background-position: center bottom;  /* 山從下半部長出 */
     background-repeat: no-repeat;
@@ -846,13 +846,6 @@
     .quote-table { font-size: 12px; }
   }
 </style>
-
-<style id="client-view-css">
-  body.client-view .form-panel { display: none !important; }
-  body.client-view .preview { width: 100% !important; max-width: 920px !important; margin: 0 auto !important; }
-  body.client-view { background: var(--soft); }
-</style>
-
 </head>
 <body>
 
@@ -932,6 +925,7 @@
         <option value="咖啡渣" selected>咖啡渣</option>
         <option value="牡蠣殼">牡蠣殼</option>
         <option value="再生塑膠">再生塑膠</option>
+        <option value="牛仔布">牛仔布</option>
         <option value="紙纖循環">紙纖循環</option>
         <option value="天然材料">天然材料</option>
         <option value="其他">其他</option>
@@ -1341,6 +1335,27 @@ const NARRATIVE_LIB = {
     }
   },
 
+  '牛仔布': {
+    brand_line: '被時光磨出紋理的牛仔布，藏著每一道刷色與車線的痕跡。當它被丟棄，那些痕跡也跟著被丟棄。',
+    story: {
+      default:  '被時光磨出刷色與車線的牛仔布，原本多數會進入紡織廢料的下一頁。\n這一次，我們把布料接回來，清潔、裁切、重新縫定，\n讓那些被保留下來的痕跡，在手中變成另一種日常的陪伴。',
+      mat:      '被時光磨出刷色與紋理的牛仔布，原本會進入紡織廢料的循環。\n這次我們把布料裁成杯墊，留下原本的車線與磨白，\n讓每一次放下杯子，都像把一道布料的痕跡輕輕擱在手邊。',
+      craft:    '被時光磨出刷色與車線的牛仔布，原本會被視為紡織廢料。\n這次我們把它做成可以掛在包上的小物，帶著原本的布紋與纖維紋理，\n讓這段布料的痕跡，以另一種方式繼續被帶著走。',
+      pot:      '被時光磨出紋理的牛仔布，原本會成為下一批紡織廢料。\n這次我們把布料縫成一個柔軟的植栽套，\n讓一株植物，被布料溫潤的質地包圍著長大。',
+      soap:     '被時光磨出紋理的牛仔布，原本會成為下一批紡織廢料。\n這次我們把布料做成皂盤或皂袋，\n讓每一次使用手工皂，都接住布料上那些被保留的痕跡。',
+      diffuser: '被時光磨出紋理的牛仔布，原本會成為下一批紡織廢料。\n這次我們讓布料承托擴香石，\n讓熟悉的藍，成為日常香氣的背景。'
+    },
+    brand_line_gift: '被時光磨出紋理的牛仔布，原本即將進入下一批紡織廢料。當它以一份禮重生，那些痕跡，成為收禮者手中被看見的溫度。',
+    story_gift: {
+      default: '被時光磨出紋理的牛仔布，原本只會進入下一批紡織廢料。\n這次我們把布料清潔、重新裁切縫定，裝進禮盒，\n讓那些刷色與車線的痕跡，成為收禮者手中被看見的日常。',
+      mat: '被時光磨出刷色與紋理的牛仔布，原本會成為下一批紡織廢料。\n這次我們把布料壓成一件杯墊，裝進禮盒，\n讓收禮者每次放下杯子，都接住布料上那些被保留的痕跡。',
+      craft: '被時光磨出刷色與車線的牛仔布，原本會成為下一批紡織廢料。\n這次我們把它做成可以掛在包上的小物，\n讓收禮者把這段布料的故事，繼續帶在身上。',
+      pot: '被時光磨出紋理的牛仔布，原本會成為下一批紡織廢料。\n這次我們讓布料成為植栽的柔軟容器，\n讓收禮者桌上的植物，被布料溫潤的質地包圍。',
+      soap: '被時光磨出紋理的牛仔布，原本會成為下一批紡織廢料。\n這次我們讓布料變成皂的搭檔，\n讓收禮者每天洗手的時刻，都帶著這份溫潤的相遇。',
+      diffuser: '被時光磨出紋理的牛仔布，原本會成為下一批紡織廢料。\n這次我們讓布料承托擴香石，\n讓熟悉的藍與香氣一起，住進收禮者的日常。',
+    }
+  },
+
   '其他': {
     brand_line: '每一份被忽略的資源，都值得一次被重新看見的機會。',
     story: {
@@ -1557,6 +1572,13 @@ const ESG_LIB = {
     sdgs_ctx:      '從自然素材出發，連結環境保護與人與土地的永續關係',
     education_ctx: '在質地與氣味的觸碰之中，重新感受土地的溫度與節奏'
   },
+  '牛仔布': {
+    intro: '紡織業的記憶裡，藏著我們都穿過的日子。',
+    sdgs: ['SDG 12 責任消費', 'SDG 13 氣候行動'],
+    cycle_ctx:     '那些被穿過、被淘汰的牛仔褲，在裁切與縫合之間，回到材料循環之中。',
+    sdgs_ctx:      '從紡織廢棄物出發，連結責任消費與減少紡織業污染',
+    education_ctx: '在布料的縫線與磨白之中，重新認識被忽略的紡織生命週期'
+  },
   '其他': {
     intro: '每一份被忽略的資源，都值得一次被重新看見的機會。',
     sdgs: ['SDG 12 責任消費'],
@@ -1594,23 +1616,23 @@ function formatNTD(n) {
    完整 17 個都已備齊，未來新增材料 ESG 只要改 ESG_LIB 的 sdgs 陣列即可。
    ========================================= */
 const SDG_ICONS = {
-  1:  '/wishlite-proposals/assets/sdg/sdg-1.png',   // 終結貧窮
-  2:  '/wishlite-proposals/assets/sdg/sdg-2.png',   // 消除飢餓
-  3:  '/wishlite-proposals/assets/sdg/sdg-3.png',   // 健康與福祉
-  4:  '/wishlite-proposals/assets/sdg/sdg-4.png',   // 優質教育
-  5:  '/wishlite-proposals/assets/sdg/sdg-5.png',   // 性別平權
-  6:  '/wishlite-proposals/assets/sdg/sdg-6.png',   // 淨水及衛生
-  7:  '/wishlite-proposals/assets/sdg/sdg-7.png',   // 可負擔的潔淨能源
-  8:  '/wishlite-proposals/assets/sdg/sdg-8.png',   // 合適的工作及經濟成長
-  9:  '/wishlite-proposals/assets/sdg/sdg-9.png',   // 工業化、創新及基礎建設
-  10: '/wishlite-proposals/assets/sdg/sdg-10.png',  // 減少不平等
-  11: '/wishlite-proposals/assets/sdg/sdg-11.png',  // 永續城鄉
-  12: '/wishlite-proposals/assets/sdg/sdg-12.png',  // 責任消費及生產
-  13: '/wishlite-proposals/assets/sdg/sdg-13.png',  // 氣候行動
-  14: '/wishlite-proposals/assets/sdg/sdg-14.png',  // 保育海洋生態
-  15: '/wishlite-proposals/assets/sdg/sdg-15.png',  // 保育陸域生態
-  16: '/wishlite-proposals/assets/sdg/sdg-16.png',  // 和平、正義及健全制度
-  17: '/wishlite-proposals/assets/sdg/sdg-17.png'   // 多元夥伴關係
+  1:  'assets/sdg/sdg-1.png',   // 終結貧窮
+  2:  'assets/sdg/sdg-2.png',   // 消除飢餓
+  3:  'assets/sdg/sdg-3.png',   // 健康與福祉
+  4:  'assets/sdg/sdg-4.png',   // 優質教育
+  5:  'assets/sdg/sdg-5.png',   // 性別平權
+  6:  'assets/sdg/sdg-6.png',   // 淨水及衛生
+  7:  'assets/sdg/sdg-7.png',   // 可負擔的潔淨能源
+  8:  'assets/sdg/sdg-8.png',   // 合適的工作及經濟成長
+  9:  'assets/sdg/sdg-9.png',   // 工業化、創新及基礎建設
+  10: 'assets/sdg/sdg-10.png',  // 減少不平等
+  11: 'assets/sdg/sdg-11.png',  // 永續城鄉
+  12: 'assets/sdg/sdg-12.png',  // 責任消費及生產
+  13: 'assets/sdg/sdg-13.png',  // 氣候行動
+  14: 'assets/sdg/sdg-14.png',  // 保育海洋生態
+  15: 'assets/sdg/sdg-15.png',  // 保育陸域生態
+  16: 'assets/sdg/sdg-16.png',  // 和平、正義及健全制度
+  17: 'assets/sdg/sdg-17.png'   // 多元夥伴關係
 };
 
 // 新版：只輸出純圖標（橫排並列用），中文併進下方敘述
@@ -2098,17 +2120,42 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <!-- 🆕 JSON 注入區（n8n / Claude 寫入處） -->
 <script id="proposalData" type="application/json">
-__PROPOSAL_JSON__
-</script>
-
-
-<script>
-(function(){
-  var d = document.getElementById('proposalData');
-  if (d && d.textContent.trim() && d.textContent.trim() !== '{}') {
-    document.body.classList.add('client-view');
-  }
-})();
+{
+  "meta": {
+    "template": "A",
+    "material": "咖啡渣",
+    "scene": "ESG體驗活動",
+    "tone": "warm"
+  },
+  "cover": {
+    "client": "遠雄建設",
+    "activity": "永續材料體驗工作坊",
+    "category": "提案",
+    "tagline": "讓材料被重新看見，讓行動成為日常的一部分。",
+    "date": "2026-05-15",
+    "headcount": 60
+  },
+  "context": {
+    "purpose": "team",
+    "audience": "employees",
+    "work_type": "擴香石",
+    "focus": "ESG 報告素材、員工關懷、客戶禮品延伸",
+    "depth": "medium",
+    "customization": "light",
+    "plan": "本場結合 LOGO 浮雕擴香石體驗，現場提供三款精油香氣選擇（森林、海洋、柑橘），作品可帶回辦公室或作為員工關懷贈品。"
+  },
+  "quote": {
+    "item_name": "永續體驗 DIY 工作坊",
+    "item_desc": "含咖啡渣材料、講師教學、LOGO 浮雕、三款精油",
+    "unit_price": 780,
+    "total": 46800,
+    "tax": "untaxed",
+    "custom_extra": "estimated",
+    "transport_extra": "included",
+    "notes": "付款條件：簽約 50% / 活動後 50%\n交期：活動前 7 天確認客製 LOGO 檔案"
+  },
+  "memo": "建議搭配內部永續週活動，可延伸為 ESG 報告素材。"
+}
 </script>
 
 </body>
