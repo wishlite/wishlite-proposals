@@ -874,6 +874,74 @@
   .quote-table tr.recommended-row td:first-child { border-left: 3px solid var(--moss); padding-left: 10px; }
   .quote-table .tier-item { font-size: 12.5px; color: var(--ink); font-weight: 500; display: inline-block; margin-top: 2px; }
   .quote-table tbody tr td { padding-top: 14px; padding-bottom: 14px; vertical-align: middle; }
+
+  /* ===== v0.8 決策型升級 ===== */
+  /* 封面決策價值句 — 霧綠、細字、放在 tagline 下方 */
+  .cover-decision-value {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 400;
+    font-size: 14.5px;
+    line-height: 1.85;
+    color: var(--fog);
+    max-width: 520px;
+    letter-spacing: 0.5px;
+    margin-top: -22px;
+    margin-bottom: 40px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(125, 143, 114, 0.25);
+  }
+  .cover-decision-value:empty { display: none; }
+
+  /* Narrative 三段（YOU / I / U） */
+  .narrative-pain,
+  .narrative-impact {
+    font-size: 15.5px;
+    line-height: 1.95;
+    color: var(--ink);
+    margin: 18px 0;
+    white-space: pre-wrap;
+    padding-left: 14px;
+    border-left: 2px solid var(--sage);
+  }
+  .narrative-pain { border-left-color: var(--earth); color: var(--ink-warm); }
+  .narrative-impact { border-left-color: var(--moss); }
+  .narrative-pain:empty, .narrative-impact:empty { display: none; }
+
+  /* 流程：企業價值轉譯小標 */
+  .flow-business-value {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--moss);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  .flow-business-value::before { content: "企業價值："; color: var(--ink-weak); font-weight: 400; }
+
+  /* ESG 卡：報告素材提示 */
+  .esg-report-hint {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(61,90,62,0.22);
+    font-size: 12px;
+    color: var(--moss-dark);
+    line-height: 1.7;
+    letter-spacing: 0.3px;
+  }
+  .esg-report-hint::before { content: "📊 "; }
+
+  /* 首選方案下方 adoption_note caption 列 */
+  .quote-table tr.adoption-note-row td {
+    background: rgba(196,154,60,0.08);
+    border-top: none;
+    padding-top: 8px;
+    padding-bottom: 14px;
+    font-size: 12px;
+    color: var(--moss-dark);
+    font-style: italic;
+    letter-spacing: 0.4px;
+    text-align: left;
+  }
+  .quote-table tr.adoption-note-row td::before { content: "✨ 顧問建議："; font-style: normal; color: var(--gold); font-weight: 500; margin-right: 4px; }
 </style>
 </head>
 <body>
@@ -883,7 +951,7 @@
   <!-- ============ 左側：輸入表單 ============ -->
   <aside class="form-panel">
     <h1>Wishlite Template Engine</h1>
-    <div class="subtitle">MODULE A · v6.5 DUAL-MODE STABLE</div>
+    <div class="subtitle">MODULE A · v0.8 DECISION-DRIVEN</div>
 
     <div class="section-label">基本資訊</div>
 
@@ -1136,6 +1204,7 @@
           <div class="cover-en-tagline">Growing Deep. Giving True.</div>
 
           <div class="cover-slogan" id="p-tagline">讓材料被重新看見，讓行動成為日常的一部分。</div>
+          <div class="cover-decision-value" id="p-decision-value"></div>
 
           <div class="cover-client-line">
             <span class="cover-client-label">提案對象</span>
@@ -1156,7 +1225,9 @@
         <div class="section-tag">NARRATIVE</div>
         <h2 class="section-title">關於這場活動</h2>
         <div class="divider"></div>
+        <div class="narrative-pain" id="p-narrative-pain"></div>
         <div class="narrative" id="p-narrative"></div>
+        <div class="narrative-impact" id="p-narrative-impact"></div>
         <div class="narrative-plan" id="p-narrative-plan" style="display:none;"></div>
       </div>
 
@@ -1892,6 +1963,14 @@ function render() {
     buildClosing({ purpose: purpose || (isGift ? 'gift' : ''), focus, customization })
   ].filter(Boolean);
   $('p-narrative').textContent = narrativeSegments.join('\n\n');
+  // v0.8: YOU（pain）/ U（impact）三段式
+  const painEl = $('p-narrative-pain');
+  const impactEl = $('p-narrative-impact');
+  if (painEl) painEl.textContent = window.__WL_NARRATIVE_PAIN__ || '';
+  if (impactEl) impactEl.textContent = window.__WL_NARRATIVE_IMPACT__ || '';
+  // v0.8: 封面決策價值句
+  const dvEl = $('p-decision-value');
+  if (dvEl) dvEl.textContent = window.__WL_DECISION_VALUE__ || '';
   const planEl = $('p-narrative-plan');
   if (plan) {
     planEl.style.display = '';
@@ -1916,13 +1995,20 @@ function render() {
       ? '從需求確認到交付完成，\n透過清晰的客製流程，讓企業送禮更安心。'
       : '';
   }
-  $('p-flow').innerHTML = flow.map(item => `
+  // v0.8: 每階段加「企業價值轉譯」一行，優先吃 flow_business_values，否則用 mode 預設
+  const flowBizValues = window.__WL_FLOW_BIZ_VALUES__ || [];
+  const defaultBizValues = (proposalMode === 'gift')
+    ? ['建立需求共識', '轉化為品牌記憶', '延伸企業敘事素材']
+    : ['建立 ESG 認知與共識', '轉化為個人參與體驗', '形成內部溝通素材'];
+  $('p-flow').innerHTML = flow.map((item, i) => {
+    const bizVal = flowBizValues[i] || defaultBizValues[i] || '';
+    return `
     <div class="flow-item">
       <div class="flow-stage">${item.stage}</div>
-      <div class="flow-content"><strong>${item.title}</strong>${item.desc}</div>
+      <div class="flow-content"><strong>${item.title}</strong>${item.desc}${bizVal ? `<div class="flow-business-value">${bizVal}</div>` : ''}</div>
       <div class="flow-duration">${item.dur || ''}</div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
   // ─── ④ ESG 價值 ─── v6.2 雙層結構 + v6.4 mode 分流
   const esg = ESG_LIB[material] || ESG_LIB['其他'];
@@ -1934,22 +2020,35 @@ function render() {
   const sdgLabels     = esg.sdgs.join('、');
   const sdgsDescText  = `${T.sdgs.head}\n對應 ${sdgLabels}，\n${esg.sdgs_ctx}，\n${T.sdgs.tail}`;
   const educationText = `${T.education.head}\n${esg.education_ctx}；\n${T.education.tail}`;
+  // v0.8: ESG 報告素材提示（每卡底部），優先吃 esg_report_hints，否則用預設
+  const esgHints = window.__WL_ESG_REPORT_HINTS__ || [];
+  const defaultEsgHints = [
+    '可作為企業 ESG / CSR 報告素材：材料循環案例',
+    '可作為企業 ESG / CSR 報告素材：SDGs 對應章節',
+    '可作為企業 ESG / CSR 報告素材：員工參與佐證'
+  ];
+  const hint0 = esgHints[0] || defaultEsgHints[0];
+  const hint1 = esgHints[1] || defaultEsgHints[1];
+  const hint2 = esgHints[2] || defaultEsgHints[2];
   $('p-esg').innerHTML = `
     <div class="esg-card">
       <div class="esg-icon">◐</div>
       <h4>材料循環</h4>
       <p class="esg-card-body">${cycleText}</p>
+      <div class="esg-report-hint">${hint0}</div>
     </div>
     <div class="esg-card">
       <div class="esg-icon">◎</div>
       <h4>SDGs 對應</h4>
       <div class="sdg-icons-row">${esg.sdgs.map(renderSDGIcon).join('')}</div>
       <p class="esg-card-body">${sdgsDescText}</p>
+      <div class="esg-report-hint">${hint1}</div>
     </div>
     <div class="esg-card">
       <div class="esg-icon">◑</div>
       <h4>教育與體驗</h4>
       <p class="esg-card-body">${educationText}</p>
+      <div class="esg-report-hint">${hint2}</div>
     </div>
   `;
 
@@ -2017,13 +2116,19 @@ function render() {
       const sub = (o.total != null && o.total !== '') ? formatNTD(o.total) : '—';
       const recClass = o.recommended ? ' class="recommended-row"' : '';
       const tierMark = o.recommended ? '⭐ ' : '';
-      return '<tr' + recClass + '>' +
+      const mainRow = '<tr' + recClass + '>' +
         '<td>' + tierMark + '<strong>' + (o.tier_label || '') + '</strong><br><span class="tier-item">' + (o.item_name || '') + '</span></td>' +
         '<td>' + (o.item_desc || '') + '</td>' +
         '<td class="num">' + qty + ' ' + unitLabel + '</td>' +
         '<td class="num">' + price + '</td>' +
         '<td class="num">' + sub + '</td>' +
         '</tr>';
+      // v0.8: 首選方案下方 adoption_note caption 列
+      const note = (o.recommended && o.adoption_note) ? o.adoption_note : '';
+      const noteRow = note
+        ? '<tr class="adoption-note-row"><td colspan="5">' + note + '</td></tr>'
+        : '';
+      return mainRow + noteRow;
     }).join('');
     // 總計顯示「推薦方案」的 total
     const rec = opts.find(o => o.recommended) || opts[1] || opts[0];
@@ -2138,6 +2243,13 @@ function applyJsonToForm(data) {
   } else {
     window.__WL_QUOTE_OPTIONS__ = null;
   }
+
+  // v0.8: 決策型欄位
+  window.__WL_DECISION_VALUE__   = (data.cover && data.cover.decision_value) || '';
+  window.__WL_NARRATIVE_PAIN__   = (data.context && data.context.pain_points) || '';
+  window.__WL_NARRATIVE_IMPACT__ = (data.context && data.context.impact) || '';
+  window.__WL_FLOW_BIZ_VALUES__  = Array.isArray(data.flow_business_values) ? data.flow_business_values : null;
+  window.__WL_ESG_REPORT_HINTS__ = Array.isArray(data.esg_report_hints) ? data.esg_report_hints : null;
 
   return true;
 }
