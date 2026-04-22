@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ESG 永續體驗活動｜Wishlite 韻手作</title>
+<meta name="description" content="用雙手，把永續變成可以被記住的行動。填寫需求，我們幫你整理最適合的方案。" />
+<style>
+  :root{
+    --bg:#F5F2EA; --ink:#2F2A24; --sub:#7A6F61;
+    --brown:#A67C52; --green:#7D8F72; --line:#E6E0D2; --card:#FDFBF5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);
+    font-family:"PingFang TC","Noto Serif TC","Noto Sans TC",serif;
+    -webkit-font-smoothing:antialiased;line-height:1.7}
+  .wrap{max-width:720px;margin:0 auto;padding:56px 24px 80px}
+  .hero{text-align:center;margin-bottom:40px}
+  .hero .kicker{font-size:13px;letter-spacing:3px;color:var(--brown);
+    text-transform:uppercase;margin-bottom:16px;font-weight:500}
+  .hero h1{font-size:30px;font-weight:600;line-height:1.4;margin-bottom:12px;letter-spacing:1px}
+  .hero p{font-size:15px;color:var(--sub);line-height:1.9}
+  .divider{width:48px;height:1px;background:var(--brown);margin:28px auto}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:4px;
+    padding:36px 28px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .field{margin-bottom:24px}
+  .field label{display:block;font-size:14px;font-weight:500;margin-bottom:8px;color:var(--ink)}
+  .field .hint{font-size:12px;color:var(--sub);margin-bottom:8px;display:block}
+  .req{color:#B4543A;margin-left:3px}
+
+  input[type=text],input[type=email],input[type=tel],input[type=date],
+  input[type=number],select,textarea{
+    width:100%;padding:12px 14px;border:1px solid var(--line);
+    background:#fff;border-radius:3px;font-size:15px;color:var(--ink);
+    font-family:inherit;transition:border-color .15s}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brown)}
+  textarea{resize:vertical;min-height:90px;line-height:1.7}
+
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts.one{grid-template-columns:1fr}
+  .opt{display:flex;align-items:flex-start;padding:12px 14px;
+    background:#fff;border:1px solid var(--line);border-radius:3px;
+    cursor:pointer;transition:all .15s;font-size:14.5px}
+  .opt:hover{border-color:var(--brown)}
+  .opt input{margin-right:10px;margin-top:3px;accent-color:var(--brown)}
+  .opt.active{background:#FAF6EA;border-color:var(--brown)}
+
+  .btn{width:100%;padding:16px;background:var(--brown);color:#fff;
+    border:none;border-radius:3px;font-size:16px;letter-spacing:2px;
+    font-family:inherit;cursor:pointer;transition:background .2s;margin-top:12px}
+  .btn:hover{background:#8F683D}
+  .btn:disabled{background:#C9B89A;cursor:not-allowed}
+
+  .ok,.err{margin-top:20px;padding:18px;border-radius:3px;
+    font-size:14.5px;line-height:1.8;display:none}
+  .ok{background:#EFF2EC;border-left:3px solid var(--green);color:#3E4938}
+  .err{background:#FBEFE9;border-left:3px solid #B4543A;color:#6B3420}
+
+  .footer-note{text-align:center;margin-top:32px;font-size:12.5px;color:var(--sub)}
+  .footer-brand{text-align:center;margin-top:48px;padding-top:24px;
+    border-top:1px solid var(--line);color:var(--sub);font-size:12px;letter-spacing:2px}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 60px}
+    .hero h1{font-size:24px}
+    .card{padding:28px 20px}
+    .opts{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="kicker">ESG · Sustainable Experience</div>
+    <h1>ESG 永續體驗活動</h1>
+    <div class="divider"></div>
+    <p>讓材料被重新看見，<br/>讓永續變成可以被記住的行動。<br/>
+       不用先想很完整，我們會依你的需求整理方向。</p>
+  </div>
+
+  <form class="card" id="form" novalidate>
+    <div class="field">
+      <label>公司 / 組織名稱<span class="req">*</span></label>
+      <input type="text" name="company" required placeholder="例：○○ 股份有限公司" />
+    </div>
+
+    <div class="field">
+      <label>聯絡人姓名<span class="req">*</span></label>
+      <input type="text" name="contact_name" required />
+    </div>
+
+    <div class="field">
+      <label>Email<span class="req">*</span></label>
+      <input type="email" name="email" required placeholder="we@company.com" />
+    </div>
+
+    <div class="field">
+      <label>電話</label>
+      <input type="tel" name="phone" placeholder="市話 / 手機皆可" />
+    </div>
+
+    <div class="field">
+      <label>LINE ID（方便後續聯繫）</label>
+      <input type="text" name="lineId" />
+    </div>
+
+    <div class="field">
+      <label>合作類型<span class="req">*</span></label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="cooperation_type_code" value="esg-activity" required /><span>ESG 體驗活動</span></label>
+        <label class="opt"><input type="radio" name="cooperation_type_code" value="gift" /><span>永續禮品</span></label>
+        <label class="opt"><input type="radio" name="cooperation_type_code" value="both" /><span>活動＋禮品</span></label>
+        <label class="opt"><input type="radio" name="cooperation_type_code" value="other" /><span>其他 / 想先了解</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>預計人數<span class="req">*</span></label>
+      <input type="number" name="headcount" required min="1" placeholder="例：50" />
+    </div>
+
+    <div class="field">
+      <label>預計活動日期</label>
+      <input type="date" name="event_date" />
+    </div>
+
+    <div class="field">
+      <label>活動地點</label>
+      <input type="text" name="event_location" placeholder="例：台北市內湖區辦公室 / 尚未確定" />
+    </div>
+
+    <div class="field">
+      <label>偏好合作形式</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="cooperation_type" value="onsite" /><span>到府服務</span></label>
+        <label class="opt"><input type="radio" name="cooperation_type" value="venue" /><span>指定場地</span></label>
+        <label class="opt"><input type="radio" name="cooperation_type" value="online" /><span>線上活動</span></label>
+        <label class="opt"><input type="radio" name="cooperation_type" value="tbd" /><span>尚未確定</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>預算範圍</label>
+      <div class="opts one">
+        <label class="opt"><input type="radio" name="budget" value="under10k" /><span>NT$ 1 萬以下</span></label>
+        <label class="opt"><input type="radio" name="budget" value="10k-30k" /><span>NT$ 1–3 萬</span></label>
+        <label class="opt"><input type="radio" name="budget" value="30k-50k" /><span>NT$ 3–5 萬</span></label>
+        <label class="opt"><input type="radio" name="budget" value="50k-100k" /><span>NT$ 5–10 萬</span></label>
+        <label class="opt"><input type="radio" name="budget" value="over100k" /><span>NT$ 10 萬以上</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>ESG 關注主題（可複選）</label>
+      <span class="hint">我們會依此搭配最貼近你的材料與敘事</span>
+      <div class="opts">
+        <label class="opt"><input type="checkbox" name="esg_focus" value="循環材料" /><span>循環材料</span></label>
+        <label class="opt"><input type="checkbox" name="esg_focus" value="海洋廢棄物" /><span>海洋廢棄物</span></label>
+        <label class="opt"><input type="checkbox" name="esg_focus" value="咖啡渣再生" /><span>咖啡渣再生</span></label>
+        <label class="opt"><input type="checkbox" name="esg_focus" value="員工凝聚" /><span>員工凝聚</span></label>
+        <label class="opt"><input type="checkbox" name="esg_focus" value="親子共融" /><span>親子共融</span></label>
+        <label class="opt"><input type="checkbox" name="esg_focus" value="其他" /><span>其他 / 想先了解</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>想達成的目的 / 其他需求</label>
+      <textarea name="description" placeholder="例：想讓同仁實際觸碰永續材料，活動後留下一份可以帶走的作品⋯⋯（不用一次寫完整）"></textarea>
+    </div>
+
+    <div class="field">
+      <label>是否需要活動紀錄 / 成果文件？</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="esg_report" value="yes" /><span>需要</span></label>
+        <label class="opt"><input type="radio" name="esg_report" value="no" /><span>不需要</span></label>
+        <label class="opt"><input type="radio" name="esg_report" value="maybe" /><span>想先了解</span></label>
+      </div>
+    </div>
+
+    <input type="hidden" name="service_type" value="esg-activity" />
+    <input type="hidden" name="form_source" value="line" />
+    <input type="hidden" name="source" value="LINE OA" />
+
+    <button type="submit" class="btn" id="btn">送出需求</button>
+
+    <div class="ok" id="ok">
+      🌿 已收到你的需求。<br/>
+      我們會依填寫內容整理最適合的方向，透過 Email 與你聯繫。<br/>
+      期待和你一起，把永續變成可以被實踐的日常。
+    </div>
+    <div class="err" id="err">
+      送出失敗，請稍後再試，或直接 LINE 我們：@728zvmqz
+    </div>
+  </form>
+
+  <div class="footer-note">你的資料僅用於本次需求評估，不會對外分享。</div>
+  <div class="footer-brand">WISHLITE · 韻手作永續</div>
+</div>
+
+<script>
+const WEBHOOK = 'https://wishlite-n8n.zeabur.app/webhook/esg-inquiry';
+
+// Radio / checkbox 視覺選中態
+document.querySelectorAll('.opt input').forEach(inp => {
+  const sync = () => {
+    if (inp.type === 'radio') {
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(x =>
+        x.closest('.opt').classList.toggle('active', x.checked));
+    } else {
+      inp.closest('.opt').classList.toggle('active', inp.checked);
+    }
+  };
+  inp.addEventListener('change', sync);
+});
+
+const form = document.getElementById('form');
+const btn = document.getElementById('btn');
+const ok = document.getElementById('ok');
+const err = document.getElementById('err');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  ok.style.display = err.style.display = 'none';
+  btn.disabled = true; btn.textContent = '送出中…';
+
+  const fd = new FormData(form);
+  const data = {};
+  for (const [k, v] of fd.entries()) {
+    if (k === 'esg_focus') (data.esg_focus = data.esg_focus || []).push(v);
+    else data[k] = v;
+  }
+  // cooperation_type_code → service_type override
+  if (data.cooperation_type_code) {
+    data.service_type = data.cooperation_type_code;
+    delete data.cooperation_type_code;
+  }
+
+  try {
+    const r = await fetch(WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    form.style.display = 'none';
+    ok.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (ex) {
+    err.style.display = 'block';
+    btn.disabled = false; btn.textContent = '送出需求';
+  }
+});
+</script>
+</body>
+</html>
