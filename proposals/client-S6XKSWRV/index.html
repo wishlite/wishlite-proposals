@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, initial-scale=1.0">
+<title>Wishlite Module B · AI 模板版 v2.0</title>
+
+<!-- ============================================================
+     Wishlite Module B · AI 模板版 v2.0（變數化重構）
+     對應 Wishlite 品牌視覺規範 v1.0
+     升級重點：snake_case JSON、4 meta 標記、新增 P05/P06/P11
+
+     13 頁固定結構：
+       P01 COVER 封面
+       P02 PILLARS 三大主軸
+       P03 OVERVIEW 方案總覽
+       P04 WHY US 選擇理由
+       P05 CUSTOMIZATION 客製化說明（🆕）
+       P06 EXECUTION 執行方式（🆕，活動/禮品 toggle）
+       P07–P10 PRODUCTS 產品頁（動態 3–8 頁，統一格式）
+       P11 IMPACT ESG 影響力（🆕）
+       P12 CLOSING 收尾金句
+       P13 CONTACT 聯絡（hard-code）
+
+     使用：修改下方 <script id="proposalData"> 的 JSON
+     n8n / Claude API 串接：替換整個 JSON object 即可
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     提案資料（JSON Schema v2.0）— 範例：達永基金會「厚禮系列」
+     所有可變內容皆 snake_case；固定品牌句寫死於 CSS/JS
+     ============================================================ -->
+<script id="proposalData" type="application/json">
+{
+  "meta": {
+    "proposal_type": "禮品",
+    "client_type": "企業",
+    "budget_level": "高",
+    "mode": "厚禮模式",
+    "use_title_brackets": true
+  },
+  "cover": {
+    "year": "2026",
+    "client": "達永基金會",
+    "brand_name": "韻手作永續",
+    "series_label": "年度厚禮主題提案",
+    "proposal_title": "厚｜從土地生長的永續之禮",
+    "proposal_subtitle": "台灣的每一寸土，都用著厚實、韌性、沉穩的方式，承載著人們的生活、文化與盼望。",
+    "highlight": "厚, 是土地, 也是承諾",
+    "date": "2026.04",
+    "background_image": "../../../05-品牌素材與圖片/hero-mountain-warm.jpg"
+  },
+  "pillars": {
+    "title": "三大主軸",
+    "items": [
+      { "num": "01", "color": "#C75A3A", "pillar_title": "厚實", "pillar_subtitle": "來自土地的再生力量",
+        "pillar_description": "選材的厚實源於對環境的厚道。我們關注土地，透過再生材料，讓土地長出的東西回歸土地，象徵土地是我們、我們也回歸土地的循環精神。",
+        "label": "選材方式：PCR 再生塑料、牡蠣殼再生石材、天然植物染、循環棉紗" },
+      { "num": "02", "color": "#7D8F72", "pillar_title": "厚工", "pillar_subtitle": "台灣手工 × 工藝溫度",
+        "pillar_description": "厚工是時間與心力的精煉。每一件作品都帶著職人的專注與祝福，是有溫度的手作製造。情工、手感、紋理、細節，讓每份禮物都留下手作的記憶。",
+        "label": "製作方式：手工雷雕模具、玉山細手石雕琢、手工結繩包款" },
+      { "num": "03", "color": "#A67C52", "pillar_title": "厚禮", "pillar_subtitle": "承諾・誠意・祝福",
+        "pillar_description": "厚禮是達永基金會的深厚情意。這份禮物不只有重量，更有情感的承載，是對收禮者長久的陪伴與祝福。比起客套，更實在地厚待土地、厚待你。",
+        "label": "禮盒方式：層體禮盒與外框、化身品牌字徽、搭配理念敘事手冊" }
+    ]
+  },
+  "overview": {
+    "project_name": "厚禮系列｜五款品項",
+    "overview_summary": "從擴香到禮盒，每一款都承載土地的記憶。",
+    "product_list": [
+      { "no": "01", "name": "海棠花擴香掛片 × 香薰禮盒", "tag": "窗花之香・文化祝福" },
+      { "no": "02", "name": "手感咖啡渣禮盒", "tag": "再生纖維・回甘的時光" },
+      { "no": "03", "name": "牡蠣殼擴香石組", "tag": "海洋循環・在地工藝" },
+      { "no": "04", "name": "稻殼織紋杯墊", "tag": "農作伴生・生活承載" },
+      { "no": "05", "name": "永續植染手帕", "tag": "草木入色・四季之禮" }
+    ]
+  },
+  "why_us": {
+    "title": "為什麼是「厚禮」",
+    "subtitle": "用三個面向，回答企業選擇我們的理由。",
+    "why_material": "全系列採用台灣在地循環材料：PCR 塑料、牡蠣殼、咖啡渣、稻殼。讓禮物本身就是 ESG 行動。",
+    "why_craft": "每一件作品由台灣職人手工製作，保留材料原有紋理與手感，禮盒層次與包裝細節都不打折。",
+    "why_emotion": "從祝福小卡到品牌印記，每份禮物可客製專屬訊息，讓基金會的心意精準被收禮者感受。"
+  },
+  "customization": {
+    "title": "本案將依貴單位需求進行客製",
+    "subtitle": "從識別、敘事到結構，全方位調整為專屬於您的提案。",
+    "items": [
+      { "icon": "01", "label": "品牌識別呈現", "body": "Logo 雷雕、燙金、布標等多種方式，與產品本體自然融合。" },
+      { "icon": "02", "label": "祝福卡與文字設計", "body": "依主題撰寫專屬祝福文案，可印製於卡片、紙標、緞帶。" },
+      { "icon": "03", "label": "禮盒結構與包裝風格", "body": "外盒材質、開盒儀式、內襯層次，依品牌調性量身規劃。" },
+      { "icon": "04", "label": "ESG 主題與敘事調整", "body": "對應貴單位永續主軸，調整故事敘事與材料配比。" }
+    ],
+    "custom_note": "我們相信，禮物的厚度，從理解客戶的那一刻就開始累積。"
+  },
+  "execution": {
+    "execution_mode": "禮品",
+    "title": "執行方式",
+    "subtitle": "從提案確認到交付，每一步都有明確的時間與品質控管。",
+    "steps_event": [
+      { "no": "01", "label": "永續議題導入", "duration": "15–20 分鐘", "body": "由講師帶入主題情境，從材料的前世今生切入。" },
+      { "no": "02", "label": "材料故事與示範", "duration": "15 分鐘", "body": "現場展示原料、轉化過程、成品差異。" },
+      { "no": "03", "label": "手作體驗", "duration": "60 分鐘", "body": "每位參與者親手完成一件作品，講師全程協助。" },
+      { "no": "04", "label": "成果分享與收束", "duration": "15 分鐘", "body": "作品分享、永續行動回顧、帶走作品與紀念卡。" }
+    ],
+    "steps_gift": [
+      { "no": "01", "label": "需求確認", "duration": "1–2 工作日", "body": "確認數量、預算、Logo 客製、交期。" },
+      { "no": "02", "label": "打樣與確認", "duration": "5–7 工作日", "body": "提供實體打樣與細節確認，確保品質一致。" },
+      { "no": "03", "label": "量產與品檢", "duration": "10–14 工作日", "body": "職人手作 + 雙重品檢，每件都符合禮品標準。" },
+      { "no": "04", "label": "包裝與出貨", "duration": "3–5 工作日", "body": "依指定地點配送，含開箱說明與感謝卡。" }
+    ],
+    "execution_note": "如需調整流程順序或加入企業專屬環節，可於前期會議溝通。"
+  },
+  "products": [
+    {
+      "no": "01",
+      "product_name": "海棠花擴香掛片 × 香薰禮盒",
+      "product_tagline": "窗花之香，文化祝福",
+      "image": "../../../05-品牌素材與圖片/material_06_natural.jpg",
+      "product_culture": "海棠花象徵團圓 × 平安 × 美好祝願，是台灣老房子窗花紋樣中最常見的圖案之一。我們將這份文化符號轉化為可隨身攜帶的擴香掛片，讓祝福隨風而至，成為日常生活中的溫柔陪伴。",
+      "product_esg": "採用工業副產物 FGD 環保石膏與牡蠣殼粉製作，減少工業與海洋廢棄物。搭配天然複方香氛，對人體與環境無害。包裝使用木皮紙盒與紙繩，可完全回收、低碳。擴香掛片可重覆使用，非一次性消耗品。",
+      "product_sdgs": ["SDG 12 責任生產", "SDG 14 海洋保護", "SDG 11 文化保存"]
+    },
+    {
+      "no": "02",
+      "product_name": "手感咖啡渣禮盒",
+      "product_tagline": "再生纖維・回甘的時光",
+      "image": "../../../05-品牌素材與圖片/material_01_coffee.jpg",
+      "product_culture": "台灣每年丟棄超過 12 萬噸咖啡渣。我們將它重新塑形成有溫度的器皿，把日常的廢棄轉化為開始，讓喝咖啡這件事多了一層永續的儀式感。",
+      "product_esg": "100% 回收咖啡渣 + 食品級樹脂，無毒可降解。手工沖壓成型，每一件都有獨特紋理。禮盒使用 FSC 認證紙材，內襯為再生紙絨。",
+      "product_sdgs": ["SDG 12 責任生產", "SDG 13 氣候行動", "SDG 17 夥伴關係"]
+    },
+    {
+      "no": "03",
+      "product_name": "牡蠣殼擴香石組",
+      "product_tagline": "海洋循環・在地工藝",
+      "image": "../../../05-品牌素材與圖片/material_05_fabric.jpg",
+      "product_culture": "嘉義東石、彰化王功的牡蠣殼長期是海岸環境的負擔。我們與當地養殖戶合作回收，將牡蠣殼磨粉後與 FGD 環保石膏結合，做成有海風氣息的擴香石。每一件都帶著海浪的溫度。",
+      "product_esg": "在地循環經濟典範：回收牡蠣殼 → 廢棄物轉資源 → 帶回家庭使用。減少海岸污染，創造養殖戶額外收入。可重複滴香使用 1 年以上。",
+      "product_sdgs": ["SDG 14 海洋保護", "SDG 11 永續城鄉", "SDG 8 經濟成長"]
+    },
+    {
+      "no": "04",
+      "product_name": "稻殼織紋杯墊",
+      "product_tagline": "農作伴生・生活承載",
+      "image": "../../../05-品牌素材與圖片/material_02_natural.jpg",
+      "product_culture": "稻米是台灣的根。每一公噸稻穀產出約 200 公斤稻殼，過去多半就地焚燒。我們將它編織為杯墊，讓農作的副產品回到日常餐桌，也讓稻香被重新看見。",
+      "product_esg": "100% 在地稻殼纖維 + 天然植物膠合劑，可堆肥分解。與彰化農會合作收料，建立穩定循環鏈。每片杯墊都減少 0.3 kg 焚燒碳排。",
+      "product_sdgs": ["SDG 12 責任生產", "SDG 15 陸域生態", "SDG 17 夥伴關係"]
+    }
+  ],
+  "impact": {
+    "title": "本提案可提供的永續成果",
+    "subtitle": "讓 ESG 不只是議題，而是可量化、可呈現的具體貢獻。",
+    "metrics": [
+      { "label": "材料轉化量", "value": "12.5", "unit": "kg", "note": "每 100 份禮品估算" },
+      { "label": "減碳效益", "value": "8.4", "unit": "kg CO₂e", "note": "對比一般禮品" },
+      { "label": "預估參與人數", "value": "100+", "unit": "人", "note": "依專案規模調整" },
+      { "label": "ESG 結案報告", "value": "選配", "unit": "", "note": "含影像、敘事、量化數據" }
+    ],
+    "impact_statement": "我們相信，永續不是口號，而是每一份禮物背後可被驗證、可被分享的真實行動。"
+  },
+  "closing": {
+    "headline": "我們相信",
+    "closing_paragraph": "當一份禮物能被帶回日常，永續才真正開始發生。\n當收禮者每天看到、用到、想起，這份心意就不只是禮物，而是長期的陪伴。",
+    "brand_slogan": "厚, 是土地, 也是承諾。"
+  }
+}
+</script>
+
+<style>
+  :root {
+    --paper:        #F5F2EA;
+    --paper-warm:   #EAE7E2;
+    --ink:          #5C4830;
+    --ink-soft:     #A67C52;
+    --ink-mute:     rgba(92, 72, 48, 0.55);
+    --sage:         #7D8F72;
+    --accent:       #A67C52;
+    --terra:        #C75A3A;
+    --golden:       #C8A058;
+    --line:         rgba(92, 72, 48, 0.15);
+    --bg-veil-left:    0.62;
+    --bg-veil-mid-l:   0.42;
+    --bg-veil-mid-r:   0.18;
+    --bg-veil-right:   0.05;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: #d8d4c7;
+    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== 共用：1920×1080 畫布 ===== */
+  .page {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    background: var(--paper);
+    overflow: hidden;
+    margin: 0 auto 24px;
+  }
+  .page__paper-texture {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.65  0 0 0 0 0.49  0 0 0 0 0.32  0 0 0 0.10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.18; mix-blend-mode: multiply; pointer-events: none; z-index: 1;
+  }
+  .page__inner {
+    position: relative; z-index: 2;
+    width: 100%; height: 100%;
+    padding: 56px 64px;
+    display: grid; grid-template-rows: 80px 1fr 80px; row-gap: 32px;
+  }
+
+  /* Typography Wordmark */
+  .topbar__wordmark { display: flex; flex-direction: column; line-height: 1; }
+  .topbar__wordmark .en {
+    font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 32px;
+    color: var(--ink-soft); letter-spacing: 0.5px;
+  }
+  .topbar__wordmark .zh {
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 400; font-size: 11px;
+    color: var(--ink-mute); letter-spacing: 5px; margin-top: 4px;
+  }
+
+  /* 上方帶 */
+  .topbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 24px; }
+  .topbar__brand { display: flex; align-items: center; gap: 24px; }
+  .topbar__divider { width: 1px; height: 40px; background: var(--line); }
+  .topbar__tagline {
+    font-family: 'Playfair Display', 'Noto Serif TC', serif;
+    font-style: italic; font-weight: 400; font-size: 22px;
+    color: var(--ink-soft); letter-spacing: 0.6px; opacity: 0.85;
+  }
+  .topbar__pageno {
+    font-family: 'Playfair Display', 'Noto Sans TC', serif;
+    font-style: italic; font-weight: 500; font-size: 18px;
+    color: var(--sage); letter-spacing: 2px;
+  }
+  .topbar__pageno .section-label { color: var(--ink-mute); margin-left: 12px; font-size: 14px; }
+
+  /* footer */
+  .footer { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--line); padding-top: 14px; }
+  .footer__page-name {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 14px; color: var(--ink-mute); letter-spacing: 2px;
+  }
+  .footer__line {
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 500; font-size: 14px;
+    color: var(--ink); letter-spacing: 3px; opacity: 0.85;
+  }
+  .footer__line .dot { color: var(--accent); opacity: 0.55; font-weight: 400; }
+
+  /* ===== meta-badge：右上分類標籤（debug 用，可隱藏）===== */
+  .meta-badge {
+    position: absolute; top: 14px; right: 14px; z-index: 5;
+    display: flex; gap: 4px;
+    font-family: 'Noto Sans TC', sans-serif; font-size: 10px; letter-spacing: 1px;
+  }
+  .meta-badge span {
+    background: rgba(92, 72, 48, 0.08); color: var(--ink-mute);
+    padding: 3px 8px; border-radius: 10px;
+  }
+
+  /* ===== P01 封面 ===== */
+  .page--cover .page__inner { padding: 56px 64px; display: flex; flex-direction: column; }
+  .cover__bg { position: absolute; inset: 0; background-size: cover; background-position: center; background-repeat: no-repeat; }
+  .cover__overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(95deg,
+      rgba(245, 242, 234, var(--bg-veil-left)) 0%,
+      rgba(245, 242, 234, var(--bg-veil-mid-l)) 32%,
+      rgba(245, 242, 234, var(--bg-veil-mid-r)) 68%,
+      rgba(245, 242, 234, var(--bg-veil-right)) 100%);
+  }
+  .cover__topbar { position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 24px; flex-shrink: 0; }
+  .cover__date { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 22px; color: var(--sage); letter-spacing: 1.5px; }
+  .cover__main { position: relative; z-index: 3; flex: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 80px; max-width: 1500px; }
+  .cover__eyebrow-line { font-family: 'Noto Sans TC', sans-serif; font-weight: 500; font-size: 22px; color: var(--ink-soft); letter-spacing: 6px; margin-bottom: 14px; }
+  .cover__series-label { font-family: 'Noto Serif TC', serif; font-weight: 600; font-size: 36px; color: var(--ink); letter-spacing: 2px; margin-bottom: 32px; }
+  .cover__title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 76px; line-height: 1.20; letter-spacing: 1.8px; color: var(--ink); margin-bottom: 30px; white-space: nowrap; word-break: keep-all; }
+  .cover__tagline-en { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; font-size: 24px; color: var(--ink-soft); letter-spacing: 1px; margin-bottom: 36px; }
+  .cover__highlight-block { border-left: 3px solid var(--terra); padding-left: 24px; max-width: 900px; }
+  .cover__highlight { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 22px; color: var(--terra); letter-spacing: 2px; margin-bottom: 14px; }
+  .cover__subtitle { font-family: 'Noto Sans TC', sans-serif; font-weight: 400; font-size: 18px; line-height: 1.85; color: var(--ink); opacity: 0.78; letter-spacing: 0.6px; }
+  .cover__footer { position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--line); padding-top: 14px; flex-shrink: 0; margin-top: 32px; }
+
+  /* ===== P02 三大主軸 ===== */
+  .page--pillars .page__main { display: flex; flex-direction: column; padding: 0 16px; }
+  .pillars__title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 56px; color: var(--ink); letter-spacing: 1.5px; margin-bottom: 48px; }
+  .pillars__grid { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 56px; align-items: start; }
+  .pillar { display: flex; flex-direction: column; gap: 16px; }
+  .pillar__num-box { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border: 2px solid; border-radius: 4px; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 24px; }
+  .pillar__title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 38px; color: var(--ink); letter-spacing: 2px; margin-top: 8px; }
+  .pillar__subtitle { font-family: 'Noto Sans TC', sans-serif; font-weight: 500; font-size: 18px; color: var(--ink-soft); letter-spacing: 1px; }
+  .pillar__body { font-family: 'Noto Sans TC', sans-serif; font-weight: 400; font-size: 16px; line-height: 1.85; color: var(--ink); opacity: 0.78; letter-spacing: 0.4px; margin-top: 12px; }
+  .pillar__label { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--ink-mute); letter-spacing: 1px; line-height: 1.6; padding-top: 16px; border-top: 1px solid var(--line); margin-top: 20px; }
+
+  /* ===== P03 總覽 ===== */
+  .page--overview .page__main { display: flex; flex-direction: column; padding: 0 16px; }
+  .overview__title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 52px; color: var(--ink); letter-spacing: 1.5px; margin-bottom: 12px; }
+  .overview__subtitle { font-family: 'Noto Sans TC', sans-serif; font-size: 22px; color: var(--ink-soft); letter-spacing: 0.8px; margin-bottom: 52px; }
+  .overview__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; }
+  .overview__item { padding: 28px; background: rgba(255,255,255,0.4); border: 1px solid var(--line); border-radius: 4px; }
+  .overview__item-no { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; color: var(--accent); letter-spacing: 2px; margin-bottom: 10px; }
+  .overview__item-name { font-family: 'Noto Serif TC', serif; font-weight: 600; font-size: 24px; color: var(--ink); letter-spacing: 1px; margin-bottom: 8px; }
+  .overview__item-tag { font-family: 'Noto Sans TC', sans-serif; font-size: 16px; color: var(--ink-soft); letter-spacing: 0.5px; }
+
+  /* ===== P04 WHY US ===== */
+  .page--why .page__main { display: flex; flex-direction: column; padding: 0 16px; }
+  .why__title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 52px; color: var(--ink); letter-spacing: 1.5px; margin-bottom: 12px; }
+  .why__subtitle { font-family: 'Noto Sans TC', sans-serif; font-size: 22px; color: var(--ink-soft); letter-spacing: 0.8px; margin-bottom: 52px; }
+  .why__columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+  .why__col { padding-top: 24px; border-top: 2px solid var(--accent); }
+  .why__icon { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 48px; color: var(--terra); letter-spacing: 2px; margin-bottom: 16px; }
+  .why__col-title { font-family: 'Noto Serif TC', serif; font-weight: 600; font-size: 28px; color: var(--ink); letter-spacing: 1px; margin-bottom: 18px; }
+  .why__col-body { font-family: 'Noto Sans TC', sans-serif; font-size: 18px; line-height: 1.85; color: var(--ink); opacity: 0.78; letter-spacing: 0.4px; }
+
+  /* ===== P05 客製化（v2.1：主次層級） ===== */
+  .page--customization .page__main { display: flex; flex-direction: column; padding: 0 16px; }
+  .cust__title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 48px; color: var(--ink); letter-spacing: 1.5px; margin-bottom: 10px; }
+  .cust__subtitle { font-family: 'Noto Sans TC', sans-serif; font-size: 18px; color: var(--ink-soft); letter-spacing: 0.6px; margin-bottom: 40px; max-width: 880px; line-height: 1.6; }
+
+  /* 主卡：第一項，視覺重量最高 */
+  .cust__primary { display: flex; gap: 32px; padding: 36px 40px; background: linear-gradient(135deg, rgba(125,143,114,0.08) 0%, rgba(255,255,255,0.55) 100%); border-left: 5px solid var(--sage); border-radius: 0 6px 6px 0; margin-bottom: 28px; box-shadow: 0 1px 0 rgba(0,0,0,0.04); }
+  .cust__primary-icon { flex-shrink: 0; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; background: var(--sage); color: white; border-radius: 6px; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 28px; box-shadow: 0 2px 6px rgba(125,143,114,0.28); }
+  .cust__primary-label { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 26px; color: var(--ink); margin-bottom: 10px; letter-spacing: 1px; }
+  .cust__primary-body { font-family: 'Noto Sans TC', sans-serif; font-size: 16px; line-height: 1.8; color: var(--ink); opacity: 0.88; }
+  .cust__primary-flag { display: inline-block; padding: 3px 12px; background: var(--sage); color: white; font-size: 11px; letter-spacing: 2px; border-radius: 12px; margin-bottom: 12px; font-family: 'Noto Sans TC', sans-serif; font-weight: 500; }
+
+  /* 次卡：第 2-4 項，3 欄並排，權重較輕 */
+  .cust__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 48px; }
+  .cust__item { padding: 22px 24px; background: rgba(255,255,255,0.35); border-top: 2px solid var(--line); border-radius: 2px; }
+  .cust__item-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: transparent; color: var(--sage); border: 1.5px solid var(--sage); border-radius: 4px; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 16px; margin-bottom: 14px; }
+  .cust__item-label { font-family: 'Noto Serif TC', serif; font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 6px; letter-spacing: 0.6px; }
+  .cust__item-body { font-family: 'Noto Sans TC', sans-serif; font-size: 13.5px; line-height: 1.7; color: var(--ink); opacity: 0.72; letter-spacing: 0.2px; }
+
+  /* 收尾金句：更輕、更多留白 */
+  .cust__note { font-family: 'Noto Serif TC', serif; font-style: italic; font-weight: 400; font-size: 15px; color: var(--ink-mute); padding: 32px 20px 8px; text-align: center; letter-spacing: 2px; line-height: 1.9; max-width: 680px; margin: 0 auto; position: relative; }
+  .cust__note::before { content: ""; display: block; width: 40px; height: 1px; background: var(--sage); margin: 0 auto 24px; opacity: 0.5; }
+
+  /* ===== P06 執行方式（v2.1：雙模式標頭 + timeline 感） ===== */
+  .page--execution .page__main { display: flex; flex-direction: column; padding: 0 16px; }
+  .exec__title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 48px; color: var(--ink); letter-spacing: 1.5px; margin-bottom: 10px; }
+  .exec__subtitle { font-family: 'Noto Sans TC', sans-serif; font-size: 18px; color: var(--ink-soft); letter-spacing: 0.6px; margin-bottom: 28px; }
+
+  /* 雙模式大標頭（取代舊的 mode-tag） */
+  .exec__mode-header { display: flex; align-items: stretch; background: rgba(255,255,255,0.5); border-radius: 4px; padding: 18px 28px; margin-bottom: 44px; border-left: 5px solid var(--terra); gap: 28px; }
+  .exec__mode-header--event { border-left-color: var(--sage); }
+  .exec__mode-eyebrow { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--ink-mute); letter-spacing: 3px; margin-bottom: 4px; text-transform: uppercase; }
+  .exec__mode-name { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 28px; color: var(--ink); letter-spacing: 2px; }
+  .exec__mode-name span { color: var(--terra); }
+  .exec__mode-header--event .exec__mode-name span { color: var(--sage); }
+  .exec__mode-divider { width: 1px; background: var(--line); }
+  .exec__mode-hint { font-family: 'Noto Sans TC', sans-serif; font-size: 13.5px; color: var(--ink-soft); line-height: 1.65; letter-spacing: 0.3px; flex: 1; align-self: center; }
+
+  /* Timeline 容器 */
+  .exec__timeline { position: relative; margin-bottom: 36px; padding: 0 12px; }
+  .exec__timeline::before { content: ""; position: absolute; top: 48px; left: 40px; right: 40px; height: 1.5px; background: linear-gradient(to right, var(--line) 0%, var(--sage) 50%, var(--line) 100%); z-index: 0; }
+  .page--execution .exec__timeline--gift::before { background: linear-gradient(to right, var(--line), var(--terra) 40%, var(--terra) 60%, var(--line)); }
+  .exec__steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; z-index: 1; }
+
+  /* 步驟卡 */
+  .exec__step { padding: 18px 20px 22px; background: var(--paper); border: 1px solid var(--line); border-radius: 4px; position: relative; }
+  .exec__step-no { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--paper); border: 2px solid var(--sage); border-radius: 50%; font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--sage); font-weight: 500; margin: -36px auto 14px; position: relative; z-index: 2; }
+  .page--execution .exec__timeline--gift .exec__step-no { border-color: var(--terra); color: var(--terra); }
+  .exec__step-label { font-family: 'Noto Serif TC', serif; font-weight: 600; font-size: 18px; color: var(--ink); margin-bottom: 10px; letter-spacing: 0.8px; text-align: center; }
+
+  /* Duration — 加強對比，做成 chip */
+  .exec__step-duration { display: inline-block; font-family: 'Noto Sans TC', sans-serif; font-weight: 500; font-size: 12px; color: var(--terra); background: rgba(192,125,78,0.1); padding: 3px 10px; border-radius: 10px; letter-spacing: 0.8px; margin-bottom: 12px; }
+  .exec__timeline--event .exec__step-duration { color: var(--sage); background: rgba(125,143,114,0.1); }
+
+  .exec__step-body { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; line-height: 1.7; color: var(--ink); opacity: 0.78; letter-spacing: 0.2px; }
+
+  /* 活動模式：節奏變化（交錯上下） */
+  .exec__timeline--event .exec__step:nth-child(even) { margin-top: 22px; }
+
+  .exec__note { font-family: 'Noto Sans TC', sans-serif; font-style: italic; font-size: 13px; color: var(--ink-mute); padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: 0.6px; line-height: 1.7; text-align: center; }
+
+  /* ===== P07–P10 商品頁 ===== */
+  .page--product .page__main { display: grid; grid-template-columns: 800px 1fr; column-gap: 60px; align-items: center; }
+  .product__image { position: relative; height: 100%; max-height: 800px; border-radius: 4px; overflow: hidden; background: var(--paper-warm); }
+  .product__image-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  .product__info { padding-right: 32px; }
+  .product__no { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 18px; color: var(--golden); letter-spacing: 4px; margin-bottom: 14px; }
+  .product__no::before { content: ""; display: inline-block; width: 32px; height: 1.5px; background: var(--golden); margin-right: 14px; vertical-align: middle; }
+  .product__name { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 40px; color: var(--ink); letter-spacing: 1px; line-height: 1.3; margin-bottom: 12px; word-break: keep-all; }
+  .product__subtitle { font-family: 'Noto Sans TC', sans-serif; font-size: 20px; color: var(--ink-soft); letter-spacing: 1.5px; margin-bottom: 28px; }
+  .product__section { margin-bottom: 22px; }
+  .product__section-label { font-family: 'Noto Sans TC', sans-serif; font-weight: 600; font-size: 13px; color: var(--terra); letter-spacing: 4px; margin-bottom: 8px; }
+  .product__section-body { font-family: 'Noto Sans TC', sans-serif; font-size: 15px; line-height: 1.8; color: var(--ink); opacity: 0.82; letter-spacing: 0.4px; }
+  .product__sdgs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .sdg-tag { background: var(--sage); color: white; font-family: 'Noto Sans TC', sans-serif; font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 16px; letter-spacing: 1px; }
+
+  /* ===== P11 ESG 影響力（v2.1：前 3 主指標 + 第 4 附加交付分層） ===== */
+  .page--impact .page__main { display: flex; flex-direction: column; padding: 0 16px; }
+  .impact__title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 48px; color: var(--ink); letter-spacing: 1.5px; margin-bottom: 10px; }
+  .impact__subtitle { font-family: 'Noto Sans TC', sans-serif; font-size: 18px; color: var(--ink-soft); letter-spacing: 0.6px; margin-bottom: 40px; }
+
+  /* 主指標：3 張辨識度更高的卡 */
+  .impact__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 32px; }
+  .impact__metric { padding: 40px 28px 32px; background: var(--paper-warm); border-radius: 6px; text-align: center; border-top: 3px solid var(--sage); box-shadow: 0 1px 0 rgba(0,0,0,0.04); position: relative; }
+  .impact__metric:nth-child(2) { border-top-color: var(--terra); transform: translateY(-8px); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .impact__metric:nth-child(3) { border-top-color: var(--accent, var(--golden)); }
+  .impact__metric-eyebrow { font-family: 'Playfair Display', serif; font-style: italic; font-size: 11px; color: var(--ink-mute); letter-spacing: 3px; margin-bottom: 8px; text-transform: uppercase; }
+  .impact__metric-value { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 60px; color: var(--terra); letter-spacing: 1px; line-height: 1; margin-bottom: 6px; }
+  .impact__metric:nth-child(1) .impact__metric-value { color: var(--sage); }
+  .impact__metric:nth-child(3) .impact__metric-value { color: var(--golden); }
+  .impact__metric-unit { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--ink-soft); letter-spacing: 1px; margin-bottom: 20px; }
+  .impact__metric-label { font-family: 'Noto Serif TC', serif; font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 6px; letter-spacing: 0.8px; }
+  .impact__metric-note { font-family: 'Noto Sans TC', sans-serif; font-size: 12.5px; color: var(--ink-mute); letter-spacing: 0.4px; line-height: 1.6; }
+
+  /* 附加交付區塊：第 4 項，視覺降一階、橫向 */
+  .impact__addon { display: flex; align-items: center; gap: 20px; padding: 18px 28px; background: rgba(255,255,255,0.35); border: 1px dashed var(--line); border-radius: 4px; margin-bottom: 32px; }
+  .impact__addon-flag { flex-shrink: 0; font-family: 'Playfair Display', serif; font-style: italic; font-size: 12px; color: var(--ink-mute); letter-spacing: 2.5px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 12px; text-transform: uppercase; }
+  .impact__addon-label { font-family: 'Noto Serif TC', serif; font-weight: 600; font-size: 16px; color: var(--ink); letter-spacing: 0.6px; }
+  .impact__addon-value { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--terra); background: rgba(192,125,78,0.1); padding: 3px 10px; border-radius: 10px; letter-spacing: 0.6px; margin-left: 8px; }
+  .impact__addon-note { font-family: 'Noto Sans TC', sans-serif; font-size: 12.5px; color: var(--ink-mute); margin-left: auto; letter-spacing: 0.3px; }
+
+  .impact__statement { font-family: 'Noto Serif TC', serif; font-style: italic; font-weight: 500; font-size: 19px; color: var(--ink); padding: 24px 36px; border-left: 3px solid var(--terra); background: rgba(255,255,255,0.4); line-height: 1.75; letter-spacing: 0.8px; }
+
+  /* ===== P12 結尾金句 ===== */
+  .page--closing .page__inner { padding: 0; display: flex; flex-direction: column; }
+  /* 收尾頁 topbar：恢復水平 80px 留白，讓 logo 與 main/CTA 對齊 */
+  .page--closing .topbar { padding: 56px 80px 24px; }
+  .page--closing .page__main { display: flex; flex-direction: column; justify-content: flex-start; padding: 24px 80px 24px; max-width: 1500px; }
+  .closing__accent { width: 60px; height: 1.5px; background: var(--accent); margin-bottom: 28px; }
+  .closing__headline { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 64px; color: var(--ink); letter-spacing: 2px; margin-bottom: 32px; }
+  .closing__body { font-family: 'Noto Sans TC', sans-serif; font-weight: 400; font-size: 22px; line-height: 1.9; color: var(--ink); opacity: 0.78; letter-spacing: 1px; max-width: 1100px; white-space: pre-line; margin-bottom: 28px; }
+  .closing__signature { font-family: 'Noto Serif TC', serif; font-weight: 700; font-style: italic; font-size: 26px; color: var(--terra); letter-spacing: 4px; padding-top: 20px; border-top: 1px solid var(--line); max-width: 700px; margin-bottom: 36px; }
+
+  /* ===== P12 CTA 行動引導區（v2.1 新增：輕量、低干擾）===== */
+  .closing__cta { padding: 0 80px 28px; }
+  .closing__cta-lead { font-family: 'Noto Sans TC', sans-serif; font-size: 14px; color: var(--ink-mute); letter-spacing: 1.2px; line-height: 1.85; text-align: center; margin-bottom: 22px; max-width: 780px; margin-left: auto; margin-right: auto; opacity: 0.82; }
+  .closing__cta-buttons { display: flex; justify-content: center; gap: 24px; }
+  .closing__btn { display: inline-block; padding: 16px 38px; font-family: 'Noto Sans TC', sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 2.5px; border-radius: 999px; transition: all 0.25s ease; cursor: pointer; }
+  .closing__btn--ghost { background: rgba(255,255,255,0.55); color: var(--ink); border: 1px solid rgba(192,125,78,0.35); }
+  .closing__btn--ghost:hover { background: rgba(255,255,255,0.85); border-color: var(--terra); }
+  .closing__btn--solid { background: var(--terra); color: #fff; border: 1px solid var(--terra); box-shadow: 0 2px 8px rgba(192,125,78,0.22); }
+  .closing__btn--solid:hover { background: #a26538; }
+
+  /* ===== P13 Contact (hard-code) ===== */
+  .page--contact .page__inner { padding: 0; display: flex; flex-direction: column; background: var(--paper); }
+  /* Hero：漸層底部改為 paper 色，無縫接續下一區；不再形成切段 */
+  .contact__hero { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #E8E4D5 0%, #EFE9DC 55%, var(--paper) 100%); }
+  .contact__hero-title { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 80px; letter-spacing: 12px; color: var(--ink); }
+  /* Band 去區塊化：透明底、取消底色，讓資訊「浮」在 paper 頁面上 */
+  .contact__band { background: transparent; padding: 32px 64px; display: grid; grid-template-columns: 320px 1fr; column-gap: 48px; align-items: center; }
+  .contact__band-left { display: flex; flex-direction: column; gap: 16px; }
+  .contact__brand-mark { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 38px; color: var(--ink-soft); line-height: 1; }
+  .contact__brand-mark-zh { font-family: 'Noto Sans TC', sans-serif; font-weight: 400; font-size: 12px; color: var(--ink-mute); letter-spacing: 6px; margin-top: 4px; }
+  .contact__pills { display: flex; gap: 8px; margin-top: 8px; }
+  .pill { padding: 6px 14px; border-radius: 16px; font-family: 'Noto Sans TC', sans-serif; font-size: 12px; font-weight: 500; color: white; letter-spacing: 1.5px; }
+  .pill--aesthetics { background: #C75A3A; }
+  .pill--creativity { background: #C8A058; }
+  .pill--life { background: #7D8F72; }
+  .pill--sustainable { background: #A67C52; }
+  /* 聯絡資訊：弱化 UI 感，像品牌頁的一部分 */
+  .contact__info { display: flex; flex-direction: column; gap: 20px; font-family: 'Noto Sans TC', sans-serif; font-size: 15px; color: var(--ink); opacity: 0.85; letter-spacing: 0.6px; }
+  .contact__info-row { display: flex; align-items: baseline; gap: 18px; line-height: 1.5; }
+  .contact__info-icon { width: auto; height: auto; background: transparent; border: none; border-radius: 0; color: var(--ink-mute); font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; letter-spacing: 1.5px; min-width: 22px; text-align: center; opacity: 0.55; }
+  .contact__footer-tags { background: var(--ink); color: var(--paper); padding: 16px 64px; font-family: 'Noto Sans TC', sans-serif; font-size: 13px; letter-spacing: 2px; text-align: center; opacity: 0.95; }
+
+  /* =========================================
+     CTA Footer — 地平線語言 v6.3（定版，鎖定）
+     依 wishlite-footer-horizon-language skill
+     規則：山脈 ≥3 層、霧只從上緣、暖棕系、
+          品牌字浮在山肩、38px 金線作為 anchor
+     ========================================= */
+  .cta-footer-system {
+    position: relative;
+    height: 300px;
+    /* 雙層 bg：上層奶茶／土地暖棕 soft-light（再提暖度），下層山景 */
+    background-color: #E4CBA4;
+    background-image:
+      linear-gradient(180deg,
+        rgba(232, 204, 170, 0.52) 0%,
+        rgba(202, 158, 112, 0.44) 48%,
+        rgba(160, 110, 72, 0.38) 100%),
+      url('assets/hero-mountain-warm.jpg');
+    background-size: cover, cover;
+    background-position: center bottom, center bottom;
+    background-repeat: no-repeat, no-repeat;
+    background-blend-mode: soft-light, normal;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* 頂部霧：180px 超長霧帶、奶茶米調，讓山「從頁面浮出」而不是被切在底部 */
+  .cta-footer-system::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 180px;
+    background: linear-gradient(to bottom,
+      #F1EADA 0%,
+      rgba(241, 234, 218, 0.90) 18%,
+      rgba(238, 226, 205, 0.62) 42%,
+      rgba(232, 218, 192, 0.30) 68%,
+      rgba(226, 208, 175, 0.10) 88%,
+      transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  /* 底部 grounding：暖土棕（剔除冷黑調），保留規則 8 的 grounding 感 */
+  .cta-footer-system::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      transparent 52%,
+      rgba(108, 70, 40, 0.18) 76%,
+      rgba(108, 70, 40, 0.46) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .cta-footer-system .cta-footer-text {
+    position: absolute;
+    bottom: 58px;
+    left: 0; right: 0;
+    text-align: center;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .cta-footer-system .cta-footer-text::before {
+    content: '';
+    display: block;
+    width: 38px;
+    height: 1px;
+    background: rgba(212, 176, 106, 0.88);
+    margin: 0 auto 20px;
+    box-shadow: 0 0 6px rgba(212, 176, 106, 0.35);
+  }
+  .cta-footer-system .cta-footer-brand {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 3px;
+    text-shadow:
+      0 1px 4px rgba(40, 25, 10, 0.65),
+      0 0 14px rgba(40, 25, 10, 0.45);
+  }
+  .cta-footer-system .cta-footer-slogan {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.88);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    font-family: 'Noto Sans TC', sans-serif;
+    text-shadow:
+      0 1px 3px rgba(40, 25, 10, 0.5),
+      0 0 8px rgba(40, 25, 10, 0.3);
+  }
+
+  /* 過渡柔化：山脈 footer 向上大幅回蓋（配合 180px 霧帶）讓山「從頁面自然浮出」 */
+  .page--closing .cta-footer-system { margin-top: -60px; height: 400px; flex-shrink: 0; }
+
+  /* === P12 合併版：聯絡資訊「浮」在山上，無底色、像品牌落款 === */
+  .cta-footer-contact {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 148px;                     /* 位於山中層、在 Wishlite 品牌字上方 */
+    text-align: center;
+    z-index: 3;
+    pointer-events: none;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12.5px;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.82);
+    text-shadow:
+      0 1px 3px rgba(40, 25, 10, 0.5),
+      0 0 8px rgba(40, 25, 10, 0.3);
+    line-height: 2;
+  }
+  .cta-footer-contact span + span::before {
+    content: '·';
+    margin: 0 14px;
+    opacity: 0.55;
+  }
+
+  /* 預覽用 */
+  .preview-label { position: absolute; top: -22px; left: 0; font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: rgba(255, 255, 255, 0.85); background: rgba(92, 72, 48, 0.6); padding: 4px 12px; border-radius: 2px; letter-spacing: 2px; z-index: 10; }
+  .page-stack-wrap { padding: 50px 0 80px; }
+
+  /* 固定品牌句（寫死） */
+  .BRAND_TAGLINE_EN::before { content: "Growing Deep. Giving True."; }
+  .FOOTER_TAGLINE_EN::before { content: "From Earth, With Care."; }
+  .FOOTER_BRAND::before { content: "WISHLITE 韻手作永續"; }
+</style>
+</head>
+<body>
+
+<div class="page-stack-wrap" id="proposal-stack"></div>
+
+<script>
+(function() {
+  const data = JSON.parse(document.getElementById('proposalData').textContent);
+  const meta = data.meta;
+
+  // 固定品牌句（不可變）
+  const BRAND_TAGLINE_EN = "Growing Deep. Giving True.";
+  const FOOTER_TAGLINE_EN = "From Earth, With Care.";
+  const FOOTER_BRAND = "WISHLITE 韻手作永續";
+
+  const totalPages = 9 + data.products.length; // 9 個固定 + N 個產品頁
+  const useBrackets = meta.use_title_brackets;
+  const wrapTitle = (t) => useBrackets ? `《${t}》` : t;
+
+  const WORDMARK = `
+    <div class="topbar__wordmark">
+      <span class="en">Wishlite</span>
+      <span class="zh">韻 手 作 永 續</span>
+    </div>`;
+
+  const metaBadge = `
+    <div class="meta-badge">
+      <span>${meta.proposal_type}</span>
+      <span>${meta.client_type}</span>
+      <span>${meta.budget_level}預算</span>
+    </div>`;
+
+  const topbar = (pn, label) => `
+    <header class="topbar">
+      <div class="topbar__brand">
+        ${WORDMARK}
+        <div class="topbar__divider"></div>
+        <div class="topbar__tagline">${BRAND_TAGLINE_EN}</div>
+      </div>
+      <div class="topbar__pageno">${String(pn).padStart(2,'0')} / ${String(totalPages).padStart(2,'0')}<span class="section-label">${label}</span></div>
+    </header>`;
+
+  const footer = (pageName) => `
+    <footer class="footer">
+      <span class="footer__page-name">${pageName}</span>
+      <span class="footer__line">${FOOTER_TAGLINE_EN}<span class="dot">　·　</span>${FOOTER_BRAND}</span>
+    </footer>`;
+
+  // ========== P01 Cover ==========
+  const c = data.cover;
+  const p01 = `
+    <div class="page page--cover">
+      <span class="preview-label">P01 · COVER</span>
+      <div class="cover__bg" style="background-image: url('${c.background_image}'); background-position: right center;"></div>
+      <div class="cover__overlay"></div>
+      <div class="page__paper-texture"></div>
+      <div class="page__inner">
+        <header class="cover__topbar">
+          <div class="topbar__brand">
+            ${WORDMARK}
+            <div class="topbar__divider"></div>
+            <div class="topbar__tagline">${BRAND_TAGLINE_EN}</div>
+          </div>
+          <div class="cover__date">${c.date}</div>
+        </header>
+        <main class="cover__main">
+          <div class="cover__eyebrow-line">${c.year} ${c.client} ・ ${c.brand_name}</div>
+          <div class="cover__series-label">${c.series_label}</div>
+          <h1 class="cover__title">${wrapTitle(c.proposal_title)}</h1>
+          <div class="cover__tagline-en">${BRAND_TAGLINE_EN}</div>
+          <div class="cover__highlight-block">
+            <div class="cover__highlight">${c.highlight}</div>
+            <p class="cover__subtitle">${c.proposal_subtitle}</p>
+          </div>
+        </main>
+        <footer class="cover__footer">
+          <span class="footer__page-name">P01 · COVER</span>
+          <span class="footer__line">${FOOTER_TAGLINE_EN}<span class="dot">　·　</span>${FOOTER_BRAND}</span>
+        </footer>
+      </div>
+    </div>`;
+
+  // ========== P02 Pillars ==========
+  const pl = data.pillars;
+  const pillars = pl.items.map(item => `
+    <div class="pillar">
+      <div class="pillar__num-box" style="border-color: ${item.color}; color: ${item.color};">${item.num}</div>
+      <div class="pillar__title">${item.pillar_title}</div>
+      <div class="pillar__subtitle">${item.pillar_subtitle}</div>
+      <div class="pillar__body">${item.pillar_description}</div>
+      <div class="pillar__label">${item.label}</div>
+    </div>`).join('');
+  const p02 = `
+    <div class="page page--pillars">
+      <span class="preview-label">P02 · PILLARS</span>
+      ${metaBadge}
+      <div class="page__paper-texture"></div>
+      <div class="page__inner">
+        ${topbar(2, 'PILLARS')}
+        <main class="page__main">
+          <h1 class="pillars__title">${pl.title}</h1>
+          <div class="pillars__grid">${pillars}</div>
+        </main>
+        ${footer('P02 · PILLARS')}
+      </div>
+    </div>`;
+
+  // ========== P03 Overview ==========
+  const ov = data.overview;
+  const ovItems = ov.product_list.map(item => `
+    <div class="overview__item">
+      <div class="overview__item-no">No. ${item.no}</div>
+      <div class="overview__item-name">${item.name}</div>
+      <div class="overview__item-tag">${item.tag}</div>
+    </div>`).join('');
+  const p03 = `
+    <div class="page page--overview">
+      <span class="preview-label">P03 · OVERVIEW</span>
+      <div class="page__paper-texture"></div>
+      <div class="page__inner">
+        ${topbar(3, 'OVERVIEW')}
+        <main class="page__main">
+          <h1 class="overview__title">${ov.project_name}</h1>
+          <p class="overview__subtitle">${ov.overview_summary}</p>
+          <div class="overview__list">${ovItems}</div>
+        </main>
+        ${footer('P03 · OVERVIEW')}
+      </div>
+    </div>`;
+
+  // ========== P04 WHY US ==========
+  const wu = data.why_us;
+  const p04 = `
+    <div class="page page--why">
+      <span class="preview-label">P04 · WHY US</span>
+      <div class="page__paper-texture"></div>
+      <div class="page__inner">
+        ${topbar(4, 'WHY US')}
+        <main class="page__main">
+          <h1 class="why__title">${wu.title}</h1>
+          <p class="why__subtitle">${wu.subtitle}</p>
+          <div class="why__columns">
+            <div class="why__col">
+              <div class="why__icon">材</div>
+              <div class="why__col-title">材料的厚實</div>
+              <div class="why__col-body">${wu.why_material}</div>
+            </div>
+            <div class="why__col">
+              <div class="why__icon">藝</div>
+              <div class="why__col-title">工藝的厚工</div>
+              <div class="why__col-body">${wu.why_craft}</div>
+            </div>
+            <div class="why__col">
+              <div class="why__icon">情</div>
+              <div class="why__col-title">情感的厚禮</div>
+              <div class="why__col-body">${wu.why_emotion}</div>
+            </div>
+          </div>
+        </main>
+        ${footer('P04 · WHY US')}
+      </div>
+    </div>`;
+
+  // ========== P05 客製化（🆕 v2.1 主次層級）==========
+  const cu = data.customization;
+  const cuList = cu.items || [];
+  const cuPrimary = cuList[0];
+  const cuRest = cuList.slice(1);
+  const cuPrimaryHtml = cuPrimary ? `
+    <div class="cust__primary">
+      <div class="cust__primary-icon">${cuPrimary.icon}</div>
+      <div>
+        <span class="cust__primary-flag">主軸客製</span>
+        <div class="cust__primary-label">${cuPrimary.label}</div>
+        <div class="cust__primary-body">${cuPrimary.body}</div>
+      </div>
+    </div>` : '';
+  const cuItems = cuRest.map(it => `
+    <div class="cust__item">
+      <div class="cust__item-icon">${it.icon}</div>
+      <div class="cust__item-label">${it.label}</div>
+      <div class="cust__item-body">${it.body}</div>
+    </div>`).join('');
+  const p05 = `
+    <div class="page page--customization">
+      <span class="preview-label">P05 · CUSTOMIZATION 🆕</span>
+      <div class="page__paper-texture"></div>
+      <div class="page__inner">
+        ${topbar(5, 'CUSTOMIZATION')}
+        <main class="page__main">
+          <h1 class="cust__title">${cu.title}</h1>
+          <p class="cust__subtitle">${cu.subtitle}</p>
+          ${cuPrimaryHtml}
+          <div class="cust__grid">${cuItems}</div>
+          <div class="cust__note">${cu.custom_note}</div>
+        </main>
+        ${footer('P05 · CUSTOMIZATION')}
+      </div>
+    </div>`;
+
+  // ========== P06 執行方式（🆕 v2.1：雙模式標頭 + timeline）==========
+  const ex = data.execution;
+  const isEvent = ex.execution_mode === '活動';
+  const steps = isEvent ? ex.steps_event : ex.steps_gift;
+  const modeHint = isEvent
+    ? '以體驗節奏為主軸，參與者在每個階段都有不同的感受與互動。'
+    : '以交付節奏為主軸，從需求確認到送達，每一步都確保品質可追溯。';
+  const modeLabel = isEvent ? '活動<span>體驗</span>模式' : '禮品<span>交付</span>模式';
+  const stepHtml = steps.map(s => `
+    <div class="exec__step">
+      <div class="exec__step-no">${s.no}</div>
+      <div class="exec__step-label">${s.label}</div>
+      <div style="text-align:center;">
+        <span class="exec__step-duration">${s.duration}</span>
+      </div>
+      <div class="exec__step-body">${s.body}</div>
+    </div>`).join('');
+  const modeClass = isEvent ? 'exec__mode-header--event' : '';
+  const timelineClass = isEvent ? 'exec__timeline--event' : 'exec__timeline--gift';
+  const p06 = `
+    <div class="page page--execution">
+      <span class="preview-label">P06 · EXECUTION 🆕</span>
+      <div class="page__paper-texture"></div>
+      <div class="page__inner">
+        ${topbar(6, 'EXECUTION')}
+        <main class="page__main">
+          <h1 class="exec__title">${ex.title}</h1>
+          <p class="exec__subtitle">${ex.subtitle}</p>
+          <div class="exec__mode-header ${modeClass}">
+            <div>
+              <div class="exec__mode-eyebrow">Execution Mode</div>
+              <div class="exec__mode-name">${modeLabel}</div>
+            </div>
+            <div class="exec__mode-divider"></div>
+            <div class="exec__mode-hint">${modeHint}</div>
+          </div>
+          <div class="exec__timeline ${timelineClass}">
+            <div class="exec__steps">${stepHtml}</div>
+          </div>
+          <p class="exec__note">${ex.execution_note}</p>
+        </main>
+        ${footer('P06 · EXECUTION')}
+      </div>
+    </div>`;
+
+  // ========== P07–P10 Products ==========
+  const productPages = data.products.map((p, i) => {
+    const pn = 7 + i;
+    const sdgs = p.product_sdgs.map(s => `<span class="sdg-tag">${s}</span>`).join('');
+    return `
+      <div class="page page--product">
+        <span class="preview-label">P${String(pn).padStart(2,'0')} · PRODUCT ${p.no}</span>
+        <div class="page__paper-texture"></div>
+        <div class="page__inner">
+          ${topbar(pn, `PRODUCT ${p.no}`)}
+          <main class="page__main">
+            <div class="product__image">
+              <div class="product__image-bg" style="background-image: url('${p.image}');"></div>
+            </div>
+            <div class="product__info">
+              <div class="product__no">${meta.mode === '厚禮模式' ? '厚禮' : '方案'} ${p.no}</div>
+              <h2 class="product__name">${p.product_name}</h2>
+              <div class="product__subtitle">${p.product_tagline}</div>
+              <div class="product__section">
+                <div class="product__section-label">文化意義</div>
+                <p class="product__section-body">${p.product_culture}</p>
+              </div>
+              <div class="product__section">
+                <div class="product__section-label">永續價值</div>
+                <p class="product__section-body">${p.product_esg}</p>
+              </div>
+              <div class="product__section">
+                <div class="product__section-label">SDGs 對應</div>
+                <div class="product__sdgs">${sdgs}</div>
+              </div>
+            </div>
+          </main>
+          ${footer(`P${String(pn).padStart(2,'0')} · PRODUCT ${p.no}`)}
+        </div>
+      </div>`;
+  }).join('');
+
+  const productCount = data.products.length;
+  const closingPN = 7 + productCount;
+  const impactPN = closingPN - 1 + 0; // wait: order is products → impact → closing → contact
+
+  // 重新計算頁碼：P07~P(6+N) products → P(7+N) impact → P(8+N) closing → P(9+N) contact
+  const impactPageNo = 7 + productCount;
+  const closingPageNo = 8 + productCount;
+  const contactPageNo = 9 + productCount;
+
+  // ========== P11 ESG 影響力（🆕 v2.1：前 3 主指標 + 第 4 附加交付）==========
+  const im = data.impact;
+  const mList = im.metrics || [];
+  const mainMetrics = mList.slice(0, 3);
+  const addonMetric = mList[3];
+  const eyebrows = ['Impact Metric 01', 'Impact Metric 02', 'Impact Metric 03'];
+  const metricsHtml = mainMetrics.map((m, i) => `
+    <div class="impact__metric">
+      <div class="impact__metric-eyebrow">${eyebrows[i] || ''}</div>
+      <div class="impact__metric-value">${m.value}</div>
+      <div class="impact__metric-unit">${m.unit || '&nbsp;'}</div>
+      <div class="impact__metric-label">${m.label}</div>
+      <div class="impact__metric-note">${m.note}</div>
+    </div>`).join('');
+  const addonHtml = addonMetric ? `
+    <div class="impact__addon">
+      <span class="impact__addon-flag">Add-on</span>
+      <span class="impact__addon-label">${addonMetric.label}${addonMetric.value ? `<span class="impact__addon-value">${addonMetric.value}</span>` : ''}</span>
+      <span class="impact__addon-note">${addonMetric.note}</span>
+    </div>` : '';
+  const p11 = `
+    <div class="page page--impact">
+      <span class="preview-label">P${String(impactPageNo).padStart(2,'0')} · IMPACT 🆕</span>
+      <div class="page__paper-texture"></div>
+      <div class="page__inner">
+        ${topbar(impactPageNo, 'ESG IMPACT')}
+        <main class="page__main">
+          <h1 class="impact__title">${im.title}</h1>
+          <p class="impact__subtitle">${im.subtitle}</p>
+          <div class="impact__grid">${metricsHtml}</div>
+          ${addonHtml}
+          <div class="impact__statement">${im.impact_statement}</div>
+        </main>
+        ${footer(`P${String(impactPageNo).padStart(2,'0')} · ESG IMPACT`)}
+      </div>
+    </div>`;
+
+  // ========== P12 Closing（v2.1：加 CTA 行動引導 + 山脈 footer）==========
+  const cl = data.closing;
+  const p12 = `
+    <div class="page page--closing">
+      <span class="preview-label">P${String(closingPageNo).padStart(2,'0')} · CLOSING</span>
+      <div class="page__paper-texture"></div>
+      <div class="page__inner">
+        ${topbar(closingPageNo, 'CLOSING')}
+        <main class="page__main">
+          <div class="closing__accent"></div>
+          <h1 class="closing__headline">${cl.headline}</h1>
+          <p class="closing__body">${cl.closing_paragraph}</p>
+          <div class="closing__signature">${cl.brand_slogan}</div>
+        </main>
+        <div class="closing__cta">
+          <p class="closing__cta-lead">歡迎與我們討論您的預算與需求，我們將為您提供最合適的提案建議。</p>
+          <div class="closing__cta-buttons">
+            <a class="closing__btn closing__btn--ghost" href="https://wishlite.notion.site/esg-records" target="_blank" rel="noopener noreferrer">了解合作方案</a>
+            <a class="closing__btn closing__btn--solid" href="https://wishlite.github.io/wishlite-esg/wishlite-landing.html#open-form" target="_blank" rel="noopener noreferrer">開始規劃永續禮品</a>
+          </div>
+        </div>
+        <div class="cta-footer-system">
+          <div class="cta-footer-contact">
+            <span>wishlite1111@gmail.com</span><span>https://wishlite.com.tw</span><span>330 桃園市桃園區介壽路 392、394 號</span>
+          </div>
+          <div class="cta-footer-text">
+            <div class="cta-footer-brand">Wishlite 韻手作永續</div>
+            <div class="cta-footer-slogan">MAKE ART · LIVE ECO</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // ========== P13 Contact（合併進 P12，保留以便 fallback，渲染時已移除）==========
+  const p13 = `
+    <div class="page page--contact">
+      <span class="preview-label">P${String(contactPageNo).padStart(2,'0')} · CONTACT DETAILS（hard-code）</span>
+      <div class="page__inner">
+        <div class="contact__hero">
+          <h1 class="contact__hero-title">CONTACT DETAILS</h1>
+        </div>
+        <div class="contact__band">
+          <div class="contact__band-left">
+            <div>
+              <div class="contact__brand-mark">Wishlite</div>
+              <div class="contact__brand-mark-zh">韻 手 作 永 續</div>
+            </div>
+            <div class="contact__pills">
+              <span class="pill pill--aesthetics">美學</span>
+              <span class="pill pill--creativity">創意</span>
+              <span class="pill pill--life">生活</span>
+              <span class="pill pill--sustainable">永續</span>
+            </div>
+          </div>
+          <div class="contact__info">
+            <div class="contact__info-row"><span class="contact__info-icon">@</span>wishlite1111@gmail.com</div>
+            <div class="contact__info-row"><span class="contact__info-icon">⌘</span>https://wishlite.com.tw/</div>
+            <div class="contact__info-row"><span class="contact__info-icon">●</span>330 桃園市桃園區介壽路 392、394 號</div>
+          </div>
+        </div>
+        <div class="cta-footer-system">
+          <div class="cta-footer-text">
+            <div class="cta-footer-brand">Wishlite 韻手作永續</div>
+            <div class="cta-footer-slogan">MAKE ART · LIVE ECO</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // v2.1：P13 已合併進 P12（情緒 + CTA + 山脈 + 聯絡）→ 12 頁
+  document.getElementById('proposal-stack').innerHTML = [
+    p01, p02, p03, p04, p05, p06, productPages, p11, p12
+  ].join('');
+
+  // 主標自動縮字級
+  document.fonts.ready.then(() => {
+    document.querySelectorAll('.cover__title').forEach(title => {
+      const MAX_WIDTH = 1500, MIN_SIZE = 48;
+      let size = 76;
+      title.style.fontSize = size + 'px';
+      while (title.scrollWidth > MAX_WIDTH && size > MIN_SIZE) {
+        size -= 1;
+        title.style.fontSize = size + 'px';
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
