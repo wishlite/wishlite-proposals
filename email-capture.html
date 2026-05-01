@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="把《永續創作靈感包 2026》寄到你的信箱。永續行動學院｜Wishlite。">
+  <meta property="og:title" content="把你的永續創作靈感包寄到信箱｜永續行動學院">
+  <meta property="og:description" content="留下 Email，我們會把《永續創作靈感包 2026》寄給你。也會依照你的永續行動天賦，慢慢陪你整理適合自己的行動方式。">
+  <meta property="og:type" content="website">
+  <title>把你的永續創作靈感包寄到信箱｜永續行動學院｜Wishlite</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: #faf8f4;
+      color: #3a3a3a;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+    .wrap {
+      width: 100%;
+      max-width: 560px;
+    }
+    .topbar {
+      text-align: center;
+      margin-bottom: 28px;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      color: #7a7a6e;
+    }
+    .topbar .brand { font-weight: 600; }
+    .card {
+      background: #ffffff;
+      border: 1px solid #ece6d8;
+      border-radius: 20px;
+      padding: 38px 32px;
+      box-shadow: 0 4px 24px rgba(80, 107, 84, 0.06);
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #f0ebdc;
+      color: #506b54;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #2f4231;
+      margin: 0 0 14px;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+    }
+    .lead {
+      font-size: 15px;
+      color: #555;
+      margin: 0 0 24px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      color: #6a6a5e;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+    input[type=email] {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-family: inherit;
+      border: 1px solid #d8cfb8;
+      border-radius: 12px;
+      background: #fdfbf6;
+      color: #3a3a3a;
+      transition: border .15s, background .15s;
+      outline: none;
+    }
+    input[type=email]:focus {
+      border-color: #506b54;
+      background: #ffffff;
+    }
+    .role-hint {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #9a9a8a;
+      text-align: right;
+    }
+    .submit-btn {
+      width: 100%;
+      margin-top: 22px;
+      padding: 15px 24px;
+      font-size: 16px;
+      font-family: inherit;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #ffffff;
+      background: #506b54;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .submit-btn:hover { background: #3f5743; }
+    .submit-btn:active { transform: translateY(1px); }
+    .submit-btn:disabled {
+      background: #a8b3a8;
+      cursor: not-allowed;
+    }
+    .form-msg {
+      margin-top: 14px;
+      font-size: 13px;
+      min-height: 20px;
+      text-align: center;
+    }
+    .form-msg.error { color: #b04a3e; }
+    .footer-note {
+      margin-top: 26px;
+      font-size: 12px;
+      color: #9a9a8a;
+      text-align: center;
+      line-height: 1.6;
+    }
+    /* Success state */
+    .success {
+      text-align: center;
+      display: none;
+    }
+    .success.active {
+      display: block;
+      animation: fadein .5s ease;
+    }
+    .form-state.hidden { display: none; }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .success h2 {
+      font-size: 22px;
+      color: #2f4231;
+      margin: 8px 0 14px;
+      line-height: 1.5;
+    }
+    .success p {
+      color: #555;
+      font-size: 15px;
+      margin: 0 0 24px;
+    }
+    .pdf-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: #506b54;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: background .15s;
+    }
+    .pdf-btn:hover { background: #3f5743; }
+    .leaf {
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+    @media (max-width: 480px) {
+      .card { padding: 30px 22px; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="topbar">
+      <span class="brand">永續行動學院</span> ｜ Wishlite
+    </div>
+
+    <article class="card">
+      <!-- ======= 表單狀態 ======= -->
+      <section class="form-state" id="formState">
+        <span class="pill">Lead Magnet</span>
+        <h1>把你的永續創作靈感包寄到信箱</h1>
+        <p class="lead">
+          留下 Email，我們會把《永續創作靈感包 2026》寄給你。<br>
+          也會依照你的永續行動天賦，慢慢陪你整理適合自己的行動方式。
+        </p>
+
+        <form id="leadForm" novalidate>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="your@email.com">
+
+          <input type="hidden" name="role"   id="hiddenRole">
+          <input type="hidden" name="source" id="hiddenSource">
+
+          <p class="role-hint" id="roleHint"></p>
+
+          <button class="submit-btn" id="submitBtn" type="submit">把靈感包寄給我</button>
+          <p class="form-msg" id="formMsg" role="status"></p>
+        </form>
+
+        <p class="footer-note">
+          送出 Email 即代表你同意 Wishlite 將以上資訊用於寄送靈感包與後續通知。<br>
+          隨時可取消訂閱。
+        </p>
+      </section>
+
+      <!-- ======= 成功狀態 ======= -->
+      <section class="success" id="successState">
+        <div class="leaf">🌿</div>
+        <h2>謝謝你<br>靈感包已經為你準備好了</h2>
+        <p>
+          你可以先點下方按鈕收藏完整 PDF。<br>
+          後續我們也會慢慢寄送與你角色相關的<br>永續行動靈感。
+        </p>
+        <a class="pdf-btn" id="pdfBtn" href="https://wishlite.github.io/wishlite-proposals/quiz/inspiration-pack-2026.pdf" target="_blank" rel="noopener">
+          打開《永續創作靈感包 2026》
+        </a>
+        <p class="footer-note" style="margin-top: 26px;">
+          先不急著成為誰。<br>
+          從看見自己怎麼靠近永續開始。
+        </p>
+      </section>
+    </article>
+  </main>
+
+  <script>
+    (function() {
+      const WEBHOOK_URL = "https://wishlite-n8n.zeabur.app/webhook/email-capture-inspiration-pack";
+      const VALID_ROLES = {
+        "coffee":  "你是小渣型｜材料敘事者",
+        "plastic": "你是小塑型｜體驗設計者",
+        "oyster":  "你是小蠔型｜系統建構者",
+        "cotton":  "你是小棉型｜陪伴轉化者",
+        "denim":   "你是小仔型｜故事重寫者",
+        "sprout":  "你是小芽型｜行動整合者"
+      };
+
+      // 讀 URL 參數
+      const params = new URLSearchParams(location.search);
+      const roleParam   = (params.get("role") || "").toLowerCase();
+      const sourceParam = (params.get("source") || "line_academy").toLowerCase();
+
+      const hiddenRole   = document.getElementById("hiddenRole");
+      const hiddenSource = document.getElementById("hiddenSource");
+      const roleHint     = document.getElementById("roleHint");
+
+      hiddenRole.value   = VALID_ROLES[roleParam] ? roleParam : "";
+      hiddenSource.value = sourceParam;
+
+      if (VALID_ROLES[roleParam]) {
+        roleHint.textContent = "🌱 " + VALID_ROLES[roleParam];
+      }
+
+      // 表單送出
+      const form     = document.getElementById("leadForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const formMsg   = document.getElementById("formMsg");
+      const formState = document.getElementById("formState");
+      const success   = document.getElementById("successState");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        formMsg.textContent = "";
+        formMsg.classList.remove("error");
+
+        const email = document.getElementById("email").value.trim();
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRe.test(email)) {
+          formMsg.textContent = "Email 格式好像不太對，請再確認一次 🌿";
+          formMsg.classList.add("error");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "傳送中…";
+
+        try {
+          const resp = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email,
+              role:    hiddenRole.value,
+              source:  hiddenSource.value,
+              consent: true,
+              submittedAt: new Date().toISOString(),
+              pageUrl: location.href
+            })
+          });
+
+          if (!resp.ok) throw new Error("Server error " + resp.status);
+          const data = await resp.json();
+
+          // 切換到 success 狀態
+          formState.classList.add("hidden");
+          success.classList.add("active");
+          // 若 webhook 回 PDF URL，更新按鈕（保險，避免 hardcode 過期）
+          if (data.pdf_url) {
+            document.getElementById("pdfBtn").href = data.pdf_url;
+          }
+        } catch (err) {
+          console.error(err);
+          formMsg.textContent = "送出時遇到一點狀況，請稍後再試 🌿";
+          formMsg.classList.add("error");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "把靈感包寄給我";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
