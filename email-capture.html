@@ -233,12 +233,12 @@
     (function() {
       const WEBHOOK_URL = "https://wishlite-n8n.zeabur.app/webhook/email-capture-inspiration-pack";
       const VALID_ROLES = {
-        "coffee":  "你是小渣型｜材料敘事者",
-        "plastic": "你是小塑型｜體驗設計者",
-        "oyster":  "你是小蠔型｜系統建構者",
-        "cotton":  "你是小棉型｜陪伴轉化者",
-        "denim":   "你是小仔型｜故事重寫者",
-        "sprout":  "你是小芽型｜行動整合者"
+        "coffee":  "☕ 你和小渣，有著很相近的永續行動樣子",
+        "plastic": "🌊 你和小塑，有著很相近的永續行動樣子",
+        "oyster":  "🐚 你和小蠔，有著很相近的永續行動樣子",
+        "cotton":  "👶 你和小棉，有著很相近的永續行動樣子",
+        "denim":   "👖 你和小仔，有著很相近的永續行動樣子",
+        "sprout":  "🌱 你和小芽，有著很相近的永續行動樣子"
       };
 
       // 讀 URL 參數
@@ -254,7 +254,8 @@
       hiddenSource.value = sourceParam;
 
       if (VALID_ROLES[roleParam]) {
-        roleHint.textContent = "🌱 " + VALID_ROLES[roleParam];
+        // 新版 VALID_ROLES 已自帶 emoji，直接顯示
+        roleHint.textContent = VALID_ROLES[roleParam];
       }
 
       // 表單送出
