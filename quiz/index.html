@@ -740,7 +740,8 @@
           </div>
         </article>
 
-        <section class="panel form-section" aria-labelledby="formTitle">
+        <section class="panel form-section" aria-labelledby="formTitle" style="display:none" hidden>
+          <!-- v3.7: form 暫時隱藏（v4 quiz-intake webhook 未接通，避免 user 誤以為直接領 PDF）。LINE CTA 為唯一主路徑。DOM 保留以避免 JS leadForm 引用噴錯。 -->
           <h2 id="formTitle" class="section-title">把你的靈感包，寄到信箱慢慢收藏</h2>
           <p class="lead">留下 Email，我們會把《永續創作靈感包 2026》和後續提醒寄給你。<br>讓你在離開頁面後，也能慢慢回看自己的永續行動方向。</p>
           <form id="leadForm" class="form-grid">
