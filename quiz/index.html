@@ -804,15 +804,6 @@
           </form>
         </section>
 
-        <section class="panel share-section" aria-labelledby="shareTitle">
-          <h2 id="shareTitle" class="section-title">想把這個結果分享給朋友嗎？ 🌿</h2>
-          <p class="lead">也許你身邊，也有人正在用這樣的方式靠近永續。</p>
-          <div class="share-row">
-            <button id="lineShareBtn" class="share-btn share-btn--line" type="button">LINE 分享</button>
-            <button id="copyLinkBtn" class="share-btn" type="button">複製連結</button>
-          </div>
-        </section>
-
         <p class="footer-note">Wishlite 韻手作｜讓永續成為日常的選擇。</p>
       </section>
     </div>
@@ -1021,9 +1012,10 @@
     backBtn.addEventListener("click", goBack);
     restartBtn.addEventListener("click", restartQuiz);
     leadForm.addEventListener("submit", submitLead);
+    // v3.8.1: share section removed; listeners guarded with optional chaining
     document.getElementById("nativeShareBtn")?.addEventListener("click", shareResult);
-    document.getElementById("lineShareBtn").addEventListener("click", shareToLine);
-    document.getElementById("copyLinkBtn").addEventListener("click", copyResultLink);
+    document.getElementById("lineShareBtn")?.addEventListener("click", shareToLine);
+    document.getElementById("copyLinkBtn")?.addEventListener("click", copyResultLink);
 
     window.addEventListener("DOMContentLoaded", () => {
       const resultFromUrl = new URLSearchParams(window.location.search).get("result");
