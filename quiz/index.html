@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="測測你的永續行動天賦，3 分鐘找到屬於你的永續樣子。從故事、體驗、整理、陪伴到重寫與整合，看見你最自然的行動方式。永續行動學院｜Wishlite。">
-  <meta property="og:title" content="測測你的永續行動天賦">
-  <meta property="og:description" content="3 分鐘看見你最自然的永續樣子。從故事、體驗、整理、陪伴到重寫與整合，找到屬於你的永續行動天賦。">
+  <meta name="description" content="你會用什麼方式靠近一件你在乎的事？7 題小測驗，看見你最自然的行動樣子。3 分鐘，認識另一面的自己。永續行動學院｜Wishlite。">
+  <meta property="og:title" content="你會用什麼方式靠近一件你在乎的事？">
+  <meta property="og:description" content="7 題小測驗，看見你最自然的行動樣子。3 分鐘，認識另一面的自己。">
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/hero-quiz-cover.png">
   <title>測測你的永續行動天賦｜永續行動學院｜Wishlite</title>
@@ -181,6 +181,27 @@
       text-align: center;
     }
 
+    .hero-title {
+      margin: 0 0 12px;
+      font-size: 28px;
+      line-height: 1.45;
+      color: var(--brown);
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      max-width: 480px;
+    }
+
+    .hero-sub {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    @media (min-width: 720px) {
+      .hero-title { font-size: 34px; max-width: 560px; }
+    }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -348,6 +369,127 @@
       margin: 14px 0 20px;
       color: var(--muted);
       font-size: 14px;
+    }
+
+    /* v3.0 醒悟揭曉序列 */
+    .reveal-sequence {
+      display: grid;
+      gap: 28px;
+      justify-items: center;
+      text-align: center;
+      padding: 56px 22px 40px;
+      min-height: 60vh;
+      align-content: center;
+    }
+
+    .reveal-line {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.95;
+      color: var(--brown);
+      max-width: 520px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .reveal-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-name {
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+      margin-top: 16px;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .reveal-name.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .reveal-sparkle {
+      font-size: 15px;
+      color: var(--sage-dark);
+      letter-spacing: 8px;
+      font-weight: 600;
+    }
+
+    .reveal-role-name {
+      margin: 0;
+      font-size: 56px;
+      font-weight: 800;
+      color: var(--brown);
+      letter-spacing: 16px;
+      padding-left: 16px;
+    }
+
+    .reveal-divider {
+      color: var(--sage);
+      letter-spacing: 8px;
+      font-size: 14px;
+    }
+
+    .reveal-role-title {
+      margin: 0;
+      font-size: 20px;
+      color: var(--sage-dark);
+      letter-spacing: 6px;
+      font-weight: 700;
+    }
+
+    .reveal-skip {
+      margin-top: 12px;
+      padding: 8px 18px;
+      border: 1px solid rgba(125, 143, 114, 0.28);
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 1px;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s ease, background 0.2s ease;
+    }
+
+    .reveal-skip:hover {
+      opacity: 1;
+      background: rgba(125, 143, 114, 0.08);
+    }
+
+    .reveal-sequence.done {
+      display: none;
+    }
+
+    .result-card-staged {
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+
+    .result-card-staged.visible {
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+      .reveal-line { font-size: 16px; }
+      .reveal-role-name { font-size: 42px; letter-spacing: 12px; padding-left: 12px; }
+    }
+
+    .question-softener {
+      margin: 4px 0 18px;
+      padding: 14px 16px;
+      background: rgba(125, 143, 114, 0.08);
+      border-left: 3px solid var(--sage);
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.85;
+      white-space: pre-line;
+      border-radius: 8px;
     }
 
     .question-title {
@@ -693,26 +835,27 @@
           <span class="brand-mark brand-fallback hidden" aria-hidden="true">芽</span>
           <span>永續行動學院｜Wishlite</span>
         </a>
-        <span class="pill">測測你的永續行動天賦</span>
+        <span class="pill">7 題小測驗｜約 3 分鐘</span>
       </header>
 
       <section id="homeScreen" class="screen active" aria-labelledby="homeTitle">
         <div class="hero">
-          <figure class="hero-art" aria-label="永續樣子測驗封面主視覺">
-            <img src="assets/hero-quiz-cover.png" alt="看看你最自然的永續樣子，水彩繪本風測驗封面" onerror="showImageFallback(this, '永續樣子', '測驗封面主視覺');">
+          <figure class="hero-art" aria-label="你最自然的行動樣子｜測驗封面主視覺">
+            <img src="assets/hero-quiz-cover.png" alt="認識另一面的自己，水彩繪本風測驗封面" onerror="showImageFallback(this, '行動樣子', '測驗封面主視覺');">
           </figure>
 
           <div class="hero-copy">
-            <h1 id="homeTitle" class="sr-only">測測你的永續行動天賦</h1>
+            <h1 id="homeTitle" class="hero-title">你會用什麼方式靠近一件你在乎的事？</h1>
+            <p class="hero-sub">7 題小測驗，看見你最自然的行動樣子。</p>
 
             <div class="tag-row" aria-label="測驗資訊">
-              <span class="pill">8 題｜約 3 分鐘</span>
+              <span class="pill">7 題｜約 3 分鐘</span>
               <span class="pill">6 種人格</span>
               <span class="pill">完成後取得專屬靈感方向</span>
             </div>
 
-            <button id="startBtn" class="primary-btn" type="button">開始測驗 →</button>
-            <p class="intro-note">這不是一般心理測驗，而是陪你看見自己如何把永續轉化成行動、體驗與陪伴的入口。</p>
+            <button id="startBtn" class="primary-btn" type="button">3 分鐘，認識另一面的自己 →</button>
+            <p class="intro-note">每個人都有自己靠近事情的方式。這份測驗不評斷你，只是陪你看見你最自然的那一面。</p>
           </div>
         </div>
       </section>
@@ -723,9 +866,10 @@
             <div id="progressFill" class="progress-fill"></div>
           </div>
           <div class="quiz-meta">
-            <span id="questionCount">第 1 題 / 共 8 題</span>
+            <span id="questionCount">第 1 題 / 共 7 題</span>
             <span id="questionHint">選一個最靠近你的答案</span>
           </div>
+          <p id="questionSoftener" class="question-softener hidden"></p>
           <h2 id="questionTitle" class="question-title"></h2>
           <div id="options" class="options"></div>
           <div class="quiz-actions">
@@ -736,7 +880,20 @@
       </section>
 
       <section id="resultScreen" class="screen" aria-live="polite">
-        <article class="panel result-hero" id="resultCard">
+        <div id="revealSequence" class="reveal-sequence">
+          <p class="reveal-line" data-line="1">你剛剛回答的，<br>其實不是一份普通的人格測驗。</p>
+          <p class="reveal-line" data-line="2">它測的，是你「靠近永續」的方式。</p>
+          <p class="reveal-line" data-line="3">你不需要懂永續，<br>你早就在用自己的方式靠近它。</p>
+          <p class="reveal-line" data-line="4">而你的方式，<br>在 Wishlite 的世界裡，<br>最像這位永續六友——</p>
+          <div class="reveal-name" aria-live="polite">
+            <span class="reveal-sparkle">✨ 你 是</span>
+            <h2 id="revealRoleName" class="reveal-role-name"></h2>
+            <span class="reveal-divider">────</span>
+            <p id="revealRoleTitle" class="reveal-role-title"></p>
+          </div>
+          <button id="revealSkipBtn" class="reveal-skip" type="button" aria-label="略過揭曉動畫">略過動畫 →</button>
+        </div>
+        <article class="panel result-hero result-card-staged" id="resultCard">
           <figure class="result-visual">
             <img id="resultImage" src="" alt="" onerror="showImageFallback(this, '你的六友結果', '水彩繪本風角色卡');">
           </figure>
@@ -826,92 +983,81 @@
 
     const QUESTIONS = [
       {
-        title: "當你看見一份被留下的材料，你最先想到什麼？",
+        title: "走在路上，你看到一個手作市集的攤位，桌上擺了一個明顯是「以前是別的東西」做成的杯墊。你心裡冒出來的第一個念頭比較像？",
         options: [
-          { label: "A", key: "coffee", text: "它原本來自哪裡？我想把它的故事說出來。" },
-          { label: "B", key: "plastic", text: "它能不能變成一個有趣、好玩的互動？" },
-          { label: "C", key: "oyster", text: "它要怎麼被整理成穩定、可重複的流程？" },
-          { label: "D", key: "cotton", text: "它能不能陪某個人慢慢轉換心情？" },
-          { label: "E", key: "denim", text: "它身上一定藏著一段值得重新看見的記憶。" },
-          { label: "F", key: "sprout", text: "它可以和哪些人、場域、行動串在一起？" }
+          { label: "A", key: "coffee", text: "這個之前是什麼啊？我想知道它的故事。" },
+          { label: "B", key: "plastic", text: "這要怎麼做？看起來很好玩，我也想試試。" },
+          { label: "C", key: "oyster", text: "這是怎麼處理的？流程感覺有點複雜。" },
+          { label: "D", key: "cotton", text: "做這個的人應該很有耐心吧，我會想跟他聊聊。" },
+          { label: "E", key: "denim", text: "這個改造得真特別，可以再加一點什麼會更有意思。" },
+          { label: "F", key: "sprout", text: "整個攤位的感覺很完整，我會想知道背後是怎麼想的。" }
         ]
       },
       {
-        title: "如果要設計一場永續活動，你最想先處理哪一件事？",
+        title: "朋友突然訊息你：「下週末我家要辦一個小聚會，但我不知道怎麼弄比較有趣，你可以幫我想想嗎？」你第一個會想到的事情是？",
         options: [
-          { label: "A", key: "coffee", text: "讓大家先聽見材料背後的日常與溫度。" },
-          { label: "B", key: "plastic", text: "設計一個一進場就想動手參與的體驗。" },
-          { label: "C", key: "oyster", text: "把時間、材料、動線和節奏安排清楚。" },
-          { label: "D", key: "cotton", text: "照顧參與者的感受，讓每個人都跟得上。" },
-          { label: "E", key: "denim", text: "找到能讓人想起自己生命經驗的切入點。" },
-          { label: "F", key: "sprout", text: "先看見整體方向，讓活動和場域彼此連起來。" }
+          { label: "A", key: "coffee", text: "想一個跟這場聚會主題有關的小故事，可以當開場。" },
+          { label: "B", key: "plastic", text: "想一個讓大家可以一起動手做的小活動。" },
+          { label: "C", key: "oyster", text: "把整個流程列一遍：幾點開始、要準備什麼、怎麼進行。" },
+          { label: "D", key: "cotton", text: "想想參加的人有誰，誰會比較內向、需要被照顧。" },
+          { label: "E", key: "denim", text: "想一個比較不一樣的玩法，讓這場聚會跟一般聚會不一樣。" },
+          { label: "F", key: "sprout", text: "先問清楚她想要的氛圍，再從整體來想。" }
         ]
       },
       {
-        title: "別人通常會因為什麼事來找你幫忙？",
+        title: "回想一下，最近一次有人主動來找你聊事情或請你幫忙。你覺得他們找你，最常見的原因是？",
         options: [
-          { label: "A", key: "coffee", text: "把複雜的事情說得有畫面、有情感。" },
-          { label: "B", key: "plastic", text: "把普通的流程變得更活潑、更有參與感。" },
-          { label: "C", key: "oyster", text: "把混亂的事情整理成可以執行的步驟。" },
-          { label: "D", key: "cotton", text: "陪人安定下來，慢慢找到下一步。" },
-          { label: "E", key: "denim", text: "把舊經驗重新轉化成新的表達方式。" },
-          { label: "F", key: "sprout", text: "把不同人的想法整理成一個共同方向。" }
+          { label: "A", key: "coffee", text: "因為我會把事情說得有畫面、有感覺。" },
+          { label: "B", key: "plastic", text: "因為我會把無聊的事情變得好玩一點。" },
+          { label: "C", key: "oyster", text: "因為我會把混亂的東西整理清楚。" },
+          { label: "D", key: "cotton", text: "因為跟我說話會讓他們感覺安心。" },
+          { label: "E", key: "denim", text: "因為我會看到別人沒看到的角度。" },
+          { label: "F", key: "sprout", text: "因為我會幫他們看見全貌、找到方向。" }
         ]
       },
       {
-        title: "在團隊合作裡，你最自然的位置是？",
+        title: "一群朋友要一起辦一件事（旅行、聚會、社團活動都好），大家一開始有點亂沒方向。你最自然會做的事是？",
         options: [
-          { label: "A", key: "coffee", text: "開場的人，幫大家進入情境。" },
-          { label: "B", key: "plastic", text: "點燃氣氛的人，讓大家願意試試看。" },
-          { label: "C", key: "oyster", text: "穩住全局的人，確認事情有序發生。" },
-          { label: "D", key: "cotton", text: "照顧節奏的人，留意誰需要多一點支持。" },
-          { label: "E", key: "denim", text: "收束故事的人，把每個人的片段接在一起。" },
-          { label: "F", key: "sprout", text: "連接方向的人，讓大家知道正在一起往哪裡走。" }
+          { label: "A", key: "coffee", text: "先把這件事的「為什麼」講清楚，讓大家有共鳴。" },
+          { label: "B", key: "plastic", text: "先想一個讓大家都能參與的玩法，把氣氛帶起來。" },
+          { label: "C", key: "oyster", text: "先整理時間、分工和細節，讓事情可以順利往前。" },
+          { label: "D", key: "cotton", text: "先注意有沒有人感覺被忽略、跟不上。" },
+          { label: "E", key: "denim", text: "先想想這件事可以怎麼變得跟一般做法不一樣。" },
+          { label: "F", key: "sprout", text: "先看整體目標和大家的狀況，再決定怎麼安排。" }
         ]
       },
       {
-        title: "你覺得永續最動人的地方是什麼？",
+        softener: "每個人都有自己擅長的方式，\n但每一種方式，也都會有自己的卡住時刻。",
+        title: "當你想為一件你在乎的事情做點什麼時，你最常卡住的地方比較像？",
         options: [
-          { label: "A", key: "coffee", text: "它讓不起眼的日常重新有了意義。" },
-          { label: "B", key: "plastic", text: "它讓人用身體參與，而不只是聽道理。" },
-          { label: "C", key: "oyster", text: "它能變成一套可持續運作的方法。" },
-          { label: "D", key: "cotton", text: "它讓人被接住，也願意溫柔對待世界。" },
-          { label: "E", key: "denim", text: "它讓舊物、舊經驗、舊記憶有新的位置。" },
-          { label: "F", key: "sprout", text: "它讓不同的人和資源，慢慢長成一個共同的行動。" }
+          { label: "A", key: "coffee", text: "我有很多感受，但不知道怎麼說才不會太零散。" },
+          { label: "B", key: "plastic", text: "我有時太想讓人覺得有趣，反而忘了真正想留下什麼。" },
+          { label: "C", key: "oyster", text: "我會一直想把事情整理好，結果遲遲不敢開始。" },
+          { label: "D", key: "cotton", text: "我常常先照顧別人的感受，卻忘了自己的位置。" },
+          { label: "E", key: "denim", text: "我容易留戀過去的好，有時捨不得讓事情往下一步走。" },
+          { label: "F", key: "sprout", text: "我會一直看見太多面向，反而不知道第一步要先做什麼。" }
         ]
       },
       {
-        title: "面對一群第一次接觸永續的人，你會怎麼開始？",
+        title: "下面哪個畫面，會讓你心裡偷偷覺得：「啊，這就是我喜歡的時刻。」",
         options: [
-          { label: "A", key: "coffee", text: "從一個熟悉的生活故事開始。" },
-          { label: "B", key: "plastic", text: "先讓大家玩一個簡單的小挑戰。" },
-          { label: "C", key: "oyster", text: "先說明流程，讓大家知道會發生什麼。" },
-          { label: "D", key: "cotton", text: "先觀察大家的狀態，再慢慢帶入。" },
-          { label: "E", key: "denim", text: "先邀請大家想起自己與物件的關係。" },
-          { label: "F", key: "sprout", text: "先把今天的目的、材料和行動方向串起來。" }
+          { label: "A", key: "coffee", text: "一個原本聽不懂的人，因為你說的一段話，眼神突然亮了。" },
+          { label: "B", key: "plastic", text: "大家在你想出來的玩法裡，玩得比預期還投入。" },
+          { label: "C", key: "oyster", text: "你整理的一份東西，被別人拿去用，而且真的順利完成。" },
+          { label: "D", key: "cotton", text: "一個本來很緊張的人，在你旁邊慢慢放鬆下來。" },
+          { label: "E", key: "denim", text: "別人覺得「就這樣吧」的東西，被你看出新的可能，大家驚喜地說好特別。" },
+          { label: "F", key: "sprout", text: "一個原本很雜亂的計畫，被你整理成一條清楚的路，大家都鬆了一口氣。" }
         ]
       },
       {
-        title: "你最想把自己的永續能力用在哪裡？",
+        title: "如果用一句話形容你做事的方式，你覺得哪一句最像你？",
         options: [
-          { label: "A", key: "coffee", text: "材料故事、品牌敘事、導覽開場。" },
-          { label: "B", key: "plastic", text: "互動體驗、活動設計、創意轉譯。" },
-          { label: "C", key: "oyster", text: "流程設計、教材整理、系統建構。" },
-          { label: "D", key: "cotton", text: "陪伴教學、社群支持、溫柔引導。" },
-          { label: "E", key: "denim", text: "生命故事、舊物改造、記憶重寫。" },
-          { label: "F", key: "sprout", text: "整合策劃、場域連結、行動設計。" }
-        ]
-      },
-      {
-        title: "如果你的永續行動要長成一個小小世界，你最希望它留下什麼？",
-        weight: 2,
-        options: [
-          { label: "A", key: "coffee", text: "讓人記得材料曾經帶來的餘溫。" },
-          { label: "B", key: "plastic", text: "讓人願意親手參與改變。" },
-          { label: "C", key: "oyster", text: "讓好方法可以被更多人穩定使用。" },
-          { label: "D", key: "cotton", text: "讓每個人都感覺自己可以慢慢開始。" },
-          { label: "E", key: "denim", text: "讓被遺忘的故事重新發光。" },
-          { label: "F", key: "sprout", text: "讓不同的人、材料與行動被溫柔地串起來。" }
+          { label: "A", key: "coffee", text: "我相信，被忽略的日常裡，也有值得被說出的故事。" },
+          { label: "B", key: "plastic", text: "我相信，親手參與過的事，才會真正留在心裡。" },
+          { label: "C", key: "oyster", text: "我相信，好的改變需要方法，才走得長久。" },
+          { label: "D", key: "cotton", text: "我相信，慢慢開始也沒關係，有人陪著就會不一樣。" },
+          { label: "E", key: "denim", text: "我相信，舊的事物不一定結束，它也可以被重新命名。" },
+          { label: "F", key: "sprout", text: "我相信，當我們看見整體，方向就會慢慢長出來。" }
         ]
       }
     ];
@@ -974,7 +1120,7 @@
       },
       sprout: {
         role: "小芽型",
-        title: "行動整合者",
+        title: "整合策劃者",
         poeticName: "把不同的光，慢慢聚成一座可以前進的方向",
         material: "六大材料的整合入口",
         talent: "整合策劃力",
@@ -1033,6 +1179,49 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    // v3.0 醒悟揭曉動畫
+    let _revealTimers = [];
+    let _revealDone = false;
+    function playRevealSequence() {
+      const reveal = document.getElementById("revealSequence");
+      const card = document.getElementById("resultCard");
+      if (!reveal || !card) return;
+      _revealTimers.forEach(t => clearTimeout(t));
+      _revealTimers = [];
+      _revealDone = false;
+      // reset state
+      reveal.classList.remove("done");
+      reveal.querySelectorAll(".reveal-line").forEach(l => l.classList.remove("visible"));
+      const nameEl = reveal.querySelector(".reveal-name");
+      if (nameEl) nameEl.classList.remove("visible");
+      card.classList.remove("visible");
+
+      const lines = reveal.querySelectorAll(".reveal-line");
+      lines.forEach((line, i) => {
+        _revealTimers.push(setTimeout(() => line.classList.add("visible"), i * 1500));
+      });
+      const nameDelay = lines.length * 1500 + 500;  // 4 lines * 1500 + 500 buffer = 6500
+      _revealTimers.push(setTimeout(() => {
+        if (nameEl) nameEl.classList.add("visible");
+      }, nameDelay));
+      _revealTimers.push(setTimeout(finishReveal, nameDelay + 1500));
+
+      const skipBtn = document.getElementById("revealSkipBtn");
+      if (skipBtn) {
+        skipBtn.onclick = finishReveal;
+      }
+    }
+    function finishReveal() {
+      if (_revealDone) return;
+      _revealDone = true;
+      _revealTimers.forEach(t => clearTimeout(t));
+      _revealTimers = [];
+      const reveal = document.getElementById("revealSequence");
+      const card = document.getElementById("resultCard");
+      if (reveal) reveal.classList.add("done");
+      if (card) card.classList.add("visible");
+    }
+
     function startQuiz() {
       state.currentQuestion = 0;
       state.answers = [];
@@ -1061,9 +1250,19 @@
       const total = QUESTIONS.length;
       const number = state.currentQuestion + 1;
 
+      // v3.0: Q5 軟化過渡語（同頁顯示，不獨立過場頁）
+      const softenerEl = document.getElementById("questionSoftener");
+      if (question.softener) {
+        softenerEl.textContent = question.softener;
+        softenerEl.classList.remove("hidden");
+      } else {
+        softenerEl.classList.add("hidden");
+        softenerEl.textContent = "";
+      }
+
       questionTitle.textContent = question.title;
       questionCount.textContent = `第 ${number} 題 / 共 ${total} 題`;
-      questionHint.textContent = question.weight === 2 ? "這題權重較高，請選最貼近你的答案" : "選一個最靠近你的答案";
+      questionHint.textContent = "選一個最靠近你的答案";
       progressFill.style.width = `${(number / total) * 100}%`;
       backBtn.textContent = state.currentQuestion === 0 ? "回首頁" : "上一題";
 
@@ -1101,9 +1300,8 @@
         return acc;
       }, {});
 
-      state.answers.forEach((key, index) => {
-        const weight = QUESTIONS[index].weight || 1;
-        scores[key] += weight;
+      state.answers.forEach((key) => {
+        scores[key] += 1;
       });
 
       const maxScore = Math.max(...Object.values(scores));
@@ -1113,10 +1311,9 @@
         return { key: tied[0], scores };
       }
 
-      const q8 = state.answers[7];
-      const q4 = state.answers[3];
-      const q1 = state.answers[0];
-      const tieBreakers = [q8, q4, q1];
+      const q7 = state.answers[6];
+      const q5 = state.answers[4];
+      const tieBreakers = [q7, q5];
 
       for (const key of tieBreakers) {
         if (tied.includes(key)) {
@@ -1143,6 +1340,13 @@
       resultImage.src = result.image;
       resultImage.alt = `${result.role} ${result.title}水彩繪本風角色卡`;
       lineCta.href = LINE_URL;
+
+      // v3.0 醒悟揭曉：填名稱與職稱
+      const revealName = document.getElementById("revealRoleName");
+      const revealTitleEl = document.getElementById("revealRoleTitle");
+      if (revealName) revealName.textContent = PERSONA_LABELS[key] || result.role;
+      if (revealTitleEl) revealTitleEl.textContent = result.title;
+      playRevealSequence();
 
       const directions = document.getElementById("resultDirections");
       directions.innerHTML = "";
