@@ -1,629 +1,1278 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>你是哪一型的永續行動者？｜Wishlite ECO STAR</title>
-<meta name="description" content="從材料、故事到現場體驗，找到你最自然的永續影響力。一個關於永續行動者的人格測驗。" />
-<meta property="og:title" content="你是哪一型的永續行動者？" />
-<meta property="og:description" content="從材料、故事到現場體驗，找到你最自然的永續影響力。" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://wishlite.github.io/wishlite-proposals/quiz/" />
-<style>
-  :root{
-    --bg:#F5F2EA; --ink:#2F2A24; --sub:#7A6F61;
-    --brown:#A67C52; --brown-deep:#7E5A35;
-    --green:#7D8F72; --green-deep:#566448;
-    --accent:#D89B5C; --line:#E6E0D2; --card:#FDFBF5;
-    --cha:#A67C52; --su:#4A8A8E; --hao:#9A8E7A;
-    --mian:#C9A89B; --tsai:#5A6B7E; --sprout:#7D8F72;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--bg);color:var(--ink);
-    font-family:"PingFang TC","Noto Serif TC","Noto Sans TC",serif;
-    -webkit-font-smoothing:antialiased;line-height:1.8}
-  .wrap{max-width:680px;margin:0 auto;padding:48px 22px 80px;min-height:100vh}
-  h1,h2,h3{font-weight:700;letter-spacing:.02em}
-  a{color:var(--brown-deep)}
-  button{font-family:inherit;cursor:pointer;border:none}
-  .btn{display:inline-block;padding:14px 28px;border-radius:999px;
-    background:var(--brown);color:#fff;font-size:16px;font-weight:600;
-    box-shadow:0 8px 24px -10px rgba(126,90,53,.5);transition:.2s}
-  .btn:hover{background:var(--brown-deep);transform:translateY(-1px)}
-  .btn.ghost{background:transparent;color:var(--brown-deep);
-    border:1.5px solid var(--brown);box-shadow:none}
-  .btn.ghost:hover{background:var(--soft,#FAF6EA)}
-  .center{text-align:center}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="測測你的永續行動天賦，3 分鐘找到屬於你的永續樣子。從故事、體驗、整理、陪伴到重寫與整合，看見你最自然的行動方式。永續行動學院｜Wishlite。">
+  <meta property="og:title" content="測測你的永續行動天賦">
+  <meta property="og:description" content="3 分鐘看見你最自然的永續樣子。從故事、體驗、整理、陪伴到重寫與整合，找到屬於你的永續行動天賦。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/hero-quiz-cover.png">
+  <title>測測你的永續行動天賦｜永續行動學院｜Wishlite</title>
+  <style>
+    :root {
+      --cream: #F5F2EA;
+      --sage: #7D8F72;
+      --sage-dark: #5F7157;
+      --brown: #5C4830;
+      --tan: #A67C52;
+      --soft-blue: #BFD4DD;
+      --paper: #FFF9EF;
+      --line: #D8C7AA;
+      --clay: #C98767;
+      --ink: #3F3528;
+      --muted: #746755;
+      --white: #FFFFFF;
+      --shadow: 0 18px 45px rgba(92, 72, 48, 0.12);
+      --radius: 20px;
+      --max: 980px;
+    }
 
-  /* === Cover === */
-  .cover{padding:48px 16px;border-radius:18px;
-    background:radial-gradient(120% 80% at 50% 0%, #FBF6E6, var(--bg) 70%);
-    box-shadow:inset 0 0 0 1px var(--line)}
-  .cover .eyebrow{color:var(--green-deep);font-size:13px;letter-spacing:.3em;margin-bottom:16px}
-  .cover h1{font-size:30px;line-height:1.4;margin-bottom:18px}
-  .cover .sub{color:var(--sub);font-size:16px;margin-bottom:28px}
-  .cover .stat{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;
-    margin:24px 0 32px;color:var(--sub);font-size:13px}
-  .cover .stat span{display:inline-flex;align-items:center;gap:6px}
-  .mascot-row{display:flex;justify-content:center;gap:8px;margin:24px 0;flex-wrap:wrap}
-  .mascot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;
-    justify-content:center;font-size:24px;border:2px solid var(--ink)}
+    * {
+      box-sizing: border-box;
+    }
 
-  /* === Question === */
-  .progress{height:4px;background:var(--line);border-radius:4px;margin-bottom:32px;overflow:hidden}
-  .progress > div{height:100%;background:var(--brown);transition:width .4s}
-  .qnum{color:var(--green-deep);font-size:13px;letter-spacing:.2em;margin-bottom:10px}
-  .qtext{font-size:21px;line-height:1.6;margin-bottom:28px;font-weight:700}
-  .opt{display:block;width:100%;text-align:left;padding:16px 18px;
-    background:var(--card);border:1.5px solid var(--line);border-radius:12px;
-    margin-bottom:12px;font-size:15px;line-height:1.6;color:var(--ink);
-    transition:.18s;cursor:pointer}
-  .opt:hover{border-color:var(--brown);background:#FFF;transform:translateY(-1px)}
-  .opt:active{transform:translateY(0)}
+    html {
+      scroll-behavior: smooth;
+    }
 
-  /* === Result === */
-  .result-hero{padding:36px 24px 28px;border-radius:18px;text-align:center;
-    background:var(--card);border:1.5px solid var(--line);margin-bottom:24px;position:relative}
-  .result-hero .badge{display:inline-block;padding:4px 14px;border-radius:999px;
-    background:var(--green);color:#fff;font-size:12px;letter-spacing:.2em;margin-bottom:14px}
-  .big-mascot{width:120px;height:120px;border-radius:50%;display:inline-flex;
-    align-items:center;justify-content:center;font-size:60px;border:3px solid var(--ink);
-    background:#FFF;margin-bottom:18px}
-  .result-hero h2{font-size:26px;line-height:1.4;margin-bottom:12px}
-  .result-hero .poem{color:var(--sub);font-size:15px;line-height:1.8;font-style:italic;
-    padding:14px 16px;border-left:3px solid var(--accent);text-align:left;
-    background:#FBF7EC;border-radius:0 8px 8px 0;margin-top:14px}
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+      line-height: 1.7;
+      background:
+        radial-gradient(circle at 14% 10%, rgba(191, 212, 221, 0.42), transparent 26rem),
+        radial-gradient(circle at 84% 5%, rgba(166, 124, 82, 0.16), transparent 22rem),
+        linear-gradient(180deg, var(--cream), #EFE8DC 100%);
+      min-height: 100vh;
+    }
 
-  .block{background:var(--card);border:1px solid var(--line);
-    border-radius:14px;padding:24px 22px;margin-bottom:18px}
-  .block h3{font-size:15px;color:var(--green-deep);letter-spacing:.15em;
-    margin-bottom:12px;text-transform:uppercase}
-  .block p{font-size:15px;line-height:1.85}
-  .block ul{padding-left:18px;font-size:15px;line-height:1.9}
-  .block ul li{margin-bottom:4px}
-  .core-power{display:inline-block;padding:8px 18px;border-radius:999px;
-    background:var(--brown);color:#fff;font-size:15px;font-weight:600}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.38;
+      background-image:
+        linear-gradient(rgba(92, 72, 48, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(92, 72, 48, 0.025) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mix-blend-mode: multiply;
+    }
 
-  /* === Standing CTA === */
-  .standing{margin-top:24px;padding:28px 22px;border-radius:16px;
-    background:linear-gradient(180deg, #FBF7EC 0%, #F5EFDD 100%);
-    border:1.5px solid var(--line)}
-  .standing .row{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
-  .standing .row:last-child{margin-bottom:0}
-  .standing .icon{flex-shrink:0;width:42px;height:42px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;font-size:22px;
-    background:#FFF;border:2px solid var(--ink)}
-  .standing .text{flex:1}
-  .standing .text strong{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
-  .standing .text span{font-size:13px;color:var(--sub);line-height:1.6}
+    button,
+    input,
+    select {
+      font: inherit;
+    }
 
-  /* === Form === */
-  .form{margin-top:28px;padding:28px 22px;border-radius:16px;
-    background:#FFF;border:1.5px solid var(--brown)}
-  .form h3{font-size:18px;margin-bottom:6px}
-  .form .desc{font-size:14px;color:var(--sub);margin-bottom:20px;line-height:1.7}
-  .field{margin-bottom:14px}
-  .field label{display:block;font-size:13px;color:var(--sub);margin-bottom:6px}
-  .field input, .field select{width:100%;padding:12px 14px;font-size:15px;
-    border:1.5px solid var(--line);border-radius:8px;background:#FAF8F2;
-    font-family:inherit;color:var(--ink)}
-  .field input:focus, .field select:focus{outline:none;border-color:var(--brown);background:#FFF}
-  .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink);
-    cursor:pointer;line-height:1.6;padding:8px 0}
-  .check input{margin-top:4px;flex-shrink:0;width:18px;height:18px;accent-color:var(--brown)}
-  .submit-btn{width:100%;padding:16px;background:var(--brown);color:#fff;font-size:16px;
-    font-weight:700;border-radius:10px;margin-top:14px;letter-spacing:.05em}
-  .submit-btn:hover{background:var(--brown-deep)}
-  .submit-btn:disabled{background:#C9BBA8;cursor:not-allowed}
+    button {
+      cursor: pointer;
+    }
 
-  /* === Share === */
-  .share{margin-top:24px;text-align:center;padding:20px;background:var(--card);
-    border-radius:14px;border:1px dashed var(--line)}
-  .share p{font-size:14px;color:var(--sub);margin-bottom:14px}
-  .share-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-  .share-btn{padding:10px 18px;border-radius:999px;background:#FFF;
-    border:1.5px solid var(--line);color:var(--ink);font-size:14px;font-weight:600;cursor:pointer}
-  .share-btn:hover{border-color:var(--brown);color:var(--brown-deep)}
-  .hashtag{display:inline-block;margin-top:14px;padding:6px 14px;background:var(--soft,#FAF6EA);
-    border-radius:999px;color:var(--green-deep);font-size:13px}
+    a {
+      color: inherit;
+    }
 
-  /* === Footer === */
-  .footer{margin-top:48px;text-align:center;color:var(--sub);font-size:12px;line-height:1.8}
-  .footer hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+    img {
+      display: block;
+      max-width: 100%;
+    }
 
-  /* === Thank you === */
-  .thanks{padding:40px 24px;text-align:center;background:var(--card);
-    border-radius:18px;border:1.5px solid var(--line)}
-  .thanks .check-icon{width:60px;height:60px;border-radius:50%;background:var(--green);
-    color:#fff;display:inline-flex;align-items:center;justify-content:center;
-    font-size:30px;margin-bottom:18px}
-  .thanks h2{font-size:24px;margin-bottom:14px}
-  .thanks p{color:var(--sub);font-size:15px;line-height:1.9;margin-bottom:8px}
+    .site {
+      position: relative;
+      min-height: 100vh;
+      padding: 18px;
+    }
 
-  .hidden{display:none}
-  @media (max-width:480px){
-    .wrap{padding:32px 18px 60px}
-    .cover h1{font-size:24px}
-    .qtext{font-size:18px}
-    .result-hero h2{font-size:22px}
-  }
-</style>
+    .wrap {
+      width: min(100%, var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 0 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--brown);
+      font-weight: 700;
+      letter-spacing: 0;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: var(--paper);
+      object-fit: contain;
+      box-shadow: 0 8px 24px rgba(92, 72, 48, 0.12);
+    }
+
+    .brand-fallback {
+      display: grid;
+      place-items: center;
+      color: var(--sage-dark);
+      font-size: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 12px;
+      border: 1px solid rgba(216, 199, 170, 0.95);
+      border-radius: 999px;
+      color: var(--brown);
+      background: rgba(255, 249, 239, 0.74);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      align-items: start;
+      width: min(100%, 760px);
+      margin: 0 auto;
+      padding: 8px 0 28px;
+    }
+
+    .hero-art {
+      overflow: hidden;
+      border: 1px solid rgba(216, 199, 170, 0.9);
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(255, 249, 239, 0.74), rgba(191, 212, 221, 0.34)),
+        var(--paper);
+      box-shadow: var(--shadow);
+      min-height: 0;
+      position: relative;
+    }
+
+    .hero-art img {
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      object-fit: contain;
+    }
+
+    .hero-copy {
+      display: grid;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .image-fallback {
+      display: grid;
+      min-height: 250px;
+      place-items: center;
+      padding: 28px;
+      text-align: center;
+      color: var(--sage-dark);
+      background:
+        linear-gradient(145deg, rgba(255, 249, 239, 0.8), rgba(191, 212, 221, 0.45)),
+        repeating-linear-gradient(-8deg, rgba(216, 199, 170, 0.22) 0 2px, transparent 2px 13px);
+    }
+
+    .image-fallback strong {
+      display: block;
+      color: var(--brown);
+      font-size: 24px;
+      line-height: 1.4;
+    }
+
+    .kicker {
+      margin: 0 0 12px;
+      color: var(--sage-dark);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 12px;
+      color: var(--brown);
+      font-size: clamp(36px, 11vw, 72px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: clamp(19px, 5vw, 30px);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .lead {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn,
+    .option-btn,
+    .share-btn {
+      border: 0;
+      border-radius: 999px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .primary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      width: 100%;
+      padding: 13px 22px;
+      color: var(--paper);
+      background: var(--sage-dark);
+      box-shadow: 0 14px 28px rgba(95, 113, 87, 0.24);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .primary-btn:hover,
+    .primary-btn:focus-visible {
+      background: var(--sage);
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 11px 18px;
+      color: var(--brown);
+      background: rgba(255, 249, 239, 0.96);
+      border: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .ghost-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 9px 14px;
+      color: var(--sage-dark);
+      background: transparent;
+      border: 1px solid rgba(125, 143, 114, 0.35);
+      font-weight: 700;
+    }
+
+    .intro-note {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .panel {
+      border: 1px solid rgba(216, 199, 170, 0.95);
+      border-radius: var(--radius);
+      background: rgba(255, 249, 239, 0.88);
+      box-shadow: var(--shadow);
+    }
+
+    .quiz-panel {
+      padding: 18px;
+    }
+
+    .progress-line {
+      height: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(216, 199, 170, 0.48);
+    }
+
+    .progress-fill {
+      width: 12.5%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--sage), var(--tan));
+      transition: width 0.25s ease;
+    }
+
+    .quiz-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 14px 0 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .question-title {
+      margin-bottom: 16px;
+      color: var(--brown);
+      font-size: clamp(24px, 7vw, 40px);
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      min-height: 70px;
+      padding: 14px 15px;
+      border: 1px solid rgba(216, 199, 170, 0.95);
+      border-radius: 18px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.54);
+      text-align: left;
+      box-shadow: 0 8px 22px rgba(92, 72, 48, 0.06);
+    }
+
+    .option-btn:hover,
+    .option-btn:focus-visible,
+    .option-btn.selected {
+      border-color: rgba(95, 113, 87, 0.66);
+      background: rgba(191, 212, 221, 0.24);
+      transform: translateY(-1px);
+    }
+
+    .option-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      margin-right: 8px;
+      border-radius: 50%;
+      color: var(--paper);
+      background: var(--tan);
+      font-weight: 800;
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .result-hero {
+      display: grid;
+      gap: 20px;
+      align-items: start;
+      padding: 18px;
+    }
+
+    .result-visual {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--paper);
+      min-height: 250px;
+    }
+
+    .result-visual img,
+    .result-visual .image-fallback {
+      width: 100%;
+      min-height: 250px;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .result-eyebrow {
+      display: inline-flex;
+      margin-bottom: 10px;
+      color: var(--sage-dark);
+      font-weight: 800;
+    }
+
+    .result-title {
+      margin-bottom: 8px;
+      color: var(--brown);
+      font-size: clamp(32px, 9vw, 58px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .poetic {
+      margin-bottom: 14px;
+      color: var(--tan);
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .facts {
+      display: grid;
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .fact {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(216, 199, 170, 0.9);
+    }
+
+    .fact span:first-child {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .fact strong {
+      color: var(--brown);
+      text-align: right;
+    }
+
+    .direction-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0;
+      margin: 12px 0 0;
+      list-style: none;
+    }
+
+    .cta-band {
+      margin: 22px 0;
+      padding: 18px;
+      border: 1px solid rgba(125, 143, 114, 0.32);
+      border-radius: 18px;
+      background: rgba(191, 212, 221, 0.2);
+    }
+
+    .cta-band h3 {
+      margin-bottom: 10px;
+      color: var(--brown);
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .line-btn {
+      margin-top: 10px;
+      background: #5F8F63;
+    }
+
+    .form-section,
+    .share-section {
+      margin-top: 18px;
+      padding: 18px;
+    }
+
+    .section-title {
+      margin-bottom: 12px;
+      color: var(--brown);
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--brown);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 12px;
+      border: 1px solid rgba(216, 199, 170, 0.95);
+      border-radius: 14px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.68);
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(95, 113, 87, 0.72);
+      box-shadow: 0 0 0 4px rgba(125, 143, 114, 0.16);
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--ink);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .check input {
+      width: 20px;
+      min-width: 20px;
+      height: 20px;
+      min-height: 20px;
+      margin-top: 2px;
+      accent-color: var(--sage-dark);
+    }
+
+    .form-message {
+      min-height: 28px;
+      margin: 12px 0 0;
+      color: var(--sage-dark);
+      font-weight: 700;
+    }
+
+    .share-row {
+      display: grid;
+      gap: 10px;
+    }
+
+    .share-btn {
+      min-height: 46px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      color: var(--brown);
+      background: rgba(255, 255, 255, 0.54);
+      font-weight: 800;
+    }
+
+    .share-btn:hover,
+    .share-btn:focus-visible,
+    .secondary-btn:hover,
+    .ghost-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(92, 72, 48, 0.1);
+    }
+
+    .footer-note {
+      margin: 26px 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (min-width: 720px) {
+      .site {
+        padding: 28px;
+      }
+
+      .topbar {
+        padding-bottom: 28px;
+      }
+
+      .hero {
+        gap: 22px;
+        padding-bottom: 42px;
+      }
+
+      .primary-btn {
+        width: auto;
+        min-width: 190px;
+      }
+
+      .quiz-panel {
+        padding: 34px;
+      }
+
+      .options {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .result-hero {
+        grid-template-columns: 0.9fr 1.1fr;
+        padding: 28px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .form-grid .wide,
+      .form-grid .check,
+      .form-grid .primary-btn,
+      .form-message {
+        grid-column: 1 / -1;
+      }
+
+      .share-row {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
+  <main class="site">
+    <div class="wrap">
+      <header class="topbar" aria-label="網站頁首">
+        <a class="brand" href="#home" aria-label="回到 Wishlite 測驗首頁">
+          <img class="brand-mark" src="assets/logo.png" alt="Wishlite logo" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+          <span class="brand-mark brand-fallback hidden" aria-hidden="true">芽</span>
+          <span>永續行動學院｜Wishlite</span>
+        </a>
+        <span class="pill">測測你的永續行動天賦</span>
+      </header>
 
-  <!-- ========== COVER ========== -->
-  <section id="cover" class="cover center">
-    <div class="eyebrow">Wishlite ECO STAR</div>
-    <h1>你是哪一型的<br>永續行動者？</h1>
-    <p class="sub">從材料、故事到現場體驗，<br>找到你最自然的永續影響力。</p>
+      <section id="homeScreen" class="screen active" aria-labelledby="homeTitle">
+        <div class="hero">
+          <figure class="hero-art" aria-label="永續樣子測驗封面主視覺">
+            <img src="assets/hero-quiz-cover.png" alt="看看你最自然的永續樣子，水彩繪本風測驗封面" onerror="showImageFallback(this, '永續樣子', '測驗封面主視覺');">
+          </figure>
 
-    <div class="mascot-row" aria-hidden="true">
-      <div class="mascot" style="background:#FBE6CD">☕</div>
-      <div class="mascot" style="background:#CDE3E5">🌊</div>
-      <div class="mascot" style="background:#EDE6D8">🐚</div>
-      <div class="mascot" style="background:#F2DDD3">👶</div>
-      <div class="mascot" style="background:#D8DCE3">👖</div>
-      <div class="mascot" style="background:#D9E0CE">🌱</div>
-    </div>
+          <div class="hero-copy">
+            <h1 id="homeTitle" class="sr-only">測測你的永續行動天賦</h1>
 
-    <div class="stat">
-      <span>📋 8 題｜約 3 分鐘</span>
-      <span>🌿 6 種人格</span>
-      <span>⭐ 完訓拿大星徽章</span>
-    </div>
+            <div class="tag-row" aria-label="測驗資訊">
+              <span class="pill">8 題｜約 3 分鐘</span>
+              <span class="pill">6 種人格</span>
+              <span class="pill">完成後取得專屬靈感方向</span>
+            </div>
 
-    <button class="btn" onclick="startQuiz()">開始測驗 →</button>
-
-    <p style="font-size:12px;color:var(--sub);margin-top:24px;line-height:1.7">
-      這不是一般心理測驗。<br>
-      而是一個幫助你看見自己如何把永續轉化成行動、體驗與陪伴的入口。
-    </p>
-  </section>
-
-  <!-- ========== QUESTIONS ========== -->
-  <section id="quiz" class="hidden">
-    <div class="progress"><div id="bar" style="width:0%"></div></div>
-    <div class="qnum" id="qnum">QUESTION 1 / 8</div>
-    <h2 class="qtext" id="qtext">—</h2>
-    <div id="opts"></div>
-  </section>
-
-  <!-- ========== RESULT ========== -->
-  <section id="result" class="hidden">
-    <div class="result-hero">
-      <span class="badge">你的永續行動設計師類型</span>
-      <div class="big-mascot" id="r-emoji">🌱</div>
-      <h2 id="r-title">—</h2>
-      <p style="color:var(--sub);font-size:15px;margin-top:6px" id="r-tagline">—</p>
-      <div class="poem" id="r-poem">—</div>
-    </div>
-
-    <div class="block">
-      <h3>你是一個會 OO 的人</h3>
-      <p id="r-intro">—</p>
-    </div>
-
-    <div class="block">
-      <h3>核心能力</h3>
-      <p><span class="core-power" id="r-power">—</span></p>
-    </div>
-
-    <div class="block">
-      <h3>適合發展的方向</h3>
-      <ul id="r-directions"></ul>
-    </div>
-
-    <div class="block">
-      <h3>給你的提醒</h3>
-      <p id="r-reminder">—</p>
-    </div>
-
-    <!-- 常駐 CTA：大星 + 小群 -->
-    <div class="standing">
-      <div class="row">
-        <div class="icon" style="background:#FBE6B8">⭐</div>
-        <div class="text">
-          <strong>完訓後你會拿到「大星」認證徽章</strong>
-          <span>方法論可以帶走，認證不打折。完訓即可申請實習與合作評估。</span>
+            <button id="startBtn" class="primary-btn" type="button">開始測驗 →</button>
+            <p class="intro-note">這不是一般心理測驗，而是陪你看見自己如何把永續轉化成行動、體驗與陪伴的入口。</p>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="icon" style="background:#EAE5D5">👥</div>
-        <div class="text">
-          <strong>首屆 ECO STAR 共創梯：25 人</strong>
-          <span>三日核心訓練・18 小時・NT$24,800・不設早鳥。<br>說明會將公布完整時程與報名方式。</span>
+      </section>
+
+      <section id="quizScreen" class="screen" aria-labelledby="questionTitle">
+        <div class="panel quiz-panel">
+          <div class="progress-line" aria-hidden="true">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+          <div class="quiz-meta">
+            <span id="questionCount">第 1 題 / 共 8 題</span>
+            <span id="questionHint">選一個最靠近你的答案</span>
+          </div>
+          <h2 id="questionTitle" class="question-title"></h2>
+          <div id="options" class="options"></div>
+          <div class="quiz-actions">
+            <button id="backBtn" class="ghost-btn" type="button">上一題</button>
+            <button id="restartBtn" class="secondary-btn" type="button">重新開始</button>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section id="resultScreen" class="screen" aria-live="polite">
+        <article class="panel result-hero" id="resultCard">
+          <figure class="result-visual">
+            <img id="resultImage" src="" alt="" onerror="showImageFallback(this, '你的六友結果', '水彩繪本風角色卡');">
+          </figure>
+          <div>
+            <span id="resultRole" class="result-eyebrow"></span>
+            <h2 id="resultTitle" class="result-title"></h2>
+            <p id="resultPoetic" class="poetic"></p>
+            <p id="resultDescription" class="lead"></p>
+
+            <div class="facts">
+              <div class="fact"><span>對應材料</span><strong id="resultMaterial"></strong></div>
+              <div class="fact"><span>核心天賦</span><strong id="resultTalent"></strong></div>
+            </div>
+
+            <h3 class="section-title">適合方向</h3>
+            <ul id="resultDirections" class="direction-list"></ul>
+
+            <div class="cta-band">
+              <h3>想更了解你的永續行動天賦？</h3>
+              <p class="lead">加入 LINE，領取你的完整人格解析。<br>我們會把你的角色故事、適合的行動方向，以及專屬的永續創作靈感包入口一起送給你。</p>
+              <a id="lineCta" class="primary-btn line-btn" href="https://line.me/R/ti/p/@403kginl" target="_blank" rel="noopener">加入 LINE 領完整解析</a>
+            </div>
+          </div>
+        </article>
+
+        <section class="panel form-section" aria-labelledby="formTitle">
+          <h2 id="formTitle" class="section-title">把你的靈感包，寄到信箱慢慢收藏</h2>
+          <p class="lead">留下 Email，我們會把《永續創作靈感包 2026》和後續提醒寄給你。<br>讓你在離開頁面後，也能慢慢回看自己的永續行動方向。</p>
+          <form id="leadForm" class="form-grid">
+            <label>
+              姓名 / 暱稱
+              <input name="name" autocomplete="name" required placeholder="例如：Apple">
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" autocomplete="email" required placeholder="your@email.com">
+            </label>
+            <label>
+              LINE ID（選填）
+              <input name="lineId" autocomplete="off" placeholder="方便後續辨識即可">
+            </label>
+            <label>
+              目前身份（選填）
+              <select name="identity">
+                <option value="">請選擇最接近的一項</option>
+                <option>手作講師 / 工作室主理人</option>
+                <option>企業內訓 / HR / ESG 負責人</option>
+                <option>學校老師 / 教育工作者</option>
+                <option>永續 / NGO / 社企工作者</option>
+                <option>個人探索 / 想轉職</option>
+                <option>其他</option>
+              </select>
+            </label>
+            <label class="check wide">
+              <input name="wantsInfo" type="checkbox">
+              <span>我想收到 ECO STAR 線上說明會通知</span>
+            </label>
+            <label class="check wide">
+              <input name="consent" type="checkbox" required>
+              <span>我同意 Wishlite 韻手作將以上資訊用於寄送靈感包與後續通知</span>
+            </label>
+            <button id="submitBtn" class="primary-btn" type="submit">寄到我的信箱</button>
+            <p id="formMessage" class="form-message" role="status"></p>
+          </form>
+        </section>
+
+        <section class="panel share-section" aria-labelledby="shareTitle">
+          <h2 id="shareTitle" class="section-title">想把這個結果分享給朋友嗎？ 🌿</h2>
+          <p class="lead">結果頁適合截圖分享，也可以直接把連結傳給朋友。</p>
+          <div class="share-row">
+            <button id="nativeShareBtn" class="share-btn" type="button">分享結果</button>
+            <button id="lineShareBtn" class="share-btn" type="button">LINE 分享</button>
+            <button id="copyLinkBtn" class="share-btn" type="button">複製連結</button>
+          </div>
+        </section>
+
+        <p class="footer-note">Wishlite 韻手作｜讓永續從材料走進行動。</p>
+      </section>
     </div>
+  </main>
 
-    <!-- Form：留資料 -->
-    <form class="form" id="leadForm" onsubmit="return submitLead(event)">
-      <h3>留下 Email，繼續往下走 →</h3>
-      <p class="desc">
-        留下 Email，我們會將《永續創作靈感包 2026》寄給你，<br>
-        也會同步提供 ECO STAR 說明會資訊給你參考。
-      </p>
+  <script>
+    const LINE_URL = "https://line.me/R/ti/p/@403kginl";
+    const FORM_ENDPOINT = "PASTE_N8N_WEBHOOK_URL_HERE";
 
-      <div class="field">
-        <label>姓名 / 暱稱</label>
-        <input type="text" id="f-name" required maxlength="40" placeholder="你希望我們怎麼稱呼你">
-      </div>
-      <div class="field">
-        <label>Email *</label>
-        <input type="email" id="f-email" required placeholder="your@email.com">
-      </div>
-      <div class="field">
-        <label>LINE ID（選填，方便加入說明會通知）</label>
-        <input type="text" id="f-line" maxlength="40" placeholder="@your_line_id">
-      </div>
-      <div class="field">
-        <label>你目前的身份（選填）</label>
-        <select id="f-role">
-          <option value="">— 請選擇 —</option>
-          <option>手作講師 / 工作室主理人</option>
-          <option>企業內訓 / HR / ESG 負責人</option>
-          <option>學校老師 / 教育工作者</option>
-          <option>永續 / NGO / 社企工作者</option>
-          <option>個人探索 / 想轉職</option>
-          <option>其他</option>
-        </select>
-      </div>
+    const PERSONA_ORDER = ["coffee", "plastic", "oyster", "cotton", "denim", "sprout"];
 
-      <label class="check">
-        <input type="checkbox" id="f-briefing" checked>
-        <span>是的，我想收到 ECO STAR 線上說明會的時間通知</span>
-      </label>
-      <label class="check">
-        <input type="checkbox" id="f-consent" required>
-        <span>我同意 Wishlite 韻手作將以上資訊用於寄送靈感包與說明會通知。</span>
-      </label>
+    const PERSONA_LABELS = {
+      coffee: "小渣",
+      plastic: "小塑",
+      oyster: "小蠔",
+      cotton: "小棉",
+      denim: "小仔",
+      sprout: "小芽"
+    };
 
-      <button type="submit" class="submit-btn" id="submitBtn">
-        下載《永續創作靈感包 2026》
-      </button>
-    </form>
+    const QUESTIONS = [
+      {
+        title: "當你看見一份被留下的材料，你最先想到什麼？",
+        options: [
+          { label: "A", key: "coffee", text: "它原本來自哪裡？我想把它的故事說出來。" },
+          { label: "B", key: "plastic", text: "它能不能變成一個有趣、好玩的互動？" },
+          { label: "C", key: "oyster", text: "它要怎麼被整理成穩定、可重複的流程？" },
+          { label: "D", key: "cotton", text: "它能不能陪某個人慢慢轉換心情？" },
+          { label: "E", key: "denim", text: "它身上一定藏著一段值得重新看見的記憶。" },
+          { label: "F", key: "sprout", text: "它可以和哪些人、場域、行動串在一起？" }
+        ]
+      },
+      {
+        title: "如果要設計一場永續活動，你最想先處理哪一件事？",
+        options: [
+          { label: "A", key: "coffee", text: "讓大家先聽見材料背後的日常與溫度。" },
+          { label: "B", key: "plastic", text: "設計一個一進場就想動手參與的體驗。" },
+          { label: "C", key: "oyster", text: "把時間、材料、動線和節奏安排清楚。" },
+          { label: "D", key: "cotton", text: "照顧參與者的感受，讓每個人都跟得上。" },
+          { label: "E", key: "denim", text: "找到能讓人想起自己生命經驗的切入點。" },
+          { label: "F", key: "sprout", text: "先看見整體方向，讓活動和場域彼此連起來。" }
+        ]
+      },
+      {
+        title: "別人通常會因為什麼事來找你幫忙？",
+        options: [
+          { label: "A", key: "coffee", text: "把複雜的事情說得有畫面、有情感。" },
+          { label: "B", key: "plastic", text: "把普通的流程變得更活潑、更有參與感。" },
+          { label: "C", key: "oyster", text: "把混亂的事情整理成可以執行的步驟。" },
+          { label: "D", key: "cotton", text: "陪人安定下來，慢慢找到下一步。" },
+          { label: "E", key: "denim", text: "把舊經驗重新轉化成新的表達方式。" },
+          { label: "F", key: "sprout", text: "把不同人的想法整理成一個共同方向。" }
+        ]
+      },
+      {
+        title: "在團隊合作裡，你最自然的位置是？",
+        options: [
+          { label: "A", key: "coffee", text: "開場的人，幫大家進入情境。" },
+          { label: "B", key: "plastic", text: "點燃氣氛的人，讓大家願意試試看。" },
+          { label: "C", key: "oyster", text: "穩住全局的人，確認事情有序發生。" },
+          { label: "D", key: "cotton", text: "照顧節奏的人，留意誰需要多一點支持。" },
+          { label: "E", key: "denim", text: "收束故事的人，把每個人的片段接在一起。" },
+          { label: "F", key: "sprout", text: "連接方向的人，讓大家知道正在一起往哪裡走。" }
+        ]
+      },
+      {
+        title: "你覺得永續最動人的地方是什麼？",
+        options: [
+          { label: "A", key: "coffee", text: "它讓不起眼的日常重新有了意義。" },
+          { label: "B", key: "plastic", text: "它讓人用身體參與，而不只是聽道理。" },
+          { label: "C", key: "oyster", text: "它能變成一套可持續運作的方法。" },
+          { label: "D", key: "cotton", text: "它讓人被接住，也願意溫柔對待世界。" },
+          { label: "E", key: "denim", text: "它讓舊物、舊經驗、舊記憶有新的位置。" },
+          { label: "F", key: "sprout", text: "它讓不同的人和資源，慢慢長成一個共同的行動。" }
+        ]
+      },
+      {
+        title: "面對一群第一次接觸永續的人，你會怎麼開始？",
+        options: [
+          { label: "A", key: "coffee", text: "從一個熟悉的生活故事開始。" },
+          { label: "B", key: "plastic", text: "先讓大家玩一個簡單的小挑戰。" },
+          { label: "C", key: "oyster", text: "先說明流程，讓大家知道會發生什麼。" },
+          { label: "D", key: "cotton", text: "先觀察大家的狀態，再慢慢帶入。" },
+          { label: "E", key: "denim", text: "先邀請大家想起自己與物件的關係。" },
+          { label: "F", key: "sprout", text: "先把今天的目的、材料和行動方向串起來。" }
+        ]
+      },
+      {
+        title: "你最想把自己的永續能力用在哪裡？",
+        options: [
+          { label: "A", key: "coffee", text: "材料故事、品牌敘事、導覽開場。" },
+          { label: "B", key: "plastic", text: "互動體驗、活動設計、創意轉譯。" },
+          { label: "C", key: "oyster", text: "流程設計、教材整理、系統建構。" },
+          { label: "D", key: "cotton", text: "陪伴教學、社群支持、溫柔引導。" },
+          { label: "E", key: "denim", text: "生命故事、舊物改造、記憶重寫。" },
+          { label: "F", key: "sprout", text: "整合策劃、場域連結、行動設計。" }
+        ]
+      },
+      {
+        title: "如果你的永續行動要長成一個小小世界，你最希望它留下什麼？",
+        weight: 2,
+        options: [
+          { label: "A", key: "coffee", text: "讓人記得材料曾經帶來的餘溫。" },
+          { label: "B", key: "plastic", text: "讓人願意親手參與改變。" },
+          { label: "C", key: "oyster", text: "讓好方法可以被更多人穩定使用。" },
+          { label: "D", key: "cotton", text: "讓每個人都感覺自己可以慢慢開始。" },
+          { label: "E", key: "denim", text: "讓被遺忘的故事重新發光。" },
+          { label: "F", key: "sprout", text: "讓不同的人、材料與行動被溫柔地串起來。" }
+        ]
+      }
+    ];
 
-    <!-- Share -->
-    <div class="share">
-      <p>把測驗分享給對永續好奇的朋友</p>
-      <div class="share-row">
-        <button class="share-btn" onclick="shareLINE()">分享到 LINE</button>
-        <button class="share-btn" onclick="shareFB()">分享到 Facebook</button>
-        <button class="share-btn" onclick="copyLink()">複製連結</button>
-      </div>
-      <span class="hashtag">#我是哪一種永續行動設計師</span>
-      <span class="hashtag">#永續六友</span>
-    </div>
-  </section>
+    const RESULTS = {
+      coffee: {
+        role: "小渣型",
+        title: "材料敘事者",
+        poeticName: "把日常餘溫，說成故事的人",
+        material: "咖啡渣",
+        talent: "材料敘事力",
+        description: "你擅長從日常細節裡，看見材料曾經走過的路。比起直接說服別人，你更像是用一個故事，陪人慢慢靠近永續。",
+        directions: ["材料故事", "品牌敘事", "導覽開場", "情感連結"],
+        cta: "領取小渣型完整解析",
+        image: "assets/result-coffee.png"
+      },
+      plastic: {
+        role: "小塑型",
+        title: "體驗轉譯者",
+        poeticName: "把看似遙遠的議題，變成願意動手的瞬間",
+        material: "PCR 再生塑膠",
+        talent: "體驗設計力",
+        description: "你很會把抽象概念轉成可以摸到、玩到、參與到的體驗。你相信永續不用先被說服，而是可以先從一個好玩的入口開始。",
+        directions: ["活動互動", "體驗設計", "創意轉譯", "參與引導"],
+        cta: "領取小塑型完整解析",
+        image: "assets/result-plastic.png"
+      },
+      oyster: {
+        role: "小蠔型",
+        title: "系統整理者",
+        poeticName: "把散落的可能，整理成穩定發生的方法",
+        material: "牡蠣殼",
+        talent: "系統化能力",
+        description: "你擅長看見結構、流程和關鍵節點。當大家還在摸索時，你能把材料、時間、角色與步驟整理成一條可以被信任的路。",
+        directions: ["流程設計", "教材架構", "專案管理", "方法整理"],
+        cta: "領取小蠔型完整解析",
+        image: "assets/result-oyster.png"
+      },
+      cotton: {
+        role: "小棉型",
+        title: "陪伴轉化者",
+        poeticName: "把柔軟的陪伴，變成開始行動的力量",
+        material: "NG 尿布紙纖",
+        talent: "陪伴轉化力",
+        description: "你對人的狀態很敏銳，知道改變需要安全感。你不急著推人往前，而是能讓人覺得自己被理解，然後願意踏出一小步。",
+        directions: ["陪伴教學", "社群支持", "情緒安定", "溫柔引導"],
+        cta: "領取小棉型完整解析",
+        image: "assets/result-cotton.png"
+      },
+      denim: {
+        role: "小仔型",
+        title: "故事重寫者",
+        poeticName: "把舊物的痕跡，重新縫進新的意義",
+        material: "回收衣物",
+        talent: "故事重寫力",
+        description: "你很懂得看見舊物與舊經驗裡尚未說完的部分。你適合把記憶、材料與創作連在一起，讓人重新理解自己和世界的關係。",
+        directions: ["舊物改造", "生命故事", "記憶轉化", "創作敘事"],
+        cta: "領取小仔型完整解析",
+        image: "assets/result-denim.png"
+      },
+      sprout: {
+        role: "小芽型",
+        title: "行動整合者",
+        poeticName: "把不同的光，慢慢聚成一座可以前進的方向",
+        material: "六大材料的整合入口",
+        talent: "整合策劃力",
+        description: "你習慣看見人、材料、場域之間的連結。你不只在意單一作品完成，而是想讓一群人找到共同前進的節奏與方向。",
+        directions: ["整合策劃", "場域連結", "行動設計", "社群凝聚"],
+        cta: "領取小芽型完整解析",
+        image: "assets/result-sprout.png"
+      }
+    };
 
-  <!-- ========== THANKS ========== -->
-  <section id="thanks" class="hidden">
-    <div class="thanks">
-      <div class="check-icon">✓</div>
-      <h2>謝謝你完成測驗，<br>也謝謝你願意靠近永續行動設計。</h2>
-      <p>我們會將《永續創作靈感包 2026》寄到你的信箱。</p>
-      <p>也會同步提供 ECO STAR 說明會資訊給你參考。</p>
-      <p style="margin-top:24px">期待在說明會上見到你 🌱</p>
-      <div style="margin-top:32px">
-        <a href="https://line.me/R/ti/p/@728zvmqz" class="btn">加入 Wishlite LINE 官方帳號</a>
-      </div>
-    </div>
-  </section>
+    const state = {
+      currentQuestion: 0,
+      answers: [],
+      resultKey: null,
+      scores: null
+    };
 
-  <!-- ========== Footer ========== -->
-  <div class="footer">
-    <hr>
-    <p>Wishlite 韻手作永續｜ECO STAR 永續行動設計師系統</p>
-    <p>讓理念，成為可以被交付的行動。</p>
-  </div>
+    const homeScreen = document.getElementById("homeScreen");
+    const quizScreen = document.getElementById("quizScreen");
+    const resultScreen = document.getElementById("resultScreen");
+    const startBtn = document.getElementById("startBtn");
+    const backBtn = document.getElementById("backBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const questionTitle = document.getElementById("questionTitle");
+    const questionCount = document.getElementById("questionCount");
+    const questionHint = document.getElementById("questionHint");
+    const optionsEl = document.getElementById("options");
+    const progressFill = document.getElementById("progressFill");
+    const leadForm = document.getElementById("leadForm");
+    const formMessage = document.getElementById("formMessage");
+    const submitBtn = document.getElementById("submitBtn");
+    const lineCta = document.getElementById("lineCta");
 
-</div>
+    startBtn.addEventListener("click", startQuiz);
+    backBtn.addEventListener("click", goBack);
+    restartBtn.addEventListener("click", restartQuiz);
+    leadForm.addEventListener("submit", submitLead);
+    document.getElementById("nativeShareBtn").addEventListener("click", shareResult);
+    document.getElementById("lineShareBtn").addEventListener("click", shareToLine);
+    document.getElementById("copyLinkBtn").addEventListener("click", copyResultLink);
 
-<script>
-/* =========================================================
-   Wishlite ECO STAR Quiz｜v1.0
-   6 種人格：A=小渣 B=小塑 C=小蠔 D=小綿 E=小仔 F=小芽
-   ========================================================= */
-
-const N8N_WEBHOOK_URL = 'https://wishlite-n8n.zeabur.app/webhook/quiz-intake';
-// 上線前請替換成實際 n8n webhook path
-
-// ===== 題目資料 =====
-const QUESTIONS = [
-  {
-    q: 'Q1｜當你看到一個被留下、被丟棄的材料，你第一個反應是？',
-    opts: [
-      { t: '想知道它原本來自哪裡、經歷了什麼故事', m: 'A' },
-      { t: '想把它變成一個大家願意動手參與的體驗', m: 'B' },
-      { t: '想整理它的來源、分類、製程與可以應用的方式', m: 'C' },
-      { t: '想知道它能不能陪伴某個人度過一段情緒或時刻', m: 'D' },
-      { t: '想把它曾經被忽略的樣子，重新變成被看見的作品', m: 'E' },
-      { t: '想把它放進一個更大的活動、課程或行動計畫裡', m: 'F' },
-    ]
-  },
-  {
-    q: 'Q2｜如果你要設計一場永續手作活動，你最先會在意什麼？',
-    opts: [
-      { t: '材料故事有沒有被好好說出來', m: 'A' },
-      { t: '參與者在每一個步驟裡會不會有感', m: 'B' },
-      { t: '流程、時間、物料與現場動線是否順暢', m: 'C' },
-      { t: '參與者會不會在過程中感到被接住、被陪伴', m: 'D' },
-      { t: '作品能不能讓人對「廢棄」有新的想像', m: 'E' },
-      { t: '是否能連結企業目標、ESG 主題與後續行動', m: 'F' },
-    ]
-  },
-  {
-    q: 'Q3｜你最自然的教學或引導方式是什麼？',
-    opts: [
-      { t: '從一個材料的小故事開始，慢慢帶出議題', m: 'A' },
-      { t: '用提問、互動和小任務，讓大家自己走進體驗', m: 'B' },
-      { t: '把複雜內容拆成清楚的步驟與架構', m: 'C' },
-      { t: '觀察每個人的狀態，用溫柔的方式陪他完成', m: 'D' },
-      { t: '引導大家把自己的生命經驗放進創作裡', m: 'E' },
-      { t: '把人、主題、材料、場域整合成一場完整行動', m: 'F' },
-    ]
-  },
-  {
-    q: 'Q4｜如果企業邀請你規劃 ESG 體驗，你最有把握的部分是？',
-    opts: [
-      { t: '把材料循環講得有畫面、有溫度', m: 'A' },
-      { t: '設計一個讓員工願意參與、願意分享的流程', m: 'B' },
-      { t: '把活動前中後的執行細節規劃清楚', m: 'C' },
-      { t: '讓不同年齡、背景的人都能安心投入', m: 'D' },
-      { t: '把企業的永續議題轉成有記憶點的故事', m: 'E' },
-      { t: '從企業需求出發，規劃整套活動與成果呈現', m: 'F' },
-    ]
-  },
-  {
-    q: 'Q5｜你覺得「永續」最需要被轉譯成什麼？',
-    opts: [
-      { t: '一個讓人願意聽下去的材料故事', m: 'A' },
-      { t: '一場讓人親手感受到的體驗', m: 'B' },
-      { t: '一套可以被複製、被交付的方法', m: 'C' },
-      { t: '一段讓人慢慢改變的陪伴過程', m: 'D' },
-      { t: '一種重新理解自己與世界的敘事', m: 'E' },
-      { t: '一個能被組織採用、推動與延伸的行動方案', m: 'F' },
-    ]
-  },
-  {
-    q: 'Q6｜在一個永續專案團隊裡，你最自然會站在哪個位置？',
-    opts: [
-      { t: '負責把理念說得動人、有溫度', m: 'A' },
-      { t: '負責讓活動變得好玩、有參與感', m: 'B' },
-      { t: '負責整理流程、表格、SOP 與執行細節', m: 'C' },
-      { t: '負責照顧現場氣氛與參與者狀態', m: 'D' },
-      { t: '負責把作品、人物或議題整理成故事', m: 'E' },
-      { t: '負責把大家的想法整合成可執行的計畫', m: 'F' },
-    ]
-  },
-  {
-    q: 'Q7｜你希望參與者離開活動時，帶走什麼？',
-    opts: [
-      { t: '記得一種材料背後的生命歷程', m: 'A' },
-      { t: '記得自己親手完成了一件有意義的作品', m: 'B' },
-      { t: '記得原來永續也可以被清楚理解與實踐', m: 'C' },
-      { t: '記得自己曾被溫柔陪伴著完成一件事', m: 'D' },
-      { t: '記得原來被丟掉的東西，也能有新的名字', m: 'E' },
-      { t: '記得自己也可以成為推動永續行動的一部分', m: 'F' },
-    ]
-  },
-  {
-    q: 'Q8｜如果未來成為永續行動設計師，你最想練成的是什麼？',
-    opts: [
-      { t: '成為能把材料故事說進人心的人', m: 'A' },
-      { t: '成為能設計有感體驗的人', m: 'B' },
-      { t: '成為能把永續方法整理成系統的人', m: 'C' },
-      { t: '成為能陪伴不同參與者進入永續的人', m: 'D' },
-      { t: '成為能把被忽略的故事重新寫亮的人', m: 'E' },
-      { t: '成為能整合資源、策劃行動方案的人', m: 'F' },
-    ]
-  }
-];
-
-// ===== 6 種人格結果 =====
-const RESULTS = {
-  A: {
-    key: 'cha', emoji: '☕', bg: '#FBE6CD',
-    title: '小渣型｜材料敘事者',
-    tagline: '對應材料：咖啡渣',
-    poem: '「我是被喝完之後，留下的那一點暖。」',
-    intro: '你是一個會聽材料說話的人。在別人眼中，咖啡渣可能只是被留下的殘餘；但在你眼中，它曾經是一杯咖啡、一段日常、一個城市清晨裡被溫柔使用過的痕跡。你很適合成為永續行動裡的「材料翻譯者」——能把材料的來源、困境與轉化，說成一段讓人願意靠近的故事。',
-    power: '材料敘事力',
-    directions: ['材料導覽 / 永續開場','材料故事卡 / 內容寫作','品牌敘事 / 永續文案','課程前導講座','企業 ESG 故事化包裝'],
-    reminder: '你已經很會感受材料，下一步可以練習把故事變成可交付的方法。當你的敘事能被整理、被教學、被複製，你的影響力會走得更遠。ECO STAR M1 材料導覽 × 永續敘事基礎模組，會教你把故事變成一套可被企業採用的方法。'
-  },
-  B: {
-    key: 'su', emoji: '🌊', bg: '#CDE3E5',
-    title: '小塑型｜體驗設計者',
-    tagline: '對應材料：PCR 再生塑膠',
-    poem: '「我曾在海上漂泊，現在被你接住。」',
-    intro: '你是一個會把概念變成體驗的人。你知道永續不能只靠說明，真正讓人記得的，往往是一次親手完成、一個小小驚喜、一段和他人一起創作的過程。就像 PCR 再生塑膠，經過破碎、重組、再成形，你也擅長把零散的元素變成一場有節奏、有互動、有參與感的體驗。',
-    power: '體驗設計力',
-    directions: ['活動流程 / 互動任務設計','手作體驗節奏安排','員工 ESG 工作坊','學校 / 社區體驗活動','參與者旅程設計'],
-    reminder: '你很懂得讓人投入，但下一步可以練習讓體驗背後的永續價值更清楚。好的體驗不只是好玩，而是讓人玩完以後，願意重新看待材料與生活。ECO STAR M2 感官教學 × 互動設計模組，會教你把體驗變成有記憶點的方法。'
-  },
-  C: {
-    key: 'hao', emoji: '🐚', bg: '#EDE6D8',
-    title: '小蠔型｜系統建構者',
-    tagline: '對應材料：牡蠣殼',
-    poem: '「我從大海來，又回到生活裡。」',
-    intro: '你是一個能把混亂整理成方法的人。你會在意：流程是否順、材料是否備齊、時間是否剛好、現場是否能穩定執行。就像牡蠣殼從海邊被回收後，經過處理、分類與轉化才能成為新的材料，你也擅長把複雜內容整理成可以被理解、被使用、被交付的系統。',
-    power: '系統化能力',
-    directions: ['教案架構 / SOP 設計','活動執行規劃 / 物料清單','模組化課程開發','永續方法論文件化','跨場域複製規劃'],
-    reminder: '你很適合成為讓系統穩定運轉的人。下一步可以練習在清楚架構之外，加入更多溫度與故事，讓方法不只是流程，也能被人記得。ECO STAR M3 作品設計 × 創作引導模組，會教你把方法變成可以穩定交付的系統。'
-  },
-  D: {
-    key: 'mian', emoji: '👶', bg: '#F2DDD3',
-    title: '小綿型｜陪伴轉化者',
-    tagline: '對應材料：NG 尿布紙纖',
-    poem: '「我陪過你的最初，現在開始第二段。」',
-    intro: '你是一個能讓人安心開始的人。你看得見現場裡那些慢一點的人、安靜的人、怕自己做不好的人。你不急著推他們往前，而是會用一種溫柔的方式，陪他們完成。就像 NG 尿布紙纖，原本是在生產流程裡被淘汰的材料，卻能重新成為柔軟、承接、可創作的基底。',
-    power: '陪伴轉化力',
-    directions: ['現場引導 / 助教陪伴','親子 / 校園 / 社區活動','情緒支持型體驗設計','銀髮 / 弱勢族群活動','一對一輔導與引導'],
-    reminder: '你的溫柔很珍貴。下一步可以練習把陪伴轉化成清楚的引導語、流程與方法，讓你的照顧不只靠直覺，也能穩定地被帶到不同場域。ECO STAR M2 感官教學 + M3 創作引導兩個模組，會教你把陪伴變成可以教給別人的引導語。'
-  },
-  E: {
-    key: 'tsai', emoji: '👖', bg: '#D8DCE3',
-    title: '小仔型｜故事重寫者',
-    tagline: '對應材料：回收衣物',
-    poem: '「我穿過你的故事，現在去寫新的。」',
-    intro: '你是一個會替舊事物找到新名字的人。你不急著判斷什麼該被丟掉，你更常問的是：它曾經屬於誰？它留下了什麼？它還能不能用另一種方式被看見？就像回收衣物，曾經貼近某個人的身體與生活，即使被淘汰，也仍然帶著時間、記憶與溫度。',
-    power: '故事重寫力',
-    directions: ['品牌故事 / 作品命名','社群內容 / 圖文卡','人物專訪 / 情感型文案','課程主題包裝','永續議題的敘事再造'],
-    reminder: '你很會看見故事。下一步可以練習把故事和具體行動連起來，讓感動不只停留在文字，而能進入活動、作品與真實場景。ECO STAR M1 材料敘事 + M4 教案設計兩個模組，會教你把故事變成可被組織採用的品牌敘事。'
-  },
-  F: {
-    key: 'sprout', emoji: '🌱', bg: '#D9E0CE',
-    title: '小芽型｜整合策劃者',
-    tagline: '對應材料：自然素材',
-    poem: '「讓理念，成為可以被交付的行動。」',
-    intro: '你是一個能看見整體的人。你不只看單一材料，也會看場域、對象、目標、資源與後續延伸。你會想：這件事可以怎麼被設計成一場行動？可以如何連結企業、學校、社區或更多參與者？就像自然素材會依季節、土地與環境展現不同樣貌，你也擅長在不同條件之間找到平衡，把分散的資源整合成一個有方向的方案。',
-    power: '整合策劃力',
-    directions: ['永續活動 / 專案企劃','ESG 主題策展','跨域合作整合','成果規劃 / 行動方案','培訓引導 / 專案領導'],
-    reminder: '你有很好的全局感。下一步可以練習把大方向拆成可執行的步驟，讓你的企劃不只完整，也能被現場穩定交付。ECO STAR M4 教案設計 × 學習單開發模組，會教你把行動變成可被組織持續推動的方案。'
-  }
-};
-
-// ===== State =====
-let answers = []; // 每題使用者選的 mascot key (A-F)
-let qIdx = 0;
-
-// ===== Flow =====
-function startQuiz(){
-  document.getElementById('cover').classList.add('hidden');
-  document.getElementById('quiz').classList.remove('hidden');
-  qIdx = 0; answers = [];
-  renderQ();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function renderQ(){
-  const Q = QUESTIONS[qIdx];
-  document.getElementById('qnum').textContent = `QUESTION ${qIdx+1} / ${QUESTIONS.length}`;
-  document.getElementById('qtext').textContent = Q.q;
-  const optsEl = document.getElementById('opts');
-  optsEl.innerHTML = '';
-  Q.opts.forEach((o,i) => {
-    const btn = document.createElement('button');
-    btn.className = 'opt';
-    btn.type = 'button';
-    btn.textContent = o.t;
-    btn.onclick = () => choose(o.m);
-    optsEl.appendChild(btn);
-  });
-  document.getElementById('bar').style.width = `${(qIdx/QUESTIONS.length)*100}%`;
-}
-
-function choose(mascot){
-  answers.push(mascot);
-  qIdx++;
-  if(qIdx >= QUESTIONS.length){
-    document.getElementById('bar').style.width = '100%';
-    setTimeout(showResult, 200);
-  } else {
-    renderQ();
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-}
-
-function calcResult(){
-  const score = {A:0,B:0,C:0,D:0,E:0,F:0};
-  answers.forEach(a => score[a]++);
-  // 找最高分；同分時用 Q8 (最後一題) 決勝
-  let max = 0, winner = answers[answers.length-1];
-  for(const k in score){
-    if(score[k] > max){ max = score[k]; winner = k; }
-    else if(score[k] === max && answers[answers.length-1] === k){ winner = k; }
-  }
-  return { winner, score };
-}
-
-function showResult(){
-  const { winner, score } = calcResult();
-  const R = RESULTS[winner];
-  window.__quizResult = { winner, score, key: R.key, title: R.title };
-
-  document.getElementById('quiz').classList.add('hidden');
-  document.getElementById('result').classList.remove('hidden');
-
-  document.getElementById('r-emoji').textContent = R.emoji;
-  document.getElementById('r-emoji').style.background = R.bg;
-  document.getElementById('r-title').textContent = R.title;
-  document.getElementById('r-tagline').textContent = R.tagline;
-  document.getElementById('r-poem').textContent = R.poem;
-  document.getElementById('r-intro').textContent = R.intro;
-  document.getElementById('r-power').textContent = R.power;
-  document.getElementById('r-reminder').textContent = R.reminder;
-
-  const dirEl = document.getElementById('r-directions');
-  dirEl.innerHTML = '';
-  R.directions.forEach(d => {
-    const li = document.createElement('li');
-    li.textContent = d;
-    dirEl.appendChild(li);
-  });
-
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// ===== Submit Lead =====
-async function submitLead(e){
-  e.preventDefault();
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = '送出中...';
-
-  const payload = {
-    name: document.getElementById('f-name').value.trim(),
-    email: document.getElementById('f-email').value.trim(),
-    line_id: document.getElementById('f-line').value.trim(),
-    role: document.getElementById('f-role').value,
-    wants_briefing: document.getElementById('f-briefing').checked,
-    consent: document.getElementById('f-consent').checked,
-    quiz_result: window.__quizResult.winner,
-    quiz_result_key: window.__quizResult.key,
-    quiz_result_title: window.__quizResult.title,
-    quiz_score: window.__quizResult.score,
-    quiz_answers: answers,
-    source: 'quiz',
-    referer: document.referrer || 'direct',
-    submitted_at: new Date().toISOString(),
-  };
-
-  try {
-    const r = await fetch(N8N_WEBHOOK_URL, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
+    window.addEventListener("DOMContentLoaded", () => {
+      const resultFromUrl = new URLSearchParams(window.location.search).get("result");
+      if (resultFromUrl && RESULTS[resultFromUrl]) {
+        state.resultKey = resultFromUrl;
+        renderResult(resultFromUrl);
+        showScreen("result");
+      }
     });
-    if(!r.ok) throw new Error('webhook ' + r.status);
-  } catch(err) {
-    console.warn('webhook fail (still showing thanks):', err);
-    // 不擋使用者體驗：失敗也讓他看到 thank-you，背後 retry 由 n8n 處理
-  }
 
-  document.getElementById('result').classList.add('hidden');
-  document.getElementById('thanks').classList.remove('hidden');
-  window.scrollTo({top:0,behavior:'smooth'});
-  return false;
-}
+    function showScreen(name) {
+      homeScreen.classList.toggle("active", name === "home");
+      quizScreen.classList.toggle("active", name === "quiz");
+      resultScreen.classList.toggle("active", name === "result");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
-// ===== Share =====
-function shareLINE(){
-  const url = encodeURIComponent(location.href);
-  const text = encodeURIComponent('我做了 Wishlite 的「你是哪一種永續行動設計師？」測驗，你也來測測看！');
-  window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`,'_blank');
-}
-function shareFB(){
-  const url = encodeURIComponent(location.href);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`,'_blank');
-}
-function copyLink(){
-  navigator.clipboard.writeText(location.href).then(() => {
-    alert('連結已複製，可以貼給朋友了 🌱');
-  });
-}
-</script>
+    function startQuiz() {
+      state.currentQuestion = 0;
+      state.answers = [];
+      state.resultKey = null;
+      state.scores = null;
+      showScreen("quiz");
+      renderQuestion();
+    }
+
+    function restartQuiz() {
+      startQuiz();
+    }
+
+    function goBack() {
+      if (state.currentQuestion === 0) {
+        showScreen("home");
+        return;
+      }
+      state.currentQuestion -= 1;
+      state.answers.pop();
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const question = QUESTIONS[state.currentQuestion];
+      const total = QUESTIONS.length;
+      const number = state.currentQuestion + 1;
+
+      questionTitle.textContent = question.title;
+      questionCount.textContent = `第 ${number} 題 / 共 ${total} 題`;
+      questionHint.textContent = question.weight === 2 ? "這題權重較高，請選最貼近你的答案" : "選一個最靠近你的答案";
+      progressFill.style.width = `${(number / total) * 100}%`;
+      backBtn.textContent = state.currentQuestion === 0 ? "回首頁" : "上一題";
+
+      optionsEl.innerHTML = "";
+      question.options.forEach((option) => {
+        const button = document.createElement("button");
+        button.className = "option-btn";
+        button.type = "button";
+        button.innerHTML = `<span class="option-label">${option.label}</span>${option.text}`;
+        button.addEventListener("click", () => chooseOption(option));
+        optionsEl.appendChild(button);
+      });
+    }
+
+    function chooseOption(option) {
+      state.answers[state.currentQuestion] = option.key;
+
+      if (state.currentQuestion < QUESTIONS.length - 1) {
+        state.currentQuestion += 1;
+        renderQuestion();
+        return;
+      }
+
+      const result = calculateResult();
+      state.resultKey = result.key;
+      state.scores = result.scores;
+      updateResultUrl(result.key);
+      renderResult(result.key);
+      showScreen("result");
+    }
+
+    function calculateResult() {
+      const scores = PERSONA_ORDER.reduce((acc, key) => {
+        acc[key] = 0;
+        return acc;
+      }, {});
+
+      state.answers.forEach((key, index) => {
+        const weight = QUESTIONS[index].weight || 1;
+        scores[key] += weight;
+      });
+
+      const maxScore = Math.max(...Object.values(scores));
+      const tied = PERSONA_ORDER.filter((key) => scores[key] === maxScore);
+
+      if (tied.length === 1) {
+        return { key: tied[0], scores };
+      }
+
+      const q8 = state.answers[7];
+      const q4 = state.answers[3];
+      const q1 = state.answers[0];
+      const tieBreakers = [q8, q4, q1];
+
+      for (const key of tieBreakers) {
+        if (tied.includes(key)) {
+          return { key, scores };
+        }
+      }
+
+      return { key: PERSONA_ORDER.find((key) => tied.includes(key)), scores };
+    }
+
+    function renderResult(key) {
+      const result = RESULTS[key];
+      const resultImage = document.getElementById("resultImage");
+      const oldFallback = resultImage.parentElement.querySelector(".image-fallback");
+      if (oldFallback) oldFallback.remove();
+      resultImage.classList.remove("hidden");
+
+      document.getElementById("resultRole").textContent = result.role;
+      document.getElementById("resultTitle").textContent = result.title;
+      document.getElementById("resultPoetic").textContent = result.poeticName;
+      document.getElementById("resultDescription").textContent = result.description;
+      document.getElementById("resultMaterial").textContent = result.material;
+      document.getElementById("resultTalent").textContent = result.talent;
+      resultImage.src = result.image;
+      resultImage.alt = `${result.role} ${result.title}水彩繪本風角色卡`;
+      lineCta.href = LINE_URL;
+
+      const directions = document.getElementById("resultDirections");
+      directions.innerHTML = "";
+      result.directions.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "pill";
+        li.textContent = item;
+        directions.appendChild(li);
+      });
+    }
+
+    async function submitLead(event) {
+      event.preventDefault();
+      formMessage.textContent = "";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "送出中...";
+
+      const formData = new FormData(leadForm);
+      const payload = {
+        source: "wishlite-eco-star-quiz",
+        resultKey: state.resultKey,
+        resultRole: RESULTS[state.resultKey]?.role || "",
+        resultTitle: RESULTS[state.resultKey]?.title || "",
+        scores: state.scores,
+        answers: state.answers.map((key, index) => ({
+          question: index + 1,
+          persona: key,
+          personaLabel: PERSONA_LABELS[key]
+        })),
+        name: formData.get("name"),
+        email: formData.get("email"),
+        lineId: formData.get("lineId"),
+        identity: formData.get("identity"),
+        wantsInfo: formData.get("wantsInfo") === "on",
+        consent: formData.get("consent") === "on",
+        submittedAt: new Date().toISOString(),
+        pageUrl: window.location.href
+      };
+
+      try {
+        if (FORM_ENDPOINT === "PASTE_N8N_WEBHOOK_URL_HERE") {
+          console.info("Lead payload preview:", payload);
+          await new Promise((resolve) => setTimeout(resolve, 450));
+        } else {
+          const response = await fetch(FORM_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            throw new Error(`Webhook error: ${response.status}`);
+          }
+        }
+
+        formMessage.textContent = "已收到！請到 LINE 領取完整解析與靈感包。";
+        leadForm.reset();
+      } catch (error) {
+        console.error(error);
+        formMessage.textContent = "送出時遇到一點狀況，請稍後再試，或先加入 LINE 領取。";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "寄到我的信箱";
+      }
+    }
+
+    function updateResultUrl(key) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("result", key);
+      window.history.replaceState({}, "", url.toString());
+    }
+
+    function getShareData() {
+      const result = RESULTS[state.resultKey] || RESULTS.coffee;
+      return {
+        title: `我是 ${result.role}｜Wishlite 永續行動者人格測驗`,
+        text: `我的永續行動天賦是「${result.title}」：${result.poeticName}`,
+        url: window.location.href
+      };
+    }
+
+    async function shareResult() {
+      const data = getShareData();
+      if (navigator.share) {
+        try {
+          await navigator.share(data);
+          return;
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            console.warn(error);
+          }
+        }
+      }
+      await copyText(`${data.title}\n${data.text}\n${data.url}`);
+      setTemporaryText("nativeShareBtn", "已複製");
+    }
+
+    function shareToLine() {
+      const data = getShareData();
+      const text = `${data.title}\n${data.text}\n${data.url}`;
+      const shareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(data.url)}&text=${encodeURIComponent(text)}`;
+      window.open(shareUrl, "_blank", "noopener,noreferrer");
+    }
+
+    async function copyResultLink() {
+      await copyText(window.location.href);
+      setTemporaryText("copyLinkBtn", "已複製連結");
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+
+    function setTemporaryText(buttonId, text) {
+      const button = document.getElementById(buttonId);
+      const original = button.textContent;
+      button.textContent = text;
+      window.setTimeout(() => {
+        button.textContent = original;
+      }, 1600);
+    }
+
+    function showImageFallback(img, title, subtitle) {
+      const oldFallback = img.parentElement.querySelector(".image-fallback");
+      if (oldFallback) oldFallback.remove();
+      const fallback = document.createElement("div");
+      fallback.className = "image-fallback";
+      fallback.innerHTML = `<div><strong>${title}</strong><span>${subtitle}</span></div>`;
+      img.classList.add("hidden");
+      img.parentElement.appendChild(fallback);
+    }
+  </script>
 </body>
 </html>
