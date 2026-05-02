@@ -601,6 +601,20 @@
       box-shadow: 0 10px 24px rgba(92, 72, 48, 0.1);
     }
 
+    .share-btn--line {
+      border: 0;
+      color: var(--paper);
+      background: #547D58;
+      box-shadow: 0 12px 24px rgba(84, 125, 88, 0.28);
+    }
+
+    .share-btn--line:hover,
+    .share-btn--line:focus-visible {
+      background: #4A7050;
+      transform: scale(1.02);
+      box-shadow: 0 16px 32px rgba(84, 125, 88, 0.4);
+    }
+
     .footer-note {
       margin: 26px 0 8px;
       color: var(--muted);
@@ -792,10 +806,9 @@
 
         <section class="panel share-section" aria-labelledby="shareTitle">
           <h2 id="shareTitle" class="section-title">想把這個結果分享給朋友嗎？ 🌿</h2>
-          <p class="lead">結果頁適合截圖分享，也可以直接把連結傳給朋友。</p>
+          <p class="lead">也許你身邊，也有人正在用這樣的方式靠近永續。</p>
           <div class="share-row">
-            <button id="nativeShareBtn" class="share-btn" type="button">分享結果</button>
-            <button id="lineShareBtn" class="share-btn" type="button">LINE 分享</button>
+            <button id="lineShareBtn" class="share-btn share-btn--line" type="button">LINE 分享</button>
             <button id="copyLinkBtn" class="share-btn" type="button">複製連結</button>
           </div>
         </section>
@@ -1008,7 +1021,7 @@
     backBtn.addEventListener("click", goBack);
     restartBtn.addEventListener("click", restartQuiz);
     leadForm.addEventListener("submit", submitLead);
-    document.getElementById("nativeShareBtn").addEventListener("click", shareResult);
+    document.getElementById("nativeShareBtn")?.addEventListener("click", shareResult);
     document.getElementById("lineShareBtn").addEventListener("click", shareToLine);
     document.getElementById("copyLinkBtn").addEventListener("click", copyResultLink);
 
