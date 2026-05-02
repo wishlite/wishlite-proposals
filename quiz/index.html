@@ -183,12 +183,14 @@
 
     .hero-title {
       margin: 0 0 12px;
-      font-size: 28px;
-      line-height: 1.45;
+      font-size: 26px;
+      line-height: 1.5;
       color: var(--brown);
       font-weight: 800;
       letter-spacing: 0.5px;
-      max-width: 480px;
+      max-width: 560px;
+      word-break: keep-all;
+      overflow-wrap: normal;
     }
 
     .hero-sub {
@@ -198,8 +200,12 @@
       line-height: 1.7;
     }
 
+    @media (max-width: 360px) {
+      .hero-title { font-size: 22px; }
+    }
+
     @media (min-width: 720px) {
-      .hero-title { font-size: 34px; max-width: 560px; }
+      .hero-title { font-size: 34px; max-width: 640px; }
     }
 
     .sr-only {
@@ -844,7 +850,7 @@
           </figure>
 
           <div class="hero-copy">
-            <h1 id="homeTitle" class="hero-title">你會用什麼方式靠近一件你在乎的事？</h1>
+            <h1 id="homeTitle" class="hero-title">你會用什麼方式<br>靠近一件你在乎的事？</h1>
             <p class="hero-sub">看見你最自然的行動樣子。</p>
 
             <div class="tag-row" aria-label="測驗資訊">
