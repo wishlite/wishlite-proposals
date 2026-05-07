@@ -93,6 +93,7 @@
     .scene {
       display: none;
       animation: softIn 0.5s ease both;
+      position: relative;
     }
     .scene.is-on { display: block; }
 
@@ -125,7 +126,7 @@
       position: absolute;
       width: 92px;
       height: 92px;
-      opacity: 0.32;
+      opacity: 0.22;
       pointer-events: none;
       z-index: 0;
     }
@@ -133,6 +134,15 @@
     .sprig-corner.tr { top: -8px;     right: -10px;  transform: rotate(28deg); }
     .sprig-corner.bl { bottom: -12px; left: -8px;    transform: rotate(-160deg); }
     .sprig-corner.br { bottom: -10px; right: -12px;  transform: rotate(165deg); }
+    /* scene 級的角落植物 — 比 note 內更淡、更小，純陪伴 */
+    .scene > .sprig-corner {
+      opacity: 0.18;
+      width: 78px;
+      height: 78px;
+    }
+    .scene > .sprig-corner.bl { bottom: 8px;  left: -6px;  }
+    .scene > .sprig-corner.tr { top: 4px;     right: -8px; }
+    .scene > .sprig-corner.br { bottom: 12px; right: -4px; }
     .intro p {
       color: var(--ink);
       font-size: 16px;
@@ -279,90 +289,47 @@
       line-height: 1.7;
     }
 
-    /* —— email form —— */
-    .form {
-      margin-top: 28px;
-      padding: 22px 20px;
-      background: rgba(255, 249, 239, 0.55);
-      border: 1px dashed var(--line);
-      border-radius: 18px;
+    /* —— closing — 像書最後一頁淡淡留下的話，不是 CTA */
+    .closing {
+      margin: 36px 6px 0;
+      text-align: center;
+      color: var(--ink);
+      font-size: 15.5px;
+      line-height: 1.95;
+      opacity: 0.86;
     }
-    .form-q {
-      color: var(--brown);
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0 0 8px;
+    .closing p {
+      margin: 0 0 18px;
     }
-    .form-sub {
+    .closing-leaf {
+      font-size: 20px;
+      margin: 8px 0 22px !important;
+      opacity: 0.7;
+      line-height: 1;
+    }
+    .closing-sign {
       color: var(--muted);
       font-size: 14px;
-      margin: 0 0 14px;
-    }
-    .form-row {
-      display: flex;
-      gap: 8px;
-      flex-direction: column;
-    }
-    .email-input {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #FFF;
-      color: var(--ink);
-      font-size: 16px;
-    }
-    .email-input:focus {
-      outline: 2px solid var(--sage);
-      outline-offset: 1px;
-      border-color: var(--sage);
-    }
-    .submit-btn {
-      background: var(--brown);
-      color: #FFF;
-      border: none;
-      border-radius: 999px;
-      padding: 14px 24px;
-      font-size: 16px;
-      font-weight: 600;
+      margin-top: 28px !important;
       letter-spacing: 0.04em;
-      transition: background 0.2s ease, transform 0.18s ease;
+      line-height: 1.85;
     }
-    .submit-btn:hover { background: #4A3A26; }
-    .submit-btn:disabled { background: #B8AB97; cursor: not-allowed; }
-
-    .privacy {
+    .closing-contact {
       color: var(--muted);
-      font-size: 12.5px;
-      margin-top: 12px;
-      line-height: 1.6;
+      font-size: 13.5px;
+      letter-spacing: 0.05em;
+      line-height: 2.1;
+      margin-top: 14px !important;
+      margin-bottom: 36px !important;
+      opacity: 0.78;
     }
-
-    /* —— submitted thank you —— */
-    .thanks {
-      text-align: center;
-      padding: 60px 20px 40px;
-    }
-    .thanks-leaf {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 14px;
-    }
-    .thanks h2 {
-      font-size: 22px;
-      color: var(--brown);
-      margin: 18px 0 10px;
-      font-weight: 700;
-    }
-    .thanks p {
-      color: var(--ink);
-      font-size: 16px;
-      margin: 6px 0;
-    }
-    .thanks .small {
+    .closing-coda {
       color: var(--muted);
-      font-size: 14.5px;
-      margin-top: 26px;
+      font-size: 14px;
+      line-height: 2;
+      margin-top: 36px !important;
+      opacity: 0.72;
+      letter-spacing: 0.03em;
     }
 
     /* —— mobile fine-tune —— */
@@ -411,23 +378,27 @@
 
     <!-- Scene 1: intro -->
     <section class="scene is-on" id="scene-intro" aria-labelledby="intro-title">
+      <svg class="sprig-corner bl" aria-hidden="true"><use href="#sprig"/></svg>
+      <svg class="sprig-corner tr" aria-hidden="true"><use href="#sprig"/></svg>
       <h1 id="intro-title" class="intro-title">
         <svg class="sprig" aria-hidden="true"><use href="#sprig"/></svg>
         <span>看見自己的一個小練習</span>
       </h1>
       <div class="intro">
-        <p>今天，我們一起整理了人生資源地圖，也完成了專屬的價值作品。</p>
-        <p>現在，請不要想太多，憑著直覺回答以下 3 個小問題。</p>
-        <p>這不是要給妳打分數，而是想陪妳看見：當妳準備重新開始時，妳最自然的行動起點是什麼。</p>
-        <p class="hint">大約 2 分鐘。</p>
+        <p>今天，<br>我們一起留下了一些東西。</p>
+        <p>有些是故事，<br>有些是感覺，<br>有些可能還有一點點說不上來。</p>
+        <p>如果妳願意，</p>
+        <p>這裡有一個很小的小練習，<br>陪妳再多看自己一點點。</p>
+        <p class="hint">慢慢來就好。</p>
         <p style="text-align:center; margin-top: 28px;">
-          <button class="start-btn" id="btn-start" type="button">開始</button>
+          <button class="start-btn" id="btn-start" type="button">慢慢開始</button>
         </p>
       </div>
     </section>
 
     <!-- Scene 2: question -->
     <section class="scene" id="scene-question" aria-live="polite">
+      <svg class="sprig-corner br" aria-hidden="true"><use href="#sprig"/></svg>
       <div class="q-meta" id="q-meta">第 1 題 ／ 共 3 題</div>
       <h2 class="q-text" id="q-text"></h2>
       <div class="options" id="q-options"></div>
@@ -443,29 +414,23 @@
         <p class="note-body" id="r-body"></p>
 
         <p class="note-soft">今天不用急著想清楚全部。<br>先把這份感覺留下來就好。</p>
-        <p class="note-foot">一封給妳的話，會在幾個小時後寄到妳信箱。</p>
-
-        <div class="form">
-          <p class="form-q">想收到那段給妳的話嗎？</p>
-          <p class="form-sub">留下 email 就好，幾個小時後再寄。</p>
-          <form id="email-form" class="form-row" novalidate>
-            <input type="email" class="email-input" id="email-input" name="email" placeholder="妳的 email" autocomplete="email" inputmode="email" required>
-            <button type="submit" class="submit-btn" id="submit-btn">好</button>
-          </form>
-          <p class="privacy">我們不寄電子報，也不分享給第三方。只寄那一封。</p>
-        </div>
       </article>
-    </section>
 
-    <!-- Scene 4: submitted -->
-    <section class="scene" id="scene-thanks">
-      <div class="thanks">
-        <div class="thanks-leaf">
-          <svg class="sprig sprig-lg" aria-hidden="true"><use href="#sprig"/></svg>
-        </div>
-        <h2>好的。</h2>
-        <p>幾個小時後，再給妳一封。</p>
-        <p class="small">今天辛苦了。</p>
+      <div class="closing">
+        <p>今天辛苦了。</p>
+        <p>有些東西，<br>不一定現在就要想清楚。</p>
+        <p>但也許從今天開始，<br>妳會慢慢發現：</p>
+        <p>原來那些曾經以為「沒什麼」的經歷，<br>其實一直都在妳身上。</p>
+        <p class="closing-leaf" aria-hidden="true">🌿</p>
+        <p>如果之後，<br>妳還想再看看更多這樣的故事。</p>
+        <p>歡迎慢慢來到 Wishlite。</p>
+        <p class="closing-sign">Wishlite 韻手作永續</p>
+        <p class="closing-contact">
+          Instagram｜@wishlite<br>
+          LINE｜@403kginl<br>
+          Facebook｜Wishlite
+        </p>
+        <p class="closing-coda">慢慢來也沒關係。<br>我們都還在路上。</p>
       </div>
     </section>
   </main>
@@ -475,9 +440,6 @@
     // 看見自己的一個小練習｜課堂版入口 v1
     // 設計鐵律：不顯示六友、不顯示 mascot 圖、不做卡片公式風
     // ============================================
-
-    // n8n webhook（待 Apple 串接 WF-Course-Tool-Sender 後填入）
-    const WEBHOOK_URL = "https://wishlite-n8n.zeabur.app/webhook/see-yourself";
 
     // —— 題目定義 ——
     const QUESTIONS = [
@@ -569,8 +531,7 @@
     const scenes = {
       intro:    $("scene-intro"),
       question: $("scene-question"),
-      result:   $("scene-result"),
-      thanks:   $("scene-thanks")
+      result:   $("scene-result")
     };
     function showScene(name) {
       Object.values(scenes).forEach(el => el.classList.remove("is-on"));
@@ -641,51 +602,6 @@
       showScene("result");
     }
 
-    // —— 提交 email ——
-    async function submitEmail(e) {
-      e.preventDefault();
-      const input = $("email-input");
-      const btn = $("submit-btn");
-      const email = (input.value || "").trim();
-
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        input.focus();
-        input.style.borderColor = "#C98767";
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = "正在送出...";
-
-      const STYLE_NAMES = {
-        cotton: "溫柔轉譯者", oyster: "清晰梳理者", plastic: "靈感實作者",
-        sprout: "溫暖連結者", denim: "故事重寫者", ground: "安靜陪伴者"
-      };
-
-      const payload = {
-        source: "see-yourself-2026-05-09",
-        email: email,
-        style_key: state.result,
-        style_name: STYLE_NAMES[state.result] || "",
-        q_answers: state.answers.join(","),
-        ts: new Date().toISOString()
-      };
-
-      try {
-        await fetch(WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-          keepalive: true
-        });
-      } catch (err) {
-        // 網路失敗也不阻擋學員體驗 — 後端會由 cron 補回
-        console.warn("submit failed (silent):", err);
-      }
-
-      showScene("thanks");
-    }
-
     // —— init ——
     document.addEventListener("DOMContentLoaded", () => {
       $("btn-start").addEventListener("click", () => {
@@ -695,7 +611,6 @@
         renderQuestion();
         showScene("question");
       });
-      $("email-form").addEventListener("submit", submitEmail);
     });
   </script>
 </body>
