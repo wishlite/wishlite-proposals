@@ -830,6 +830,202 @@
         transition: none !important;
       }
     }
+
+    /* === Six Friends Explore (新增區塊) === */
+    .six-friends-explore {
+      margin: 28px auto 0;
+      max-width: 720px;
+      padding: 0 4px;
+      text-align: center;
+    }
+    .six-friends-explore .explore-divider {
+      border: 0;
+      border-top: 1px solid rgba(120, 110, 95, 0.22);
+      margin: 0 0 22px;
+    }
+    .explore-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #4a5d3a;
+      margin: 0 0 6px;
+      letter-spacing: 0.02em;
+    }
+    .explore-sub {
+      font-size: 13px;
+      color: #8a8170;
+      margin: 0 0 18px;
+    }
+    .friend-grid {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+    .friend-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: 0;
+      padding: 6px 2px;
+      border-radius: 12px;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+    .friend-tile:hover { transform: translateY(-2px); background: rgba(255,255,255,0.5); }
+    .friend-tile:focus-visible { outline: 2px solid #6b8e54; outline-offset: 2px; }
+    .friend-tile img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      background: #f4ede0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .friend-tile.is-current { cursor: default; }
+    .friend-tile.is-current img { border-color: #6b8e54; box-shadow: 0 0 0 3px rgba(107,142,84,0.18); }
+    .friend-tile-name {
+      font-size: 12px;
+      color: #6b6353;
+      letter-spacing: 0.02em;
+    }
+    .friend-tile.is-current .friend-tile-name { color: #4a5d3a; font-weight: 600; }
+    @media (max-width: 560px) {
+      .friend-grid { grid-template-columns: repeat(3, 1fr); gap: 14px 8px; }
+      .friend-tile img { width: 64px; height: 64px; }
+    }
+
+    /* === Friend Modal === */
+    .friend-modal[hidden] { display: none; }
+    .friend-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .friend-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(20, 18, 14, 0.5);
+      backdrop-filter: blur(2px);
+    }
+    .friend-modal-card {
+      position: relative;
+      background: #fdfaf3;
+      border-radius: 18px;
+      box-shadow: 0 18px 48px rgba(40, 32, 20, 0.28);
+      width: 100%;
+      max-width: 480px;
+      padding: 28px 24px 24px;
+      max-height: 90vh;
+      overflow-y: auto;
+      text-align: center;
+      animation: friendModalIn 0.22s ease-out;
+    }
+    @keyframes friendModalIn {
+      from { opacity: 0; transform: translateY(8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .friend-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      background: transparent;
+      font-size: 24px;
+      line-height: 1;
+      color: #8a8170;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+    .friend-modal-close:hover { background: rgba(0,0,0,0.05); }
+    .friend-modal-img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 4px auto 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .friend-modal-eyebrow {
+      font-size: 13px;
+      color: #8a8170;
+      letter-spacing: 0.08em;
+      margin: 0 0 4px;
+    }
+    .friend-modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #2f2a22;
+      margin: 0 0 8px;
+    }
+    .friend-modal-poetic {
+      font-size: 14px;
+      color: #6b8e54;
+      font-weight: 600;
+      margin: 0 0 16px;
+    }
+    .friend-modal-facts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      background: rgba(107, 142, 84, 0.06);
+      border-radius: 12px;
+      text-align: left;
+    }
+    .friend-modal-facts > div { display: flex; flex-direction: column; gap: 2px; }
+    .friend-modal-facts dt { font-size: 11px; color: #8a8170; margin: 0; }
+    .friend-modal-facts dd { font-size: 14px; font-weight: 600; color: #2f2a22; margin: 0; }
+    .friend-modal-desc {
+      font-size: 14px;
+      line-height: 1.75;
+      color: #4a4438;
+      margin: 0 0 20px;
+      text-align: left;
+    }
+    .friend-modal-actions { display: flex; flex-direction: column; gap: 10px; }
+    .friend-modal-actions .primary-btn,
+    .friend-modal-actions .secondary-btn {
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      border: 0;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+    .friend-modal-actions .primary-btn {
+      background: #6b8e54;
+      color: #fff;
+    }
+    .friend-modal-actions .primary-btn:hover { background: #5a7a47; }
+    .friend-modal-actions .secondary-btn {
+      background: transparent;
+      color: #4a5d3a;
+      border: 1px solid rgba(107, 142, 84, 0.45);
+    }
+    .friend-modal-actions .secondary-btn:hover { background: rgba(107, 142, 84, 0.08); }
+    @media (max-width: 480px) {
+      .friend-modal-card { padding: 24px 18px 20px; }
+      .friend-modal-img { width: 96px; height: 96px; }
+      .friend-modal-title { font-size: 20px; }
+    }
   </style>
 </head>
 <body>
@@ -919,6 +1115,13 @@
               <p class="lead">你剛剛看到的，是你的初步結果。<br>加入 LINE 後，<br>我們會把你的專屬解析、角色卡與靈感練習，一步一步送給你。<br>用自己最適合的方式，慢慢靠近永續。</p>
               <a id="lineCta" class="primary-btn line-btn" href="https://line.me/R/ti/p/@403kginl" target="_blank" rel="noopener">加入 LINE 領完整解析</a>
             </div>
+
+            <section class="six-friends-explore" aria-labelledby="exploreTitle">
+              <hr class="explore-divider">
+              <h3 id="exploreTitle" class="explore-title">🌿 也想認識其他永續六友嗎？</h3>
+              <p class="explore-sub">看看其他人靠近永續的方式。</p>
+              <ul class="friend-grid" id="friendGrid"></ul>
+            </section>
           </div>
         </article>
 
@@ -968,6 +1171,26 @@
       </section>
     </div>
   </main>
+
+  <div id="friendModal" class="friend-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="friendModalTitle">
+    <div class="friend-modal-backdrop" data-modal-close></div>
+    <div class="friend-modal-card" role="document">
+      <button class="friend-modal-close" type="button" data-modal-close aria-label="關閉視窗">×</button>
+      <img id="friendModalImg" class="friend-modal-img" src="" alt="">
+      <p id="friendModalEyebrow" class="friend-modal-eyebrow"></p>
+      <h3 id="friendModalTitle" class="friend-modal-title"></h3>
+      <p id="friendModalPoetic" class="friend-modal-poetic"></p>
+      <dl class="friend-modal-facts">
+        <div><dt>對應材料</dt><dd id="friendModalMaterial"></dd></div>
+        <div><dt>核心天賦</dt><dd id="friendModalTalent"></dd></div>
+      </dl>
+      <p id="friendModalDesc" class="friend-modal-desc"></p>
+      <div class="friend-modal-actions">
+        <button class="primary-btn" type="button" data-modal-close>關閉，看我的人格</button>
+        <a class="secondary-btn line-btn" href="https://line.me/R/ti/p/@403kginl" target="_blank" rel="noopener">加入 LINE 領完整解析</a>
+      </div>
+    </div>
+  </div>
 
   <script>
     const LINE_URL = "https://line.me/R/ti/p/@403kginl";
@@ -1359,7 +1582,82 @@
         li.textContent = item;
         directions.appendChild(li);
       });
+
+      renderSixFriendsExplore(key);
     }
+
+    const FRIEND_ORDER = ["coffee", "plastic", "oyster", "cotton", "denim", "sprout"];
+    const FRIEND_SHORT_NAMES = {
+      coffee: "小渣", plastic: "小塑", oyster: "小蠔",
+      cotton: "小棉", denim: "小仔", sprout: "小芽"
+    };
+
+    function renderSixFriendsExplore(currentKey) {
+      const grid = document.getElementById("friendGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+      FRIEND_ORDER.forEach((key) => {
+        const r = RESULTS[key];
+        const isCurrent = key === currentKey;
+        const li = document.createElement("li");
+        const tag = isCurrent ? "div" : "button";
+        const tile = document.createElement(tag);
+        tile.className = "friend-tile" + (isCurrent ? " is-current" : "");
+        if (!isCurrent) {
+          tile.type = "button";
+          tile.setAttribute("aria-label", `看看${FRIEND_SHORT_NAMES[key]}的介紹`);
+          tile.addEventListener("click", () => openFriendModal(key));
+        } else {
+          tile.setAttribute("aria-label", `${FRIEND_SHORT_NAMES[key]}（這是你）`);
+        }
+        const img = document.createElement("img");
+        img.src = r.image;
+        img.alt = `${FRIEND_SHORT_NAMES[key]} 角色頭像`;
+        img.loading = "lazy";
+        const name = document.createElement("span");
+        name.className = "friend-tile-name";
+        name.textContent = FRIEND_SHORT_NAMES[key] + (isCurrent ? "（你）" : "");
+        tile.appendChild(img);
+        tile.appendChild(name);
+        li.appendChild(tile);
+        grid.appendChild(li);
+      });
+    }
+
+    function openFriendModal(key) {
+      const r = RESULTS[key];
+      if (!r) return;
+      document.getElementById("friendModalImg").src = r.image;
+      document.getElementById("friendModalImg").alt = `${FRIEND_SHORT_NAMES[key]} 角色卡`;
+      document.getElementById("friendModalEyebrow").textContent = FRIEND_SHORT_NAMES[key];
+      document.getElementById("friendModalTitle").textContent = r.title;
+      document.getElementById("friendModalPoetic").textContent = r.poeticName;
+      document.getElementById("friendModalMaterial").textContent = r.material;
+      document.getElementById("friendModalTalent").textContent = r.talent;
+      document.getElementById("friendModalDesc").textContent = r.description;
+      const modal = document.getElementById("friendModal");
+      modal.hidden = false;
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeFriendModal() {
+      const modal = document.getElementById("friendModal");
+      modal.hidden = true;
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    document.addEventListener("click", (e) => {
+      const t = e.target;
+      if (t && t.matches && t.matches("[data-modal-close]")) closeFriendModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        const modal = document.getElementById("friendModal");
+        if (modal && !modal.hidden) closeFriendModal();
+      }
+    });
 
     async function submitLead(event) {
       event.preventDefault();
