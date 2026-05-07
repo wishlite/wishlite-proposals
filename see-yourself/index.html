@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一個課後的小練習。當妳準備重新開始時，妳最自然的行動起點是什麼。Wishlite 永續行動學院。">
+  <meta name="robots" content="noindex">
+  <meta property="og:title" content="看見自己的一個小練習">
+  <meta property="og:description" content="一個課後的小練習。當妳準備重新開始時，妳最自然的行動起點是什麼。">
+  <meta property="og:type" content="website">
+  <title>看見自己的一個小練習｜Wishlite 永續行動學院</title>
+  <style>
+    :root {
+      --cream: #F4EFE2;
+      --paper: #FBF6E9;
+      --paper-warm: #F8EFD9;
+      --sage:        #8FA686;
+      --sage-soft:   #B6C4A8;
+      --sage-dark:   #5F7157;
+      --leaf-deep:   #4A6147;
+      --olive:       #A4B58E;
+      --peach:       #E8C7A8;
+      --rose:        #DCAFA1;
+      --brown:       #5C4830;
+      --tan:         #A67C52;
+      --line:        #D9C9AC;
+      --line-soft:   #E6D8BC;
+      --soft-blue:   #C7DBE0;
+      --ink:         #3F3528;
+      --muted:       #746755;
+      --shadow:       0 18px 45px rgba(92, 72, 48, 0.10);
+      --shadow-soft:  0 8px 24px rgba(92, 72, 48, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+      line-height: 1.85;
+      /* watercolor 多層暈染 — 上沙綠、右上桃、左下橄欖、整體米紙 */
+      background:
+        radial-gradient(ellipse 26rem 22rem at 12% 6%,  rgba(143, 166, 134, 0.32), transparent 70%),
+        radial-gradient(ellipse 22rem 18rem at 90% 8%,  rgba(232, 199, 168, 0.30), transparent 72%),
+        radial-gradient(ellipse 28rem 22rem at 6% 92%,  rgba(164, 181, 142, 0.24), transparent 70%),
+        radial-gradient(ellipse 22rem 20rem at 96% 96%, rgba(220, 175, 161, 0.22), transparent 70%),
+        radial-gradient(ellipse 30rem 24rem at 50% 45%, rgba(199, 219, 224, 0.16), transparent 72%),
+        linear-gradient(180deg, var(--cream) 0%, var(--paper-warm) 60%, #EFE5CD 100%);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* paper grain — SVG 雜訊紋取代格線，更像水彩紙 */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.55;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.28  0 0 0 0 0.19  0 0 0 0.10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* watercolor bloom — body 角落幾朵柔色暈，更像剛上完顏料的紙 */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.85;
+      background:
+        radial-gradient(ellipse 8rem 5rem at 88% 18%, rgba(143, 166, 134, 0.18), transparent 70%),
+        radial-gradient(ellipse 7rem 4rem at 10% 78%, rgba(232, 199, 168, 0.18), transparent 70%);
+    }
+
+    main {
+      width: min(100%, 560px);
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+      position: relative;
+    }
+
+    .brand {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      padding: 6px 0 24px;
+    }
+
+    .scene {
+      display: none;
+      animation: softIn 0.5s ease both;
+    }
+    .scene.is-on { display: block; }
+
+    @keyframes softIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* —— intro —— */
+    .intro-title {
+      font-size: 22px;
+      line-height: 1.6;
+      color: var(--brown);
+      font-weight: 700;
+      margin: 18px 0 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    /* —— watercolor sprig —— 通用植物 SVG 樣式 */
+    .sprig {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      opacity: 0.85;
+    }
+    .sprig-lg { width: 56px; height: 56px; opacity: 0.78; }
+    .sprig-corner {
+      position: absolute;
+      width: 92px;
+      height: 92px;
+      opacity: 0.32;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .sprig-corner.tl { top: -10px;    left: -14px;   transform: rotate(-12deg); }
+    .sprig-corner.tr { top: -8px;     right: -10px;  transform: rotate(28deg); }
+    .sprig-corner.bl { bottom: -12px; left: -8px;    transform: rotate(-160deg); }
+    .sprig-corner.br { bottom: -10px; right: -12px;  transform: rotate(165deg); }
+    .intro p {
+      color: var(--ink);
+      font-size: 16px;
+      margin: 0 0 16px;
+    }
+    .intro .hint {
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-top: 22px;
+    }
+
+    /* —— question —— */
+    .q-meta {
+      color: var(--muted);
+      font-size: 13.5px;
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+    .q-text {
+      font-size: 18.5px;
+      line-height: 1.75;
+      color: var(--brown);
+      font-weight: 600;
+      margin: 0 0 22px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .opt {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: rgba(251, 246, 233, 0.78);
+      color: var(--ink);
+      border: 1px solid var(--line-soft);
+      border-radius: 18px;
+      padding: 16px 18px;
+      font-size: 16px;
+      line-height: 1.7;
+      box-shadow: 0 4px 14px rgba(92, 72, 48, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      min-height: 52px;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    .opt:hover {
+      border-color: var(--sage-soft);
+      background: rgba(251, 246, 233, 0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(92, 72, 48, 0.07);
+    }
+    .opt:active {
+      transform: translateY(0);
+      background: #F6EDD5;
+    }
+    .opt:focus-visible {
+      outline: 2px solid var(--sage-soft);
+      outline-offset: 3px;
+    }
+
+    /* —— start button —— */
+    .start-btn {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--sage);
+      color: #FFF;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 36px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      box-shadow: var(--shadow-soft);
+      transition: background 0.2s ease, transform 0.18s ease;
+    }
+    .start-btn:hover { background: var(--sage-dark); }
+    .start-btn:active { transform: translateY(1px); }
+
+    /* —— result note —— 一張被留下的小紙條：紙紋 + 柔陰影 + 兩角輕邊植物 */
+    .note {
+      background:
+        /* 內部一層極淡的水彩暈，集中在右下，模擬紙吸了一點顏料 */
+        radial-gradient(ellipse 14rem 10rem at 88% 92%, rgba(143, 166, 134, 0.10), transparent 72%),
+        radial-gradient(ellipse 10rem 8rem  at 8%  6%,  rgba(232, 199, 168, 0.10), transparent 72%),
+        var(--paper);
+      border: none;
+      border-radius: 22px;
+      padding: 36px 26px 30px;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 22px 50px rgba(92, 72, 48, 0.10),
+        0 4px 12px rgba(92, 72, 48, 0.06);
+      position: relative;
+      overflow: visible;
+    }
+    /* 紙張紋理疊在 note 上 */
+    .note::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0.45;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.28  0 0 0 0 0.19  0 0 0 0.07 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");
+    }
+    .note-title {
+      font-size: 19px;
+      color: var(--brown);
+      font-weight: 600;
+      margin: 0 0 16px;
+      letter-spacing: 0.01em;
+      line-height: 1.6;
+    }
+    .note-line {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 0 0 22px;
+      line-height: 1.7;
+    }
+    .note-body {
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.95;
+      margin: 0 0 26px;
+    }
+    .note-body strong {
+      color: var(--brown);
+      font-weight: 600;
+    }
+    .note-soft {
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.85;
+      margin: 0 0 14px;
+      opacity: 0.86;
+    }
+    .note-foot {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 4px;
+      line-height: 1.7;
+    }
+
+    /* —— email form —— */
+    .form {
+      margin-top: 28px;
+      padding: 22px 20px;
+      background: rgba(255, 249, 239, 0.55);
+      border: 1px dashed var(--line);
+      border-radius: 18px;
+    }
+    .form-q {
+      color: var(--brown);
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 8px;
+    }
+    .form-sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 14px;
+    }
+    .form-row {
+      display: flex;
+      gap: 8px;
+      flex-direction: column;
+    }
+    .email-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #FFF;
+      color: var(--ink);
+      font-size: 16px;
+    }
+    .email-input:focus {
+      outline: 2px solid var(--sage);
+      outline-offset: 1px;
+      border-color: var(--sage);
+    }
+    .submit-btn {
+      background: var(--brown);
+      color: #FFF;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      transition: background 0.2s ease, transform 0.18s ease;
+    }
+    .submit-btn:hover { background: #4A3A26; }
+    .submit-btn:disabled { background: #B8AB97; cursor: not-allowed; }
+
+    .privacy {
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    /* —— submitted thank you —— */
+    .thanks {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+    .thanks-leaf {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .thanks h2 {
+      font-size: 22px;
+      color: var(--brown);
+      margin: 18px 0 10px;
+      font-weight: 700;
+    }
+    .thanks p {
+      color: var(--ink);
+      font-size: 16px;
+      margin: 6px 0;
+    }
+    .thanks .small {
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-top: 26px;
+    }
+
+    /* —— mobile fine-tune —— */
+    @media (min-width: 600px) {
+      main { padding: 40px 28px 100px; }
+      .intro-title { font-size: 26px; }
+      .q-text { font-size: 20px; }
+      .note { padding: 40px 36px 32px; }
+      .note-title { font-size: 21px; }
+      .form-row { flex-direction: row; }
+      .form-row .email-input { flex: 1; }
+    }
+
+    /* —— reduce motion —— */
+    @media (prefers-reduced-motion: reduce) {
+      .scene { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 通用水彩植物 sprig：一根莖 + 三葉，重複使用、低對比 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="sprig" viewBox="0 0 80 80">
+        <!-- 莖 -->
+        <path d="M40 74 C 38 56, 34 42, 38 22 C 39 16, 41 12, 44 8"
+              stroke="#5F7157" stroke-width="1.4" stroke-linecap="round"
+              fill="none" opacity="0.55"/>
+        <!-- 上葉 -->
+        <ellipse cx="46" cy="14" rx="9"   ry="4"   transform="rotate(-30 46 14)" fill="#9CB28F" opacity="0.55"/>
+        <ellipse cx="46" cy="14" rx="6"   ry="2.2" transform="rotate(-30 46 14)" fill="#5F7157" opacity="0.38"/>
+        <!-- 中右葉 -->
+        <ellipse cx="50" cy="34" rx="11"  ry="4.5" transform="rotate(38 50 34)"  fill="#A4B58E" opacity="0.55"/>
+        <ellipse cx="50" cy="34" rx="7"   ry="2.4" transform="rotate(38 50 34)"  fill="#5F7157" opacity="0.38"/>
+        <!-- 中左葉 -->
+        <ellipse cx="28" cy="46" rx="10"  ry="4.2" transform="rotate(-42 28 46)" fill="#A4B58E" opacity="0.55"/>
+        <ellipse cx="28" cy="46" rx="6.5" ry="2.4" transform="rotate(-42 28 46)" fill="#5F7157" opacity="0.38"/>
+        <!-- 下右葉 -->
+        <ellipse cx="48" cy="60" rx="9"   ry="4"   transform="rotate(28 48 60)"  fill="#9CB28F" opacity="0.5"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <main>
+    <div class="brand">Wishlite ｜ 永續行動學院</div>
+
+    <!-- Scene 1: intro -->
+    <section class="scene is-on" id="scene-intro" aria-labelledby="intro-title">
+      <h1 id="intro-title" class="intro-title">
+        <svg class="sprig" aria-hidden="true"><use href="#sprig"/></svg>
+        <span>看見自己的一個小練習</span>
+      </h1>
+      <div class="intro">
+        <p>今天，我們一起整理了人生資源地圖，也完成了專屬的價值作品。</p>
+        <p>現在，請不要想太多，憑著直覺回答以下 3 個小問題。</p>
+        <p>這不是要給妳打分數，而是想陪妳看見：當妳準備重新開始時，妳最自然的行動起點是什麼。</p>
+        <p class="hint">大約 2 分鐘。</p>
+        <p style="text-align:center; margin-top: 28px;">
+          <button class="start-btn" id="btn-start" type="button">開始</button>
+        </p>
+      </div>
+    </section>
+
+    <!-- Scene 2: question -->
+    <section class="scene" id="scene-question" aria-live="polite">
+      <div class="q-meta" id="q-meta">第 1 題 ／ 共 3 題</div>
+      <h2 class="q-text" id="q-text"></h2>
+      <div class="options" id="q-options"></div>
+    </section>
+
+    <!-- Scene 3: result -->
+    <section class="scene" id="scene-result">
+      <article class="note">
+        <svg class="sprig-corner tr" aria-hidden="true"><use href="#sprig"/></svg>
+        <svg class="sprig-corner bl" aria-hidden="true"><use href="#sprig"/></svg>
+        <h2 class="note-title" id="r-title"></h2>
+        <p class="note-line" id="r-line"></p>
+        <p class="note-body" id="r-body"></p>
+
+        <p class="note-soft">今天不用急著想清楚全部。<br>先把這份感覺留下來就好。</p>
+        <p class="note-foot">一封給妳的話，會在幾個小時後寄到妳信箱。</p>
+
+        <div class="form">
+          <p class="form-q">想收到那段給妳的話嗎？</p>
+          <p class="form-sub">留下 email 就好，幾個小時後再寄。</p>
+          <form id="email-form" class="form-row" novalidate>
+            <input type="email" class="email-input" id="email-input" name="email" placeholder="妳的 email" autocomplete="email" inputmode="email" required>
+            <button type="submit" class="submit-btn" id="submit-btn">好</button>
+          </form>
+          <p class="privacy">我們不寄電子報，也不分享給第三方。只寄那一封。</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Scene 4: submitted -->
+    <section class="scene" id="scene-thanks">
+      <div class="thanks">
+        <div class="thanks-leaf">
+          <svg class="sprig sprig-lg" aria-hidden="true"><use href="#sprig"/></svg>
+        </div>
+        <h2>好的。</h2>
+        <p>幾個小時後，再給妳一封。</p>
+        <p class="small">今天辛苦了。</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ============================================
+    // 看見自己的一個小練習｜課堂版入口 v1
+    // 設計鐵律：不顯示六友、不顯示 mascot 圖、不做卡片公式風
+    // ============================================
+
+    // n8n webhook（待 Apple 串接 WF-Course-Tool-Sender 後填入）
+    const WEBHOOK_URL = "https://wishlite-n8n.zeabur.app/webhook/see-yourself";
+
+    // —— 題目定義 ——
+    const QUESTIONS = [
+      {
+        text: "當妳看著桌上那些零碎、不同，甚至有點不完美的材料時，妳最初的直覺動作是？",
+        options: [
+          { text: "先把它們分類，找出能用的部分。", key: "oyster" },
+          { text: "沒想太多，直接動手拼拼看。",         key: "plastic" },
+          { text: "盯著材料的細節，想像它原本經歷過什麼。", key: "denim" },
+          { text: "先看看別人怎麼做，或找人一起討論。",   key: "sprout" },
+          { text: "特別注意那些破掉、有瑕疵的地方，反而覺得它們很特別。", key: "denim" },
+          { text: "不急著開始，比較喜歡先安靜待在大家旁邊。", key: "ground" }
+        ]
+      },
+      {
+        text: "在互相分享作品的時候，哪一個瞬間妳最有感覺？",
+        options: [
+          { text: "專心聽對方說話，很自然會想接住她的情緒。", key: "cotton" },
+          { text: "腦袋開始幫對方整理：「啊，原來妳很擅長這個。」", key: "oyster" },
+          { text: "發現彼此有類似的經歷，心裡默默覺得：「原來我不是一個人。」", key: "sprout" },
+          { text: "聽著聽著，腦海裡突然冒出很多新點子。", key: "plastic" },
+          { text: "聽見對方過去的辛苦時，會想幫她看見那段經歷留下的力量。", key: "denim" },
+          { text: "不一定會講很多話，但喜歡安靜陪在旁邊。", key: "ground" }
+        ]
+      },
+      {
+        text: "如果現在要跨出下一步，妳下意識最想怎麼開始？",
+        options: [
+          { text: "先動手做一個小東西，哪怕還不完美也沒關係。", key: "plastic" },
+          { text: "先把事情拆成小步驟，慢慢一個一個完成。", key: "oyster" },
+          { text: "找一個最近有點低潮的人，陪她聊聊。", key: "cotton" },
+          { text: "找一兩個有共鳴的人，一起討論接下來可以怎麼開始。", key: "sprout" },
+          { text: "突然想把那些以前覺得「沒什麼」的經歷，重新記下來。", key: "denim" },
+          { text: "找一個讓自己安心的角落，默默開始一件小事就好。", key: "ground" }
+        ]
+      }
+    ];
+
+    // —— 結果定義 ——
+    const RESULTS = {
+      cotton: {
+        title: "妳是溫柔轉譯者",
+        line: "妳會把別人的話，慢慢翻譯成她聽得懂的樣子。",
+        body: "在一個習慣搶著表達的世界，這種能力其實很稀有。" +
+              "妳不一定是說最多話的人，但妳常常是那個讓別人「終於覺得被聽懂」的人。"
+      },
+      oyster: {
+        title: "妳是清晰梳理者",
+        line: "妳會把混亂變得可以理解。",
+        body: "別人覺得很複雜的事，到妳手上會變成「啊，原來可以這樣排」。" +
+              "這在很多場合都很需要，只是平常太自然，連妳自己都沒發現這是一種能力。"
+      },
+      plastic: {
+        title: "妳是靈感實作者",
+        line: "妳的手比腦袋更知道下一步是什麼。",
+        body: "當別人還在想，妳已經開始了。" +
+              "這不是粗心，是一種很珍貴的勇氣 — 願意讓事情先有一個粗糙的版本，再慢慢長成它該有的樣子。"
+      },
+      sprout: {
+        title: "妳是溫暖連結者",
+        line: "妳會自然地把人和人連起來。",
+        body: "妳常常會先注意到：誰沒有說話、誰好像有點累、誰其實很想被理解。" +
+              "這不是社交，是更深的東西 — 一種讓別人覺得「原來我不是一個人」的能力。"
+      },
+      denim: {
+        title: "妳是故事重寫者",
+        line: "妳會把「破掉的東西」重新寫成另一個故事。",
+        body: "妳看別人的過去，是這樣看的；看自己的過去，其實也可以是這樣。" +
+              "那些曾經以為「沒什麼」的經歷，到妳這裡會變成「原來是這樣才走到今天」。"
+      },
+      ground: {
+        title: "妳是安靜陪伴者",
+        line: "妳像一杯熱咖啡 — 不需要說很多，光是存在就讓人安心。",
+        body: "妳不一定是最先開口的人，但有妳在的地方，大家會慢慢放鬆下來。" +
+              "在一個大家都在搶著表達的世界，這種安靜的力量其實非常重要。"
+      }
+    };
+
+    // —— 狀態 ——
+    const state = {
+      idx: 0,                  // 目前第幾題
+      answers: [],             // ["A","B","C"] — 選項代號
+      keys: [],                // 對應 style_key
+      result: null
+    };
+
+    // —— DOM ——
+    const $ = (id) => document.getElementById(id);
+    const scenes = {
+      intro:    $("scene-intro"),
+      question: $("scene-question"),
+      result:   $("scene-result"),
+      thanks:   $("scene-thanks")
+    };
+    function showScene(name) {
+      Object.values(scenes).forEach(el => el.classList.remove("is-on"));
+      scenes[name].classList.add("is-on");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // —— 渲染題目 ——
+    function renderQuestion() {
+      const q = QUESTIONS[state.idx];
+      $("q-meta").textContent = `第 ${state.idx + 1} 題 ／ 共 ${QUESTIONS.length} 題`;
+      $("q-text").textContent = q.text;
+
+      const wrap = $("q-options");
+      wrap.innerHTML = "";
+      const labels = ["A", "B", "C", "D", "E", "F"];
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "opt";
+        btn.textContent = opt.text;
+        btn.dataset.label = labels[i];
+        btn.dataset.key = opt.key;
+        btn.addEventListener("click", () => onPick(opt.key, labels[i]));
+        wrap.appendChild(btn);
+      });
+    }
+
+    function onPick(key, label) {
+      state.keys.push(key);
+      state.answers.push(label);
+
+      if (state.idx < QUESTIONS.length - 1) {
+        state.idx += 1;
+        renderQuestion();
+        // 重新觸發 scene 動畫
+        scenes.question.classList.remove("is-on");
+        // force reflow
+        void scenes.question.offsetWidth;
+        scenes.question.classList.add("is-on");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        finalize();
+      }
+    }
+
+    // —— 計分 ——
+    function finalize() {
+      const tally = {};
+      state.keys.forEach(k => { tally[k] = (tally[k] || 0) + 1; });
+      const max = Math.max(...Object.values(tally));
+      const top = Object.keys(tally).filter(k => tally[k] === max);
+
+      // 平手 → 以 Q3 答案為仲裁
+      let winner;
+      if (top.length === 1) {
+        winner = top[0];
+      } else {
+        const q3Key = state.keys[2];
+        winner = top.includes(q3Key) ? q3Key : top[0];
+      }
+
+      state.result = winner;
+      const r = RESULTS[winner];
+      $("r-title").textContent = r.title;
+      $("r-line").textContent  = r.line;
+      $("r-body").textContent  = r.body;
+      showScene("result");
+    }
+
+    // —— 提交 email ——
+    async function submitEmail(e) {
+      e.preventDefault();
+      const input = $("email-input");
+      const btn = $("submit-btn");
+      const email = (input.value || "").trim();
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        input.focus();
+        input.style.borderColor = "#C98767";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "正在送出...";
+
+      const STYLE_NAMES = {
+        cotton: "溫柔轉譯者", oyster: "清晰梳理者", plastic: "靈感實作者",
+        sprout: "溫暖連結者", denim: "故事重寫者", ground: "安靜陪伴者"
+      };
+
+      const payload = {
+        source: "see-yourself-2026-05-09",
+        email: email,
+        style_key: state.result,
+        style_name: STYLE_NAMES[state.result] || "",
+        q_answers: state.answers.join(","),
+        ts: new Date().toISOString()
+      };
+
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          keepalive: true
+        });
+      } catch (err) {
+        // 網路失敗也不阻擋學員體驗 — 後端會由 cron 補回
+        console.warn("submit failed (silent):", err);
+      }
+
+      showScene("thanks");
+    }
+
+    // —— init ——
+    document.addEventListener("DOMContentLoaded", () => {
+      $("btn-start").addEventListener("click", () => {
+        state.idx = 0;
+        state.answers = [];
+        state.keys = [];
+        renderQuestion();
+        showScene("question");
+      });
+      $("email-form").addEventListener("submit", submitEmail);
+    });
+  </script>
+</body>
+</html>
