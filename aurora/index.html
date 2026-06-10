@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>極光星球 · 顏色裡的你</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{min-height:100%;}
+  body{
+    font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    color:#fff;min-height:100dvh;
+    background:
+      radial-gradient(120% 80% at 18% 8%, #5b3b7a 0%, rgba(91,59,122,0) 55%),
+      radial-gradient(120% 80% at 88% 18%, #2b6f7e 0%, rgba(43,111,126,0) 55%),
+      radial-gradient(140% 90% at 50% 102%, #1f5d52 0%, rgba(31,93,82,0) 60%),
+      linear-gradient(160deg,#1a1330 0%,#221934 45%,#15222a 100%);
+    display:flex;justify-content:center;padding:30px 20px 50px;overflow-x:hidden;
+  }
+  .bgphoto{position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:url('極光星球-底圖.jpg') center center / cover no-repeat;
+    opacity:.10;filter:saturate(.9);}
+  .stars{position:fixed;inset:0;pointer-events:none;opacity:.5;background-image:
+    radial-gradient(1px 1px at 20% 30%,#fff,transparent),
+    radial-gradient(1px 1px at 70% 18%,#fff,transparent),
+    radial-gradient(1.4px 1.4px at 40% 70%,#fff,transparent),
+    radial-gradient(1px 1px at 85% 60%,#fff,transparent),
+    radial-gradient(1px 1px at 55% 42%,#fff,transparent),
+    radial-gradient(1.2px 1.2px at 12% 82%,#fff,transparent),
+    radial-gradient(1px 1px at 92% 88%,#fff,transparent);}
+  .wrap{width:100%;max-width:470px;position:relative;z-index:1;}
+
+  header{text-align:center;margin-bottom:6px;}
+  .kicker{font-size:12px;letter-spacing:5px;color:#d9c7ef;opacity:.85;margin-bottom:10px;}
+  h1{font-size:25px;font-weight:700;letter-spacing:1px;line-height:1.45;}
+  h1 .sub{display:block;font-size:13.5px;font-weight:400;color:#cfd8e0;letter-spacing:.3px;margin-top:12px;opacity:.92;line-height:1.85;}
+
+  .note{margin:22px auto 6px;max-width:380px;padding:13px 18px;border-radius:16px;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);
+    font-size:12.5px;line-height:1.75;color:#cdc4e2;text-align:center;}
+  .note b{color:#ffe9a8;}
+
+  .step{font-size:13.5px;color:#cdbfe6;text-align:center;letter-spacing:1px;margin:24px 0 4px;}
+  .slots{display:flex;justify-content:center;gap:14px;margin:14px 0 20px;}
+  .slot{width:88px;height:88px;border-radius:18px;border:1.5px dashed rgba(255,255,255,.3);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    font-size:11px;color:#b6acce;transition:.2s;}
+  .slot.filled{border-style:solid;border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.06);}
+  .slot .so{width:36px;height:36px;border-radius:50%;display:none;
+    box-shadow:inset -3px -4px 7px rgba(0,0,0,.25),inset 3px 4px 7px rgba(255,255,255,.4);}
+  .slot.filled .so{display:block;}
+  .slot.filled .lbl{display:none;}
+  .slot .pick-name{display:none;font-size:11.5px;color:#fff;letter-spacing:.5px;}
+  .slot.filled .pick-name{display:block;}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px;}
+  .card{border:1px solid rgba(255,255,255,.32);border-radius:16px;padding:14px 6px 12px;
+    background:rgba(255,255,255,.06);cursor:pointer;text-align:center;transition:transform .15s,background .15s;}
+  .card:active{transform:scale(.93);}
+  .card .orb{width:42px;height:42px;border-radius:50%;margin:0 auto 8px;
+    box-shadow:0 4px 14px rgba(0,0,0,.3),inset -4px -5px 9px rgba(0,0,0,.22),inset 4px 5px 9px rgba(255,255,255,.42);}
+  .card .name{font-size:13px;font-weight:600;letter-spacing:.5px;}
+  .c-orange{background:radial-gradient(circle at 32% 28%,#ffd9a8,#ff9d4d 55%,#e8702a);}
+  .c-pink{background:radial-gradient(circle at 32% 28%,#ffd6ec,#ff8fc0 55%,#e85aa0);}
+  .c-purple{background:radial-gradient(circle at 32% 28%,#d9c7ff,#9b7ce8 55%,#6f4fcf);}
+  .c-green{background:radial-gradient(circle at 32% 28%,#c7f5d8,#5fd193 55%,#2fae74);}
+  .c-earth{background:radial-gradient(circle at 32% 28%,#f0e6d4,#c2a983 50%,#7d8f7a 85%);}
+  .c-blue{background:radial-gradient(circle at 32% 28%,#d6ecff,#5b9fe6 55%,#2f6fc7);}
+  .c-yellow{background:radial-gradient(circle at 32% 28%,#fff6cf,#ffd84d 55%,#e8b820);}
+
+  .tools{display:flex;gap:10px;margin-top:16px;}
+  .btn{flex:1;padding:15px;border-radius:14px;border:none;font-family:inherit;font-size:15px;
+    letter-spacing:1px;cursor:pointer;transition:.2s;}
+  .btn.ghost{background:rgba(255,255,255,.08);color:#cdbfe6;border:1px solid rgba(255,255,255,.2);}
+  .btn.go{background:linear-gradient(120deg,#f3cd6b,#e8a94d);color:#3a2a10;font-weight:700;}
+  .btn:disabled{opacity:.35;cursor:not-allowed;}
+
+  /* result */
+  .scrim{position:fixed;inset:0;background:rgba(10,6,20,.74);backdrop-filter:blur(5px);
+    display:none;align-items:flex-start;justify-content:center;padding:24px 18px;z-index:30;overflow-y:auto;}
+  .scrim.show{display:flex;}
+  .result{width:100%;max-width:400px;border-radius:26px;overflow:hidden;margin:auto;
+    background:linear-gradient(165deg,#251b40,#142128);border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 20px 60px rgba(0,0,0,.55);animation:pop .32s ease;}
+  @keyframes pop{from{transform:scale(.92);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .r-top{padding:30px 26px 16px;text-align:center;}
+  .r-eyebrow{font-size:12px;letter-spacing:3px;color:#c8b6ee;margin-bottom:8px;}
+  .reading{font-size:16.5px;line-height:1.85;color:#fff;font-weight:600;letter-spacing:.5px;}
+  .divider{height:1px;background:rgba(255,255,255,.12);margin:20px 26px 0;}
+  .r-scent{padding:22px 26px 6px;text-align:center;}
+  .r-scent .lead{font-size:12px;letter-spacing:3px;color:#f3cd6b;margin-bottom:14px;}
+  .bigorb{width:96px;height:96px;border-radius:50%;margin:0 auto 14px;
+    box-shadow:0 0 24px rgba(243,205,107,.3),inset -8px -10px 20px rgba(0,0,0,.28),inset 8px 10px 20px rgba(255,255,255,.42);}
+  .scent-name{font-size:25px;font-weight:700;letter-spacing:3px;}
+  .why{padding:14px 28px 6px;font-size:14.5px;line-height:1.9;color:#ece5f5;text-align:center;}
+  .r-actions{display:flex;border-top:1px solid rgba(255,255,255,.12);margin-top:20px;}
+  .r-actions button{flex:1;padding:16px;background:none;border:none;color:#fff;font-size:15px;
+    font-family:inherit;letter-spacing:1px;cursor:pointer;}
+  .r-actions button:first-child{border-right:1px solid rgba(255,255,255,.12);color:#cdbfe6;}
+  footer{text-align:center;margin-top:28px;font-size:11.5px;color:#9a90b8;letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="bgphoto"></div>
+<div class="stars"></div>
+<div class="wrap">
+  <header>
+    <div class="kicker">W I S H L I T E · 韻手作</div>
+    <h1>極光星球 · 顏色裡的你</h1>
+  </header>
+
+  <div class="note">選出你被吸引的兩個顏色，看看顏色裡的你，<br>還有為你選的那支香。</div>
+
+  <div class="step">選 2 個你最被吸引的顏色</div>
+  <div class="slots">
+    <div class="slot" id="slot0"><span class="lbl">第一個</span><span class="so"></span><span class="pick-name"></span></div>
+    <div class="slot" id="slot1"><span class="lbl">第二個</span><span class="so"></span><span class="pick-name"></span></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="tools">
+    <button class="btn ghost" onclick="reset_()">重選</button>
+    <button class="btn go" id="goBtn" disabled onclick="reveal()">看顏色裡的我
+  </div>
+
+  <footer>韻手作 Wishlite · 讓永續成為日常的選擇</footer>
+</div>
+
+<div class="scrim" id="scrim"><div class="result" id="result"></div></div>
+
+<script>
+// 5 支精油（結果才揭曉）
+const OILS = {
+  orange:{name:"甜橙",cls:"c-orange"},
+  rose:  {name:"玫瑰",cls:"c-pink"},
+  lavender:{name:"薰衣草",cls:"c-purple"},
+  tea:   {name:"茶樹",cls:"c-green"},
+  nature:{name:"大自然",cls:"c-earth"},
+};
+// 明天現場的 6 色（金色是固定基底，不在選單）
+const COLORS = {
+  blue:  {name:"藍",cls:"c-blue"},
+  pink:  {name:"粉",cls:"c-pink"},
+  purple:{name:"紫",cls:"c-purple"},
+  green: {name:"綠",cls:"c-green"},
+  yellow:{name:"黃",cls:"c-yellow"},
+  orange:{name:"橘",cls:"c-orange"},
+};
+const ORDER = ["blue","pink","purple","green","yellow","orange"];
+
+// 讀心版：顏色組合 → 個性解讀 + 為你選的香（刻意不直譯，香是「處方」）
+// key 用顏色配對，查詢時兩種順序都試
+const COMBOS = {
+  "blue|pink":{reading:"你外冷內熱，理性裡藏著一顆很在意人的心。",scent:"lavender",
+    why:"你把情緒收得很好，薰衣草想讓你允許自己鬆一下，不用一直撐著。"},
+  "blue|purple":{reading:"你安靜而深，有一個別人不容易走進去的內在世界。",scent:"orange",
+    why:"你習慣往內走，甜橙想給你一點向外的明亮——記得偶爾也讓陽光照進來。"},
+  "blue|green":{reading:"你冷靜又穩，是大家慌亂時會想靠近的那個人。",scent:"nature",
+    why:"你總在接住別人，大自然想把你也接住，讓你回到自己。"},
+  "blue|yellow":{reading:"你外表冷靜、心裡其實很有光，這份反差很迷人。",scent:"orange",
+    why:"你不太外露，甜橙陪你把藏起來的亮，一點一點放出來。"},
+  "blue|orange":{reading:"你能熱也能靜，懂得什麼時候上場、什麼時候退後。",scent:"tea",
+    why:"在動與靜之間，茶樹幫你保持清醒，不被外界帶著走。"},
+  "pink|purple":{reading:"你細膩又柔軟，對美和情感有很高的感受度。",scent:"rose",
+    why:"你常把溫柔給別人，玫瑰想提醒你——你也值得被這樣對待。"},
+  "pink|green":{reading:"你溫暖又穩定，是讓人很有安全感的存在。",scent:"nature",
+    why:"你給了大家安心，大自然讓你也踩回自己的土地。"},
+  "pink|yellow":{reading:"你開朗又貼心，是會把快樂分給大家的人。",scent:"rose",
+    why:"你顧著讓大家開心，玫瑰想留一點寵愛，給你自己。"},
+  "pink|orange":{reading:"你熱情又重感情，靠近你的人都會被好好照顧。",scent:"lavender",
+    why:"你的火很暖，薰衣草陪你在熱鬧之後，好好降落。"},
+  "purple|green":{reading:"你敏感卻穩得住，內在豐富又不慌張。",scent:"tea",
+    why:"想得多的時候，茶樹幫你把思緒清乾淨，回到清明。"},
+  "purple|yellow":{reading:"你有創意又有活力，腦袋裡總有有趣的東西。",scent:"nature",
+    why:"靈感跳得快時，大自然幫你扎根——落地了，才走得遠。"},
+  "purple|orange":{reading:"你既有自己的世界、又能熱情表達，很有魅力。",scent:"lavender",
+    why:"你常在發光，薰衣草想給你一個能安靜下來的角落。"},
+  "green|yellow":{reading:"你穩定裡帶著陽光，讓人又安心又愉快。",scent:"orange",
+    why:"你照顧得很周到，甜橙想讓你也輕鬆一點、多笑一點。"},
+  "green|orange":{reading:"你可靠又有行動力，是說到做到的那種人。",scent:"lavender",
+    why:"你一直在前進，薰衣草提醒你——也要停下來喘口氣。"},
+  "yellow|orange":{reading:"你是全場的能量來源，熱情又閃亮。",scent:"nature",
+    why:"你燒得很旺，大自然幫你補回根，讓你亮得久一點。"},
+  // 同色：更強烈的個性
+  "blue|blue":{reading:"你是非常冷靜、深思的人，情緒總是收得很好。",scent:"orange",
+    why:"你太常理性了，甜橙想給你一點不設防的明亮與柔軟。"},
+  "pink|pink":{reading:"你極度溫柔，把感情看得很重很重。",scent:"rose",
+    why:"你總把愛給出去，這次的玫瑰，整顆都留給你自己。"},
+  "purple|purple":{reading:"你高度敏感，有很強的內在世界與創造力。",scent:"lavender",
+    why:"你的世界很滿，薰衣草幫你騰出一塊安靜的空白。"},
+  "green|green":{reading:"你非常穩定、可靠，是大家的定心丸。",scent:"nature",
+    why:"你撐住了很多人，大自然讓你回到自己的根。"},
+  "yellow|yellow":{reading:"你超級開朗，充滿好奇與用不完的能量。",scent:"tea",
+    why:"能量滿格時，茶樹幫你保持清爽，不亂衝。"},
+  "orange|orange":{reading:"你熱情、行動力強，是全場的太陽。",scent:"orange",
+    why:"純粹的明亮——就送你一支跟你一樣熱的甜橙。"},
+};
+
+const grid=document.getElementById('grid');
+ORDER.forEach(k=>{
+  const c=COLORS[k];
+  const el=document.createElement('div');
+  el.className='card';
+  el.innerHTML=`<div class="orb ${c.cls}"></div><div class="name">${c.name}色</div>`;
+  el.onclick=()=>pick(k);
+  grid.appendChild(el);
+});
+
+let picks=[];
+function pick(k){ if(picks.length>=2) return; picks.push(k); renderSlots(); }
+function renderSlots(){
+  [0,1].forEach(i=>{
+    const slot=document.getElementById('slot'+i), k=picks[i];
+    if(k){
+      slot.classList.add('filled');
+      slot.querySelector('.so').className='so '+COLORS[k].cls;
+      slot.querySelector('.pick-name').textContent=COLORS[k].name+'色';
+    }else{
+      slot.classList.remove('filled');
+      slot.querySelector('.so').className='so';
+      slot.querySelector('.pick-name').textContent='';
+    }
+  });
+  document.getElementById('goBtn').disabled = picks.length!==2;
+}
+function reset_(){picks=[];renderSlots();}
+
+function reveal(){
+  if(picks.length!==2) return;
+  const [a,b]=picks;
+  const c=COMBOS[a+'|'+b] || COMBOS[b+'|'+a];
+  if(!c) return;
+  const p=OILS[c.scent];
+  document.getElementById('result').innerHTML=`
+    <div class="r-top">
+      <div class="r-eyebrow">顏色裡的你</div>
+      <div class="reading">${c.reading}</div>
+    </div>
+    <div class="divider"></div>
+    <div class="r-scent">
+      <div class="lead">為你選的那支香</div>
+      <div class="bigorb ${p.cls}"></div>
+      <div class="scent-name">${p.name}</div>
+    </div>
+    <div class="why">${c.why}</div>
+    <div class="r-actions">
+      <button onclick="closeR()">重新選一次</button>
+      <button onclick="closeR()">就是它了</button>
+    </div>`;
+  document.getElementById('scrim').classList.add('show');
+}
+function closeR(){document.getElementById('scrim').classList.remove('show');}
+document.getElementById('scrim').onclick=e=>{if(e.target.id==='scrim')closeR();};
+</script>
+</body>
+</html>
